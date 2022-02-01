@@ -1,16 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Attiary" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <!-- dark 모드로 자꾸 실행돼서 기존 아래의 설정을 그 아래의 설정으로 변경 -->
+<!--    <style name="Theme.Attiary" parent="Theme.MaterialComponents.DayNight.DarkActionBar">-->
+    <style name="Theme.Attiary" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/yellow_top</item>
+        <item name="colorPrimaryVariant">@color/yellow_box</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondary">@color/yellow_top</item>
+        <item name="colorSecondaryVariant">@color/yellow_box</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/yellow_background</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <!-- Customize your theme here. -->
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>

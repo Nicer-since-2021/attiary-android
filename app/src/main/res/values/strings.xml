@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Attiary</string>
     <string name="click_this_btn">Click this button!</string>
+    <string name="register_email">이메일 등록</string>
+    <string name="register_email_edit">이메일을 입력하세요.</string>
+    <string name="register_name">닉네임 등록</string>
+    <string name="register_name_edit">닉네임을 입력하세요.</string>
+    <string name="register_birth">생일 등록</string>
+    <string name="setting_password_button">앱 비밀번호 설정</string>
+    <string name="signup_button">완료</string>
+    <string name="month">월</string>
+    <string name="day">일</string>
+    <string name="back_button">뒤로가기</string>
+    <string name="signup_view_button">SignUp 실행</string>
 </resources>
