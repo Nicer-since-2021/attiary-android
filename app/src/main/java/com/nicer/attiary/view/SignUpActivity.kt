@@ -1,9 +1,14 @@
 package com.nicer.attiary.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.nicer.attiary.R
+import com.nicer.attiary.data.app.AppLock
+import com.nicer.attiary.view.SettingPasswordActivity
+import com.nicer.attiary.data.app.AppLockConst
+import com.nicer.attiary.data.app.lock
 import com.nicer.attiary.data.user.User
 import com.nicer.attiary.data.user.UserHelper
 import com.nicer.attiary.databinding.ActivitySignUpBinding
@@ -30,5 +35,11 @@ class SignUpActivity : AppCompatActivity() {
 				.build()
 			helper?.userDao()?.insert(user)
 		}
+
+		val intent = Intent(this, SettingPasswordActivity::class.java)
+		binding.buttonSettingPassword.setOnClickListener {
+			startActivity(intent)
+		}
 	}
+
 }
