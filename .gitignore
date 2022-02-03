@@ -271,3 +271,5 @@ fabric.properties
 /build
 /captures
 .cxx
+
+/app/src/main/res/values/app_key.xml
