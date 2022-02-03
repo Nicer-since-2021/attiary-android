@@ -272,4 +272,5 @@ fabric.properties
 /captures
 .cxx
 
+# 사용자 지정
 /app/src/main/res/values/app_key.xml

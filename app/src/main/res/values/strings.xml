@@ -12,4 +12,10 @@
     <string name="day">일</string>
     <string name="back_button">뒤로가기</string>
     <string name="signup_view_button">SignUp 실행</string>
+
+    <string name="new_pw_info">새 암호를 입력해주세요.</string>
+    <string name="verify_pw_info">다시 한 번 입력해주세요.</string>
+    <string name="warning_pw_info">암호가 일치하지 않습니다.</string>
+    <string name="enter_pw">암호 입력</string>
+    <string name="enter_pw_info">암호를 입력해주세요.</string>
 </resources>

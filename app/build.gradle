@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
 }
 
+apply plugin: 'kotlin-android-extensions'
 android {
     compileSdk 32
 
