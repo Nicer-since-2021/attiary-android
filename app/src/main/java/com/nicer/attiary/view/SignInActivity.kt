@@ -49,32 +49,5 @@ class SignInActivity : AppCompatActivity() {
 				UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
 			}
 		}
-
-//		binding.btnKakaoSignin.setOnClickListener {
-//			UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->
-//				if (error != null) {
-//					Log.e("KakaoLogin", "로그인 실패", error)
-//				} else if (token != null) {
-//					Log.i("KakaoLogin", "로그인 성공 ${token.accessToken}")
-//
-//					/*
-//					// 사용자 요청 정보
-//					UserApiClient.instance.me { user, error ->
-//						if (error != null) {
-//							Log.e("카카오로그인", "사용자 정보 요청 실패", error)
-//						} else if (user != null) {
-//							Log.i(
-//								"카카오로그인", "사용자 정보 요청 성공" +
-//										"\n회원번호: ${user.id}" +
-//										"\n이메일: ${user.kakaoAccount?.email}" +
-//										"\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
-//										"\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
-//							)
-//						}
-//					}
-//					*/
-//				}
-//			}
-//		}
 	}
 }
