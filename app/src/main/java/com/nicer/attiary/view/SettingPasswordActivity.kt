@@ -4,21 +4,27 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import com.nicer.attiary.R
 import com.nicer.attiary.data.app.AppLock
 import com.nicer.attiary.data.app.AppLockConst
 import com.nicer.attiary.data.app.lock
-import kotlinx.android.synthetic.main.activity_app_password.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_setting_pw.*
+
 
 class SettingPasswordActivity : AppCompatActivity() {
 	// 잠금 상태 여부 확인
+	lateinit var btnSetLock: Button
+	lateinit var btnSetDelLock: Button
+	lateinit var btnChangePwd: Button
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_setting_pw)
+
+		btnSetLock = findViewById(R.id.btnSetLock)
+		btnSetDelLock = findViewById(R.id.btnSetDelLock)
+		btnChangePwd = findViewById(R.id.btnChangePwd)
 
 		init()
 

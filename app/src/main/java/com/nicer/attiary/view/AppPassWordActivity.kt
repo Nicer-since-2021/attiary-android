@@ -6,19 +6,59 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.R
 import com.nicer.attiary.data.app.AppLock
 import com.nicer.attiary.data.app.AppLockConst
-import kotlinx.android.synthetic.main.activity_app_password.*
+
 
 class AppPassWordActivity : AppCompatActivity(){
 	private var oldPwd =""
 	private var changePwdUnlock = false
 
+
+	lateinit var editPW1: EditText
+	lateinit var editPW2: EditText
+	lateinit var editPW3: EditText
+	lateinit var editPW4: EditText
+
+	lateinit var btn0: Button
+	lateinit var btn1: Button
+	lateinit var btn2: Button
+	lateinit var btn3: Button
+	lateinit var btn4: Button
+	lateinit var btn5: Button
+	lateinit var btn6: Button
+	lateinit var btn7: Button
+	lateinit var btn8: Button
+	lateinit var btn9: Button
+	lateinit var btnDel: Button
+	lateinit var btn_pwCancel: Button
+
+	lateinit var textInfoPW: TextView
+
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_app_password)
+
+		editPW1 = findViewById<EditText>(R.id.editPW1)
+		editPW2 = findViewById<EditText>(R.id.editPW2)
+		editPW3 = findViewById<EditText>(R.id.editPW3)
+		editPW4 = findViewById<EditText>(R.id.editPW4)
+		btn0 = findViewById<Button>(R.id.btn0)
+		btn1 = findViewById<Button>(R.id.btn1)
+		btn2 = findViewById<Button>(R.id.btn2)
+		btn3 = findViewById<Button>(R.id.btn3)
+		btn4 = findViewById<Button>(R.id.btn4)
+		btn5 = findViewById<Button>(R.id.btn5)
+		btn6 = findViewById<Button>(R.id.btn6)
+		btn7 = findViewById<Button>(R.id.btn7)
+		btn8 = findViewById<Button>(R.id.btn8)
+		btn9 = findViewById<Button>(R.id.btn9)
+		btnDel = findViewById<Button>(R.id.btnDel)
+		btn_pwCancel = findViewById<Button>(R.id.btn_pwCancel)
 
 		editPW1.showSoftInputOnFocus = false
 		editPW2.showSoftInputOnFocus = false
@@ -120,6 +160,7 @@ class AppPassWordActivity : AppCompatActivity(){
 
 	// Intent Type 분류
 	private fun inputType(type : Int){
+		textInfoPW = findViewById<TextView>(R.id.textInfoPW)
 		when(type){
 			AppLockConst.AppLockCosnt.ENABLE_PASSLOCK ->{ // 잠금설정
 				if(oldPwd.isEmpty()){
