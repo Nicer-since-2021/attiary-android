@@ -26,7 +26,7 @@ class User {
 	constructor()
 
 	class Builder(
-		val name: String, val email: String) {
+		val email: String, val name: String) {
 
 		var birthdayMonth = 0
 		var birthdayDay = 0
@@ -47,9 +47,15 @@ class User {
 	}
 
 	constructor(builder: Builder) {
-		name = builder.name
 		email = builder.email
+		name = builder.name
 		birthdayMonth = builder.birthdayMonth
 		birthdayDay = builder.birthdayDay
 	}
+
+	override fun toString(): String {
+		return "User(email='$email', name='$name', birthdayMonth=$birthdayMonth, birthdayDay=$birthdayDay)"
+	}
+
+
 }

@@ -8,11 +8,11 @@
     android:background="@color/yellow_background">
 
     <ImageButton
-        android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="24dp"
+        android:id="@+id/buttonBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/back_button"
         app:layout_constraintStart_toStartOf="parent"
@@ -128,28 +128,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textBirth" />
 
-    <NumberPicker
-        android:id="@+id/pickerMonth"
-        android:layout_width="27dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="16dp"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lineBirth"
-        tools:ignore="MissingConstraints" />
-
-    <NumberPicker
-        android:id="@+id/pickerDay"
-        android:layout_width="27dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:visibility="visible"
-        app:layout_constraintStart_toEndOf="@+id/textMonth"
-        app:layout_constraintTop_toBottomOf="@+id/lineBirth"
-        tools:ignore="MissingConstraints" />
-
     <TextView
         android:id="@+id/textBirth"
         android:layout_width="wrap_content"
@@ -164,31 +142,30 @@
         app:layout_constraintTop_toBottomOf="@+id/editName" />
 
 
-
     <TextView
         android:id="@+id/textMonth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
         android:fontFamily="@font/im_heymin_regular"
         android:text="@string/month"
         android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/pickerMonth"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerDay"
         app:layout_constraintTop_toBottomOf="@+id/lineBirth" />
 
     <TextView
         android:id="@+id/textDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="80dp"
         android:fontFamily="@font/im_heymin_regular"
         android:text="@string/day"
         android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/pickerDay"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lineBirth" />
 
     <Button
@@ -202,7 +179,7 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lineBirth" />
 
@@ -219,5 +196,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonSettingPassword" />
+
+    <Spinner
+        android:id="@+id/spinnerMonth"
+        android:layout_width="100dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="16dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintEnd_toStartOf="@+id/textMonth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lineBirth" />
+
+    <Spinner
+        android:id="@+id/spinnerDay"
+        android:layout_width="100dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintEnd_toStartOf="@+id/textDay"
+        app:layout_constraintTop_toBottomOf="@+id/lineBirth" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
