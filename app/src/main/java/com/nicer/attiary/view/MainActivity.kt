@@ -12,7 +12,6 @@ class MainActivity : AppCompatActivity() {
 
 	private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
-	//private lateinit var signiture_bgm: MediaPlayer
 	private var signiture_bgm: MediaPlayer? = null
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -36,6 +35,12 @@ class MainActivity : AppCompatActivity() {
 		binding.btnGotoSignin.setOnClickListener {
 			intent_signin.addFlags(FLAG_ACTIVITY_NO_USER_ACTION)
 			startActivity(intent_signin)
+		}
+
+		binding.btnStopBGM.setOnClickListener {
+			signiture_bgm?.reset()
+			signiture_bgm?.release()
+			signiture_bgm = null
 		}
 	}
 
