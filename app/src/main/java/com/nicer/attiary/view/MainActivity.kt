@@ -37,10 +37,6 @@ class MainActivity : AppCompatActivity() {
 			intent_signin.addFlags(FLAG_ACTIVITY_NO_USER_ACTION)
 			startActivity(intent_signin)
 		}
-
-		binding.btnPlay.setOnClickListener {
-			signiture_bgm?.start()
-		}
 	}
 
 	override fun onUserLeaveHint() {
