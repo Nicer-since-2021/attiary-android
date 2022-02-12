@@ -1,75 +1,51 @@
 package com.nicer.attiary.view
 
-import android.annotation.SuppressLint
+
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.R
 import com.nicer.attiary.data.app.AppLock
 import com.nicer.attiary.data.app.AppLockConst
+import com.nicer.attiary.data.app.AppLockConst.AppLockCosnt.DISABLE_PASSLOCK
+import com.nicer.attiary.data.app.AppLockConst.AppLockCosnt.UNLOCK_PASSWORD
+import com.nicer.attiary.databinding.ActivityAppPasswordBinding
 
 
 class AppPassWordActivity : AppCompatActivity(){
+
+	val binding by lazy { ActivityAppPasswordBinding.inflate(layoutInflater) }
 	private var oldPwd =""
 	private var changePwdUnlock = false
 
 
-	lateinit var editPW1: EditText
-	lateinit var editPW2: EditText
-	lateinit var editPW3: EditText
-	lateinit var editPW4: EditText
-
-	lateinit var btn0: Button
-	lateinit var btn1: Button
-	lateinit var btn2: Button
-	lateinit var btn3: Button
-	lateinit var btn4: Button
-	lateinit var btn5: Button
-	lateinit var btn6: Button
-	lateinit var btn7: Button
-	lateinit var btn8: Button
-	lateinit var btn9: Button
-	lateinit var btnDel: Button
-	lateinit var btn_pwCancel: Button
-
-	lateinit var textInfoPW: TextView
-
-
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_app_password)
+		setContentView(binding.root)
 
-		editPW1 = findViewById<EditText>(R.id.editPW1)
-		editPW2 = findViewById<EditText>(R.id.editPW2)
-		editPW3 = findViewById<EditText>(R.id.editPW3)
-		editPW4 = findViewById<EditText>(R.id.editPW4)
-		btn0 = findViewById<Button>(R.id.btn0)
-		btn1 = findViewById<Button>(R.id.btn1)
-		btn2 = findViewById<Button>(R.id.btn2)
-		btn3 = findViewById<Button>(R.id.btn3)
-		btn4 = findViewById<Button>(R.id.btn4)
-		btn5 = findViewById<Button>(R.id.btn5)
-		btn6 = findViewById<Button>(R.id.btn6)
-		btn7 = findViewById<Button>(R.id.btn7)
-		btn8 = findViewById<Button>(R.id.btn8)
-		btn9 = findViewById<Button>(R.id.btn9)
-		btnDel = findViewById<Button>(R.id.btnDel)
-		btn_pwCancel = findViewById<Button>(R.id.btn_pwCancel)
 
-		editPW1.showSoftInputOnFocus = false
-		editPW2.showSoftInputOnFocus = false
-		editPW3.showSoftInputOnFocus = false
-		editPW4.showSoftInputOnFocus = false
+		binding.editPW1.showSoftInputOnFocus = false
+		binding.editPW2.showSoftInputOnFocus = false
+		binding.editPW3.showSoftInputOnFocus = false
+		binding.editPW4.showSoftInputOnFocus = false
+		binding.imgLocked1.bringToFront()
+		binding.imgLocked1.isClickable = true
+		binding.imgLocked2.bringToFront()
+		binding.imgLocked2.isClickable = true
+		binding.imgLocked3.bringToFront()
+		binding.imgLocked3.isClickable = true
+		binding.imgLocked4.bringToFront()
+		binding.imgLocked4.isClickable = true
 
-		val buttonArray = arrayListOf<Button>(btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7 ,btn8, btn9, btnDel)
+		val buttonArray = arrayListOf<Button>(binding.btn0, binding.btn1, binding.btn2, binding.btn3, binding.btn4, binding.btn5, binding.btn6, binding.btn7 ,binding.btn8, binding.btn9, binding.btnDel)
 		for (button in buttonArray){
 			button.setOnClickListener(btnListener)
 		}
-		btn_pwCancel.setOnClickListener {
+		binding.btnPwCancel.setOnClickListener {
 			finish()
 		}
 
@@ -95,23 +71,27 @@ class AppPassWordActivity : AppCompatActivity(){
 		val strCurrentValue = currentValue.toString() // 현재 입력된 번호 String으로 변경
 		if (currentValue != -1){
 			when {
-				editPW1.isFocused -> {
-					setEditText(editPW1, editPW2, strCurrentValue)
+				binding.editPW1.isFocused -> {
+					binding.imgLocked1.setImageResource(R.drawable.unlocked_atti)
+					setEditText(binding.editPW1, binding.editPW2, strCurrentValue)
 				}
-				editPW2.isFocused -> {
-					setEditText(editPW2, editPW3, strCurrentValue)
+				binding.editPW2.isFocused -> {
+					binding.imgLocked2.setImageResource(R.drawable.unlocked_atti)
+					setEditText(binding.editPW2, binding.editPW3, strCurrentValue)
 				}
-				editPW3.isFocused -> {
-					setEditText(editPW3, editPW4, strCurrentValue)
+				binding.editPW3.isFocused -> {
+					binding.imgLocked3.setImageResource(R.drawable.unlocked_atti)
+					setEditText(binding.editPW3, binding.editPW4, strCurrentValue)
 				}
-				editPW4.isFocused -> {
-					editPW4.setText(strCurrentValue)
+				binding.editPW4.isFocused -> {
+					binding.imgLocked4.setImageResource(R.drawable.unlocked_atti)
+					binding.editPW4.setText(strCurrentValue)
 				}
 			}
 		}
 
 		// 비밀번호를 4자리 모두 입력시
-		if (editPW4.text.isNotEmpty() && editPW3.text.isNotEmpty() && editPW2.text.isNotEmpty() && editPW1.text.isNotEmpty()) {
+		if (binding.editPW4.text.isNotEmpty() && binding.editPW3.text.isNotEmpty() && binding.editPW2.text.isNotEmpty() && binding.editPW1.text.isNotEmpty()) {
 			inputType(intent.getIntExtra("type", 0))
 		}
 	}
@@ -119,36 +99,45 @@ class AppPassWordActivity : AppCompatActivity(){
 	// 한 칸 지우기를 눌렀을때
 	private fun onDeleteKey() {
 		when {
-			editPW1.isFocused -> {
-				editPW1.setText("")
+			binding.editPW1.isFocused -> {
+				binding.editPW1.setText("")
+				binding.imgLocked1.setImageResource(R.drawable.locked_atti)
 			}
-			editPW2.isFocused -> {
-				editPW1.setText("")
-				editPW1.requestFocus()
+			binding.editPW2.isFocused -> {
+				binding.editPW1.setText("")
+				binding.editPW1.requestFocus()
+				binding.imgLocked1.setImageResource(R.drawable.locked_atti)
 			}
-			editPW3.isFocused -> {
-				editPW2.setText("")
-				editPW2.requestFocus()
+			binding.editPW3.isFocused -> {
+				binding.editPW2.setText("")
+				binding.editPW2.requestFocus()
+				binding.imgLocked2.setImageResource(R.drawable.locked_atti)
 			}
-			editPW4.isFocused -> {
-				editPW3.setText("")
-				editPW3.requestFocus()
+			binding.editPW4.isFocused -> {
+				binding.imgLocked3.setImageResource(R.drawable.locked_atti)
+				binding.editPW3.setText("")
+				binding.editPW3.requestFocus()
 			}
 		}
 	}
 
 	// 모두 지우기
 	private fun onClear(){
-		editPW1.setText("")
-		editPW2.setText("")
-		editPW3.setText("")
-		editPW4.setText("")
-		editPW1.requestFocus()
+		binding.editPW1.setText("")
+		binding.editPW2.setText("")
+		binding.editPW3.setText("")
+		binding.editPW4.setText("")
+		binding.editPW1.requestFocus()
+		binding.imgLocked1.setImageResource(R.drawable.locked_atti)
+		binding.imgLocked2.setImageResource(R.drawable.locked_atti)
+		binding.imgLocked3.setImageResource(R.drawable.locked_atti)
+		binding.imgLocked4.setImageResource(R.drawable.locked_atti)
+
 	}
 
 	// 입력된 비밀번호를 합치기
 	private fun inputedPassword():String {
-		return "${editPW1.text}${editPW2.text}${editPW3.text}${editPW4.text}"
+		return "${binding.editPW1.text}${binding.editPW2.text}${binding.editPW3.text}${binding.editPW4.text}"
 	}
 
 	// EditText 설정
@@ -158,15 +147,18 @@ class AppPassWordActivity : AppCompatActivity(){
 		nextEditText.setText("")
 	}
 
+	override fun onBackPressed() {
+
+	}
+
 	// Intent Type 분류
 	private fun inputType(type : Int){
-		textInfoPW = findViewById<TextView>(R.id.textInfoPW)
 		when(type){
 			AppLockConst.AppLockCosnt.ENABLE_PASSLOCK ->{ // 잠금설정
 				if(oldPwd.isEmpty()){
 					oldPwd = inputedPassword()
 					onClear()
-					textInfoPW.text=getString(R.string.verify_pw_info)
+					binding.textInfoPW.text=getString(R.string.verify_pw_info)
 				}
 				else{
 					if(oldPwd == inputedPassword()){
@@ -176,7 +168,7 @@ class AppPassWordActivity : AppCompatActivity(){
 					}
 					else{
 						onClear()
-						textInfoPW.text = getString(R.string.warning_pw_info)
+						binding.textInfoPW.text = getString(R.string.warning_pw_info)
 					}
 				}
 			}
@@ -189,7 +181,7 @@ class AppPassWordActivity : AppCompatActivity(){
 						finish()
 					}
 					else {
-						textInfoPW.text = getString(R.string.warning_pw_info)
+						binding.textInfoPW.text = getString(R.string.warning_pw_info)
 						onClear()
 					}
 				}
@@ -204,7 +196,7 @@ class AppPassWordActivity : AppCompatActivity(){
 					setResult(Activity.RESULT_OK)
 					finish()
 				}else{
-					textInfoPW.text = getString(R.string.warning_pw_info)
+					binding.textInfoPW.text = getString(R.string.warning_pw_info)
 					onClear()
 				}
 
@@ -212,13 +204,13 @@ class AppPassWordActivity : AppCompatActivity(){
 				if (AppLock(this).checkPassLock(inputedPassword()) && !changePwdUnlock) {
 					onClear()
 					changePwdUnlock = true
-					textInfoPW.text = getString(R.string.new_pw_info)
+					binding.textInfoPW.text = getString(R.string.new_pw_info)
 				}
 				else if (changePwdUnlock) {
 					if (oldPwd.isEmpty()) {
 						oldPwd = inputedPassword()
 						onClear()
-						textInfoPW.text = getString(R.string.verify_pw_info)
+						binding.textInfoPW.text = getString(R.string.verify_pw_info)
 					} else {
 						if (oldPwd == inputedPassword()) {
 							AppLock(this).setPassLock(inputedPassword())
@@ -226,11 +218,11 @@ class AppPassWordActivity : AppCompatActivity(){
 							finish()
 						} else {
 							onClear()
-							textInfoPW.text = getString(R.string.warning_pw_info)
+							binding.textInfoPW.text = getString(R.string.warning_pw_info)
 						}
 					}
 				} else {
-					textInfoPW.text = getString(R.string.warning_pw_info)
+					binding.textInfoPW.text = getString(R.string.warning_pw_info)
 					changePwdUnlock = false
 					onClear()
 				}
