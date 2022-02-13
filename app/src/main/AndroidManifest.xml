@@ -22,10 +22,10 @@
             android:name=".view.ready.ReadyActivity"
             android:exported="false" />
         <activity
-            android:name=".view.SignInActivity"
+            android:name=".view.ready.SignInActivity"
             android:exported="false" />
         <activity
-            android:name=".view.SignUpActivity"
+            android:name=".view.ready.SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".view.MainActivity"
@@ -34,10 +34,10 @@
         <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
         <!-- </intent-filter> -->
         <!-- </activity> -->
-        <activity android:name=".view.AppPassWordActivity" />
-        <activity android:name=".view.SettingPasswordActivity" />
+        <activity android:name=".view.ready.AppPassWordActivity" />
+        <activity android:name=".view.ready.SettingPasswordActivity" />
         <activity
-            android:name=".view.SplashActivity"
+            android:name=".view.ready.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

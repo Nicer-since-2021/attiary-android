@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.databinding.ActivityMainBinding
-import com.nicer.attiary.view.ready.ReadyActivity
+import com.nicer.attiary.view.main.MainActivity2
+import com.nicer.attiary.view.ready.SignInActivity
+import com.nicer.attiary.view.ready.SignUpActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 			startActivity(intent_signin)
 		}
 
-		val intent_frag = Intent(this, ReadyActivity::class.java)
+		val intent_frag = Intent(this, MainActivity2::class.java)
 		binding.btnGotoFragment.setOnClickListener {
 			startActivity(intent_frag)
 		}
