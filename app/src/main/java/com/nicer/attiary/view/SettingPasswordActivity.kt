@@ -1,35 +1,29 @@
 package com.nicer.attiary.view
 
-import android.app.Activity
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
-import com.nicer.attiary.R
 import com.nicer.attiary.data.app.AppLock
 import com.nicer.attiary.data.app.AppLockConst
 import com.nicer.attiary.data.app.lock
+import com.nicer.attiary.databinding.ActivitySettingPwBinding
 
 
 class SettingPasswordActivity : AppCompatActivity() {
-	// 잠금 상태 여부 확인
-	lateinit var btnSetLock: Button
-	lateinit var btnSetDelLock: Button
-	lateinit var btnChangePwd: Button
+
+	val binding by lazy { ActivitySettingPwBinding.inflate(layoutInflater) }
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_setting_pw)
+		setContentView(binding.root)
 
-		btnSetLock = findViewById(R.id.btnSetLock)
-		btnSetDelLock = findViewById(R.id.btnSetDelLock)
-		btnChangePwd = findViewById(R.id.btnChangePwd)
 
 		init()
 
 		// 잠금 설정 버튼을 눌렀을때
-		btnSetLock.setOnClickListener {
+		binding.btnSetLock.setOnClickListener {
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
 				putExtra(AppLockConst.AppLockCosnt.type, AppLockConst.AppLockCosnt.ENABLE_PASSLOCK)
 			}
@@ -38,7 +32,7 @@ class SettingPasswordActivity : AppCompatActivity() {
 		}
 
 		// 잠금 비활성화 버튼을 눌렀을때
-		btnSetDelLock.setOnClickListener{
+		binding.btnSetDelLock.setOnClickListener{
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
 				putExtra(AppLockConst.AppLockCosnt.type, AppLockConst.AppLockCosnt.DISABLE_PASSLOCK)
 			}
@@ -46,7 +40,7 @@ class SettingPasswordActivity : AppCompatActivity() {
 		}
 
 		// 암호 변경버튼을 눌렀을때
-		btnChangePwd.setOnClickListener {
+		binding.btnChangePwd.setOnClickListener {
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
 				putExtra(AppLockConst.AppLockCosnt.type, AppLockConst.AppLockCosnt.CHANGE_PASSWORD)
 			}
@@ -94,15 +88,15 @@ class SettingPasswordActivity : AppCompatActivity() {
 
 
 		if (AppLock(this).isPassLockSet()){
-			btnSetLock.isEnabled = false
-			btnSetDelLock.isEnabled = true
-			btnChangePwd.isEnabled = true
+			binding.btnSetLock.isEnabled = false
+			binding.btnSetDelLock.isEnabled = true
+			binding.btnChangePwd.isEnabled = true
 			lock = true
 		}
 		else{
-			btnSetLock.isEnabled = true
-			btnSetDelLock.isEnabled = false
-			btnChangePwd.isEnabled = false
+			binding.btnSetLock.isEnabled = true
+			binding.btnSetDelLock.isEnabled = false
+			binding.btnChangePwd.isEnabled = false
 			lock = false
 		}
 	}
