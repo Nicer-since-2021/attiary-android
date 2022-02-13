@@ -1,4 +1,4 @@
-package com.nicer.attiary.view
+package com.nicer.attiary.view.ready
 
 import android.os.Bundle
 import android.util.Log
