@@ -1,8 +1,7 @@
-package com.nicer.attiary.view
+package com.nicer.attiary.view.ready
 
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -11,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.R
 import com.nicer.attiary.data.app.AppLock
 import com.nicer.attiary.data.app.AppLockConst
-import com.nicer.attiary.data.app.AppLockConst.AppLockCosnt.DISABLE_PASSLOCK
-import com.nicer.attiary.data.app.AppLockConst.AppLockCosnt.UNLOCK_PASSWORD
 import com.nicer.attiary.databinding.ActivityAppPasswordBinding
 
 
