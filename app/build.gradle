@@ -4,7 +4,6 @@ plugins {
     id 'kotlin-kapt'
 }
 
-
 android {
     compileSdk 32
 
@@ -51,6 +50,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
     testImplementation 'junit:junit:4.13.2'
@@ -59,4 +59,7 @@ dependencies {
 
     // 카카오 SDK 모듈 설정
     implementation "com.kakao.sdk:v2-user:2.8.5" // 카카오 로그인
+
+    // Google Play Service 종속성 추가
+    implementation 'com.google.android.gms:play-services-auth:20.1.0'
 }
