@@ -20,15 +20,11 @@
             android:name=".view.SignInActivity"
             android:exported="false" />
         <activity
-            android:name=".view.SignInActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".view.MainActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
