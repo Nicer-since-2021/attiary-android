@@ -19,9 +19,6 @@
             android:name=".view.main.MainActivity2"
             android:exported="false" />
         <activity
-            android:name=".view.ready.ReadyActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.ready.SignInActivity"
             android:exported="false" />
         <activity
