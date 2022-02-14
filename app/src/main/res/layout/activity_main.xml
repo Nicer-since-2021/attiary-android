@@ -55,11 +55,13 @@
         app:layout_constraintTop_toBottomOf="@+id/btnStart" />
 
     <Button
-        android:id="@+id/btnStopBGM"
+        android:id="@+id/btnGotoFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BGM 정지"
-        android:textColor="#E91E63"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="159dp" />
+        android:layout_marginTop="20dp"
+        android:text="Fragment 구성으로 보기"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnGotoSignin" />
 </androidx.constraintlayout.widget.ConstraintLayout>

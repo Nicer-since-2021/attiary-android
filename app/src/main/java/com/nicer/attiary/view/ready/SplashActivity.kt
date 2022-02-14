@@ -1,13 +1,11 @@
-package com.nicer.attiary.view
+package com.nicer.attiary.view.ready
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import com.nicer.attiary.R
-import com.nicer.attiary.data.app.AppLock
-import com.nicer.attiary.data.app.AppLockConst
-import com.nicer.attiary.data.app.lock
+import com.nicer.attiary.view.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 
