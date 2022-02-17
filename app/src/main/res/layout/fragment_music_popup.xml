@@ -121,7 +121,7 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:id="@+id/imageButton5"
+                android:id="@+id/btnClose"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="end"

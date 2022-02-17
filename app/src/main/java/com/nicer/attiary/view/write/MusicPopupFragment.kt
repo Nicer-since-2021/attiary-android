@@ -15,6 +15,10 @@ class MusicPopupFragment : Fragment() {
 		savedInstanceState: Bundle?
 	): View? {
 		binding = FragmentMusicPopupBinding.inflate(inflater, container, false)
+
+		binding.btnClose.setOnClickListener {
+			fragmentManager?.beginTransaction()?.remove(this)?.commit()
+		}
 		return binding.root
 	}
 }
