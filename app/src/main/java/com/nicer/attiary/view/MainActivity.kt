@@ -45,7 +45,6 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-
 	fun viewFragment(fragment: Fragment?) {
 		if (fragment != null) {
 			supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
