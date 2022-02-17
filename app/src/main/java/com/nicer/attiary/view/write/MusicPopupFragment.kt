@@ -16,9 +16,26 @@ class MusicPopupFragment : Fragment() {
 	): View? {
 		binding = FragmentMusicPopupBinding.inflate(inflater, container, false)
 
+		setPicker()
+
 		binding.btnClose.setOnClickListener {
 			fragmentManager?.beginTransaction()?.remove(this)?.commit()
 		}
 		return binding.root
+	}
+
+	private fun setPicker() {
+		val picker = binding.numberPicker
+		val bgm_category = arrayOf("기쁨", "희망", "슬픔", "분노", "불안", "피곤", "후회")
+		picker.minValue = 0
+		picker.maxValue = bgm_category.size - 1
+		picker.displayedValues = bgm_category
+		picker.wrapSelectorWheel = true // 순환
+
+		// 변화값 감지
+//		picker.setOnValueChangedListener { picker, oldVal, newVal ->
+//			val text = "Changed from $oldVal to $newVal"
+//			Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
+//		}
 	}
 }
