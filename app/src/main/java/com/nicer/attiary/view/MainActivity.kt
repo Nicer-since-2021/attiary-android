@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
 		}
 
 		binding.btnMusic.setOnLongClickListener {
-			//Toast.makeText(this, "Long Click", Toast.LENGTH_SHORT).show()
 			viewFragment(MusicPopupFragment())
 			true
 		}

@@ -94,7 +94,6 @@
                     android:background="@android:color/transparent"
                     android:scaleType="fitCenter"
                     android:src="@drawable/music_next_button" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -110,8 +109,6 @@
                     android:gravity="center"
                     android:text="노래장르 바꾸기" />
             </LinearLayout>
-
-
         </LinearLayout>
 
         <LinearLayout
