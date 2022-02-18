@@ -3,10 +3,14 @@ package com.nicer.attiary.view
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.nicer.attiary.R
 import com.nicer.attiary.databinding.ActivityMainBinding
 import com.nicer.attiary.view.main.MainActivity2
 import com.nicer.attiary.view.ready.SignInActivity
 import com.nicer.attiary.view.ready.SignUpActivity
+import com.nicer.attiary.view.write.MusicPopupFragment
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +37,17 @@ class MainActivity : AppCompatActivity() {
 		val intent_frag = Intent(this, MainActivity2::class.java)
 		binding.btnGotoFragment.setOnClickListener {
 			startActivity(intent_frag)
+		}
+
+		binding.btnMusic.setOnLongClickListener {
+			viewFragment(MusicPopupFragment())
+			true
+		}
+	}
+
+	fun viewFragment(fragment: Fragment?) {
+		if (fragment != null) {
+			supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
 		}
 	}
 }
