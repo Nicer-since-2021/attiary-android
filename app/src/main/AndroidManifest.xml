@@ -18,11 +18,11 @@
         <activity
             android:name=".view.write.WriteActivity"
             android:exported="false" />
-   
+   <activity
             android:name=".view.main.HomeActivity"
             android:exported="false" />
         <activity android:name=".view.main.DiaryActivity" />
-     
+     <activity
             android:name=".view.main.ForFragmentActivity"
             android:exported="false">
         </activity>
