@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/yellow_background"
+    tools:context=".view.report.MonthlyReportFragment">
+
+    <ImageView
+        android:id="@+id/ratio_balloon"
+        android:layout_width="264dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/monthly_report_balloon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ratio_atti"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ratio_atti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/talking_atti"
+        app:layout_constraintEnd_toStartOf="@+id/ratio_balloon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ratio_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/im_heymin_regular"
+        android:text="@string/ratio_desc"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ratio_balloon"
+        app:layout_constraintEnd_toEndOf="@+id/ratio_balloon"
+        app:layout_constraintHorizontal_bias="0.66"
+        app:layout_constraintStart_toStartOf="@+id/ratio_balloon"
+        app:layout_constraintTop_toTopOf="@+id/ratio_balloon" />
+
+    <View
+        android:id="@+id/pie_chart_back_view"
+        android:layout_width="348dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@color/yellow_box"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratio_balloon" />
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/pie_chart_back_view"
+        app:layout_constraintEnd_toEndOf="@+id/pie_chart_back_view"
+        app:layout_constraintStart_toStartOf="@+id/pie_chart_back_view"
+        app:layout_constraintTop_toTopOf="@+id/pie_chart_back_view" />
+
+    <ImageView
+        android:id="@+id/happy_balloon"
+        android:layout_width="264dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/monthly_report_balloon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/happy_atti"
+        app:layout_constraintTop_toBottomOf="@+id/pie_chart_back_view" />
+
+    <TextView
+        android:id="@+id/happy_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/im_heymin_regular"
+        android:text="@string/happy_desc"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/happy_balloon"
+        app:layout_constraintEnd_toEndOf="@+id/happy_balloon"
+        app:layout_constraintHorizontal_bias="0.62"
+        app:layout_constraintStart_toStartOf="@+id/happy_balloon"
+        app:layout_constraintTop_toTopOf="@+id/happy_balloon" />
+
+    <ImageView
+        android:id="@+id/happy_atti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/talking_atti"
+        app:layout_constraintEnd_toStartOf="@+id/happy_balloon"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pie_chart_back_view" />
+
+    <View
+        android:id="@+id/happy_chart_back_view"
+        android:layout_width="348dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@color/yellow_box"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/happy_balloon" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
