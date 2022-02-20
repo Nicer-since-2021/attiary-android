@@ -6,5 +6,7 @@
         android:font="@font/im_heymin_regular"/>
     <font android:fontStyle="normal"
         android:font="@font/im_hyemin_bold"/>
+    <font android:fontStyle="normal"
+        android:font="@font/to_daughter_from_mom"/>
 
 </font-family>

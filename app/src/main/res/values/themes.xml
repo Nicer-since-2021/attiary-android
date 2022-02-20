@@ -15,4 +15,14 @@
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="CalendarDateTextStyle" parent="android:TextAppearance.DeviceDefault">
+        <item name="android:fontFamily">@font/to_daughter_from_mom</item>
+        <item name="android:textSize">35dp</item>
+    </style>
+
+    <style name="CalendarWeeksTextStyle" parent="android:TextAppearance.DeviceDefault">
+        <item name="android:fontFamily">@font/im_hyemin_bold</item>
+        <item name="android:textSize">16dp</item>
+    </style>
 </resources>
