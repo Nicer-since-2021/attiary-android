@@ -16,11 +16,21 @@
             android:name=".view.write.WriteActivity"
             android:exported="false" />
         <activity
+<<<<<<< Updated upstream
             android:name=".view.main.MainActivity2"
             android:exported="false" />
         <activity
             android:name=".view.ready.ReadyActivity"
             android:exported="false" />
+=======
+            android:name=".view.main.HomeActivity"
+            android:exported="false" />
+        <activity android:name=".view.main.DiaryActivity" />
+        <activity
+            android:name=".view.main.ForFragmentActivity"
+            android:exported="false">
+        </activity>
+>>>>>>> Stashed changes
         <activity
             android:name=".view.ready.SignInActivity"
             android:exported="false" />
