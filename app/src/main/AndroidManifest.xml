@@ -12,12 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Attiary">
+
+        <meta-data android:name="android.max_aspect" android:value="2.1" />
+
         <activity
             android:name=".view.write.WriteActivity"
             android:exported="false" />
         <activity
-            android:name=".view.main.MainActivity2"
-            android:exported="false" />
+            android:name=".view.main.ForFragmentActivity"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".view.ready.SignInActivity"
             android:exported="false" />
@@ -26,11 +30,12 @@
             android:exported="false" />
         <activity
             android:name=".view.MainActivity"
-            android:exported="true" /> <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
+            android:exported="true" />
+<!--         <intent-filter> -->
+<!--         <action android:name="android.intent.action.MAIN" /> -->
+<!--         <category android:name="android.intent.category.LAUNCHER" /> -->
+<!--         </intent-filter> -->
+<!--         </activity> -->
         <activity android:name=".view.ready.AppPassWordActivity" />
         <activity android:name=".view.ready.SettingPasswordActivity" />
         <activity
