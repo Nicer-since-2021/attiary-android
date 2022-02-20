@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ready.SignUpActivity"
-    android:background="@color/yellow_background">
+    android:layout_marginBottom="10dp"
+    android:background="@color/yellow_background"
+    tools:context=".view.ready.SignUpActivity">
 
     <ImageButton
         android:id="@+id/buttonBack"
@@ -70,13 +71,13 @@
         android:id="@+id/textEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="100dp"
         android:fontFamily="@font/im_hyemin_bold"
         android:text="@string/register_email"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -170,32 +171,36 @@
 
     <Button
         android:id="@+id/buttonSettingPassword"
-        android:layout_width="260dp"
+        android:layout_width="0dp"
         android:layout_height="55dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/yellow_top"
         android:fontFamily="@font/im_hyemin_bold"
         android:text="@string/setting_password_button"
         android:textColor="@color/black"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSubmit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lineBirth" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonSubmit"
-        android:layout_width="260dp"
+        android:layout_width="0dp"
         android:layout_height="55dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="50dp"
         android:backgroundTint="@color/gray_submit_button"
         android:fontFamily="@font/im_hyemin_bold"
         android:text="@string/signup_button"
         android:textColor="@color/white"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSettingPassword" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
         android:id="@+id/spinnerMonth"

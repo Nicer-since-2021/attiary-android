@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/yellow_background">
 
-<<<<<<< Updated upstream
-=======
+
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
@@ -29,7 +28,6 @@
             app:srcCompat="@drawable/music_button" />
     </FrameLayout>
 
->>>>>>> Stashed changes
     <TextView
         android:id="@+id/textSay"
         android:layout_width="wrap_content"
