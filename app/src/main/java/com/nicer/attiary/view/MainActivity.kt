@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.nicer.attiary.R
 import com.nicer.attiary.databinding.ActivityMainBinding
-import com.nicer.attiary.view.main.MainActivity2
+import com.nicer.attiary.view.main.ForFragmentActivity
 import com.nicer.attiary.view.ready.SignInActivity
 import com.nicer.attiary.view.ready.SignUpActivity
 import com.nicer.attiary.view.write.MusicPopupFragment
@@ -29,14 +29,14 @@ class MainActivity : AppCompatActivity() {
 			startActivity(intent)
 		}
 
-		val intent_signin = Intent(this, SignInActivity::class.java)
+		val intentSignin = Intent(this, SignInActivity::class.java)
 		binding.btnGotoSignin.setOnClickListener {
-			startActivity(intent_signin)
+			startActivity(intentSignin)
 		}
 
-		val intent_frag = Intent(this, MainActivity2::class.java)
+		val intentFrag = Intent(this, ForFragmentActivity::class.java)
 		binding.btnGotoFragment.setOnClickListener {
-			startActivity(intent_frag)
+			startActivity(intentFrag)
 		}
 
 		binding.btnMusic.setOnLongClickListener {
