@@ -171,10 +171,10 @@
 
     <Button
         android:id="@+id/buttonSettingPassword"
-        android:layout_width="320dp"
+        android:layout_width="0dp"
         android:layout_height="55dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/yellow_top"
         android:fontFamily="@font/im_hyemin_bold"
@@ -188,10 +188,10 @@
 
     <Button
         android:id="@+id/buttonSubmit"
-        android:layout_width="320dp"
+        android:layout_width="0dp"
         android:layout_height="55dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="50dp"
         android:backgroundTint="@color/gray_submit_button"
         android:fontFamily="@font/im_hyemin_bold"
