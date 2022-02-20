@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/yellow_background"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/yellow_background">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            app:contentInsetStart="0dp"
+            app:titleTextColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/yellow_top"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/bar_findText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:fontFamily="@font/to_daughter_from_mom"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="45dp" />
+
+            <ImageButton
+                android:id="@+id/musicBtn"
+                android:background="@android:color/transparent"
+                android:layout_marginStart="10dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/music_button"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"/>
+
+            <ImageButton
+                android:id="@+id/settingBtn"
+                android:background="@android:color/transparent"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                app:srcCompat="@drawable/setting_button"
+                android:adjustViewBounds="true"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:scaleType="fitCenter"/>
+
+
+
+
+        </androidx.appcompat.widget.Toolbar>
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/msg"
+            android:layout_centerVertical="true"
+            app:mcv_selectionColor="@color/yellow_top"
+            app:mcv_dateTextAppearance="@style/CalendarDateTextStyle"
+            app:mcv_weekDayTextAppearance="@style/CalendarWeeksTextStyle"
+            tools:ignore="MissingConstraints" >
+
+        </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/msg"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.8"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/home_msg_img"
+            app:layout_constraintEnd_toStartOf="@id/newButton"
+            app:layout_constraintTop_toBottomOf="@id/calendarView"
+            tools:ignore="MissingConstraints" />
+        <ImageButton
+            android:id="@+id/newButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:srcCompat="@drawable/new_diary_btn"
+            android:background="@android:color/transparent"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@id/calendarView"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintStart_toEndOf="@id/msg"
+            android:scaleType="fitCenter"/>
+        <TextView
+            android:id="@+id/monthlyStatsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="이 달의 마음통계"
+            android:gravity="center"
+            android:fontFamily="@font/im_hyemin_bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintTop_toBottomOf="@id/msg"
+            app:layout_constraintBottom_toTopOf="@id/statsView"
+            android:background="@drawable/top_round_border"/>
+
+
+        <View
+            android:id="@+id/statsView"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintTop_toBottomOf="@id/monthlyStatsTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bottom_round_border" />
+
+        <ProgressBar
+            android:id="@+id/depressionIndex"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:max="100"
+            android:progress="30"
+            android:progressBackgroundTintMode="src_over"
+            android:progressDrawable="@drawable/progress_depression"
+            android:scaleY="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtDepression" />
+
+        <TextView
+            android:id="@+id/txtDepression"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/im_heymin_regular"
+            android:text="종합 우울지수"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/monthlyStatsTitle" />
+
+        <TextView
+            android:id="@+id/levelDepression"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/im_heymin_regular"
+            android:textColor="@color/blue_depression"
+            android:text="2단계"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/monthlyStatsTitle" />
+
+        <TextView
+            android:id="@+id/msgDepression"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/to_daughter_from_mom"
+            android:text="휴식이 필요해요"
+            android:textSize="25dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/depressionIndex" />
+        <ProgressBar
+            android:id="@+id/happinessIndex"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+            android:max="100"
+            android:progress="70"
+            android:progressBackgroundTintMode="src_over"
+            android:progressDrawable="@drawable/progress_happiness_home"
+            android:scaleY="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtHappiness" />
+
+        <TextView
+            android:id="@+id/txtHappiness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/im_heymin_regular"
+            android:text="종합 행복지수"
+            android:textSize="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/msgDepression" />
+
+        <TextView
+            android:id="@+id/levelHappiness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/im_heymin_regular"
+            android:textColor="@color/green_happiness"
+            android:text="4단계"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/msgDepression" />
+
+        <TextView
+            android:id="@+id/msgHappiness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/to_daughter_from_mom"
+            android:text="행복의 힘으로 이겨내요!"
+            android:textSize="25dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/happinessIndex" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
