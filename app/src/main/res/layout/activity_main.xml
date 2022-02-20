@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/yellow_background">
 
+
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
@@ -24,7 +25,7 @@
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/music_icon" />
+            app:srcCompat="@drawable/music_button" />
     </FrameLayout>
 
     <TextView

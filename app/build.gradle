@@ -45,10 +45,12 @@ dependencies {
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
     implementation 'androidx.annotation:annotation:1.2.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
-
+    
     def room_version = "2.4.1"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
