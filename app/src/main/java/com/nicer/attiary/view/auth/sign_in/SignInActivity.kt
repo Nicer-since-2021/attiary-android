@@ -1,4 +1,4 @@
-package com.nicer.attiary.view.ready
+package com.nicer.attiary.view.auth.sign_in
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,9 +14,11 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.nicer.attiary.databinding.ActivitySignInBinding
-import com.nicer.attiary.view.main.HomeActivity
+import com.nicer.attiary.view.auth.sign_up.SignUpActivity
+import com.nicer.attiary.view.signature.HomeActivity
 
 const val RC_SIGN_IN = 1886 // 로그인 인텐트 식별을 위한 임의 상수
+
 
 class SignInActivity : AppCompatActivity() {
 
@@ -36,6 +38,11 @@ class SignInActivity : AppCompatActivity() {
 		setContentView(binding.root)
 
 		binding.btnKakaoSignin.setOnClickListener {
+/**
+ * 여기입니다...ㅠㅠ
+ */
+//			startActivity(Intent(this, SignUpActivity::class.java))
+
 			// 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인력
 			if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
 				UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->

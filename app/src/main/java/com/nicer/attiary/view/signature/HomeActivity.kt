@@ -1,10 +1,11 @@
-package com.nicer.attiary.view.main
+package com.nicer.attiary.view.signature
 
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
+import com.nicer.attiary.R
 import com.nicer.attiary.databinding.ActivityHomeBinding
 import com.nicer.attiary.view.write.WriteActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -15,7 +16,6 @@ import java.io.FileInputStream
 import java.util.*
 
 var userID: String = "userID"
-
 class HomeActivity : AppCompatActivity() {
 
 	private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
@@ -26,10 +26,8 @@ class HomeActivity : AppCompatActivity() {
 	val currentYear = startTimeCalendar.get(Calendar.YEAR)
 	val currentMonth = startTimeCalendar.get(Calendar.MONTH)
 	val currentDate = startTimeCalendar.get(Calendar.DATE)
-	val enCalendarDay = CalendarDay(
-		endTimeCalendar.get(Calendar.YEAR),
-		endTimeCalendar.get(Calendar.MONTH), endTimeCalendar.get(Calendar.DATE)
-	)
+	val enCalendarDay = CalendarDay(endTimeCalendar.get(Calendar.YEAR),
+		endTimeCalendar.get(Calendar.MONTH), endTimeCalendar.get(Calendar.DATE))
 
 	val minMaxDecorator = MinMaxDecorator(enCalendarDay)
 
@@ -41,16 +39,11 @@ class HomeActivity : AppCompatActivity() {
 
 		binding.calendarView.state().edit()
 			.setFirstDayOfWeek(Calendar.MONDAY)
-			.setMaximumDate(
-				CalendarDay.from(
-					currentYear,
-					currentMonth,
-					endTimeCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-				)
-			)
+			.setMaximumDate(CalendarDay.from(currentYear, currentMonth, endTimeCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)))
 			.setCalendarDisplayMode(CalendarMode.MONTHS)
 			.commit()
 		binding.calendarView.isDynamicHeightEnabled = true
+
 
 		binding.barFindText.text = monthToString(currentMonth)
 
@@ -101,7 +94,9 @@ class HomeActivity : AppCompatActivity() {
 			}
 		}
 
+
 		binding.calendarView.setOnDateChangedListener { widget, date, selected ->
+
 
 			var year = widget.selectedDate.year
 			var month = widget.selectedDate.month
@@ -139,6 +134,10 @@ class HomeActivity : AppCompatActivity() {
 				intent.putExtra("diary", "")
 				startActivity(intent)
 			}
+		}
+
+		binding.statsView.setOnClickListener {
+			startActivity(Intent(this, MonthlyReportActivity::class.java))
 		}
 	}
 

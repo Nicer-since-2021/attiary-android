@@ -1,4 +1,4 @@
-package com.nicer.attiary.view.ready
+package com.nicer.attiary.view.setting.lock
 
 
 import android.app.Activity
@@ -8,15 +8,15 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.R
-import com.nicer.attiary.data.app.AppLock
-import com.nicer.attiary.data.app.AppLockConst
 import com.nicer.attiary.databinding.ActivityAppPasswordBinding
+import com.nicer.attiary.util.lock.AppLock
+import com.nicer.attiary.util.lock.AppLockStatus
 
 
-class AppPassWordActivity : AppCompatActivity(){
+class AppPassWordActivity : AppCompatActivity() {
 
 	val binding by lazy { ActivityAppPasswordBinding.inflate(layoutInflater) }
-	private var oldPwd =""
+	private var oldPwd = ""
 	private var changePwdUnlock = false
 
 
@@ -51,7 +51,7 @@ class AppPassWordActivity : AppCompatActivity(){
 	// 버튼 클릭 했을때
 	private val btnListener = View.OnClickListener { view ->
 		var currentValue = -1
-		when(view.id){
+		when (view.id) {
 			R.id.btn0 -> currentValue = 0
 			R.id.btn1 -> currentValue = 1
 			R.id.btn2 -> currentValue = 2
@@ -66,7 +66,7 @@ class AppPassWordActivity : AppCompatActivity(){
 		}
 
 		val strCurrentValue = currentValue.toString() // 현재 입력된 번호 String으로 변경
-		if (currentValue != -1){
+		if (currentValue != -1) {
 			when {
 				binding.editPW1.isFocused -> {
 					binding.imgLocked1.setImageResource(R.drawable.unlocked_atti)
@@ -119,7 +119,7 @@ class AppPassWordActivity : AppCompatActivity(){
 	}
 
 	// 모두 지우기
-	private fun onClear(){
+	private fun onClear() {
 		binding.editPW1.setText("")
 		binding.editPW2.setText("")
 		binding.editPW3.setText("")
@@ -133,12 +133,16 @@ class AppPassWordActivity : AppCompatActivity(){
 	}
 
 	// 입력된 비밀번호를 합치기
-	private fun inputedPassword():String {
+	private fun inputedPassword(): String {
 		return "${binding.editPW1.text}${binding.editPW2.text}${binding.editPW3.text}${binding.editPW4.text}"
 	}
 
 	// EditText 설정
-	private fun setEditText(currentEditText : EditText, nextEditText: EditText, strCurrentValue : String){
+	private fun setEditText(
+		currentEditText: EditText,
+		nextEditText: EditText,
+		strCurrentValue: String
+	) {
 		currentEditText.setText(strCurrentValue)
 		nextEditText.requestFocus()
 		nextEditText.setText("")
@@ -149,61 +153,56 @@ class AppPassWordActivity : AppCompatActivity(){
 	}
 
 	// Intent Type 분류
-	private fun inputType(type : Int){
-		when(type){
-			AppLockConst.AppLockCosnt.ENABLE_PASSLOCK ->{ // 잠금설정
-				if(oldPwd.isEmpty()){
+	private fun inputType(type: Int) {
+		when (type) {
+			AppLockStatus.AppLockStatus.ENABLE_PASSLOCK -> { // 잠금설정
+				if (oldPwd.isEmpty()) {
 					oldPwd = inputedPassword()
 					onClear()
-					binding.textInfoPW.text=getString(R.string.verify_pw_info)
-				}
-				else{
-					if(oldPwd == inputedPassword()){
+					binding.textInfoPW.text = getString(R.string.verify_pw_info)
+				} else {
+					if (oldPwd == inputedPassword()) {
 						AppLock(this).setPassLock(inputedPassword())
 						setResult(Activity.RESULT_OK)
 						finish()
-					}
-					else{
+					} else {
 						onClear()
 						binding.textInfoPW.text = getString(R.string.warning_pw_info)
 					}
 				}
 			}
 
-			AppLockConst.AppLockCosnt.DISABLE_PASSLOCK ->{ // 잠금삭제
-				if(AppLock(this).isPassLockSet()){
-					if(AppLock(this).checkPassLock(inputedPassword())) {
+			AppLockStatus.AppLockStatus.DISABLE_PASSLOCK -> { // 잠금삭제
+				if (AppLock(this).isPassLockSet()) {
+					if (AppLock(this).checkPassLock(inputedPassword())) {
 						AppLock(this).removePassLock()
 						setResult(Activity.RESULT_OK)
 						finish()
-					}
-					else {
+					} else {
 						binding.textInfoPW.text = getString(R.string.warning_pw_info)
 						onClear()
 					}
-				}
-				else{
+				} else {
 					setResult(Activity.RESULT_CANCELED)
 					finish()
 				}
 			}
 
-			AppLockConst.AppLockCosnt.UNLOCK_PASSWORD ->
-				if(AppLock(this).checkPassLock(inputedPassword())) {
+			AppLockStatus.AppLockStatus.UNLOCK_PASSWORD -> {
+				if (AppLock(this).checkPassLock(inputedPassword())) {
 					setResult(Activity.RESULT_OK)
 					finish()
-				}else{
+				} else
 					binding.textInfoPW.text = getString(R.string.warning_pw_info)
-					onClear()
-				}
+				onClear()
+			}
 
-			AppLockConst.AppLockCosnt.CHANGE_PASSWORD -> { // 비밀번호 변경
+			AppLockStatus.AppLockStatus.CHANGE_PASSWORD -> { // 비밀번호 변경
 				if (AppLock(this).checkPassLock(inputedPassword()) && !changePwdUnlock) {
 					onClear()
 					changePwdUnlock = true
 					binding.textInfoPW.text = getString(R.string.new_pw_info)
-				}
-				else if (changePwdUnlock) {
+				} else if (changePwdUnlock) {
 					if (oldPwd.isEmpty()) {
 						oldPwd = inputedPassword()
 						onClear()

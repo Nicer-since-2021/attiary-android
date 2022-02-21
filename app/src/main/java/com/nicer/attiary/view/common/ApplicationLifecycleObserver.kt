@@ -1,4 +1,4 @@
-package com.nicer.attiary
+package com.nicer.attiary.view.common
 
 import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -12,8 +12,6 @@ class ApplicationLifecycleObserver : DefaultLifecycleObserver {
 	override fun onStart(owner: LifecycleOwner) {
 		super.onStart(owner)
 		Log.d(TAG, "onForeground")
-
-
 	}
 
 	override fun onStop(owner: LifecycleOwner) {

@@ -1,10 +1,11 @@
-package com.nicer.attiary.view.ready
+package com.nicer.attiary.view.splash
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.R
+import com.nicer.attiary.view.auth.sign_in.SignInActivity
 
 class SplashActivity : AppCompatActivity() {
 
@@ -14,7 +15,6 @@ class SplashActivity : AppCompatActivity() {
 		Handler().postDelayed({
 //			startActivity(Intent(this, SettingPasswordActivity::class.java))
 			startActivity(Intent(this, SignInActivity::class.java))
-
 			finish()
 		}, 2000)
 	}

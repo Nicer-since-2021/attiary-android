@@ -8,13 +8,11 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.nicer.attiary.R
-import com.nicer.attiary.data.app.Report
-import com.nicer.attiary.data.app.ReportDatabase
+import com.nicer.attiary.data.report.Report
+import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityWriteBinding
-import com.nicer.attiary.view.main.DiaryActivity
-import com.nicer.attiary.view.main.userID
+import com.nicer.attiary.view.signature.DiaryActivity
+import com.nicer.attiary.view.signature.userID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,7 +35,7 @@ class WriteActivity : AppCompatActivity() {
 		var month = intent.getIntExtra("month", 0)
 		var dayOfMonth = intent.getIntExtra("dayOfMonth", 0)
 		str = intent.getStringExtra("diary").toString()
-		var rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
+		var rDate = (year.toString()+month.toString()+dayOfMonth.toString()).toLong()
 
 		binding.backBtn.setOnClickListener {
 			finish()
@@ -50,12 +48,13 @@ class WriteActivity : AppCompatActivity() {
 
 
 		binding.saveBtn.setOnClickListener {
-			if (binding.contextEditText.text.isBlank()) {
+			if(binding.contextEditText.text.isBlank()){
 				val builder = AlertDialog.Builder(this)
 				builder.setMessage("내용을 입력하세요.")
-				builder.setPositiveButton("확인", null)
+				builder.setPositiveButton("확인",null)
 				builder.show()
-			} else {
+			}
+			else{
 				//저장
 				fname = "" + userID + year + "-" + (month + 1) + "" + "-" + dayOfMonth + ".txt"
 				try {
@@ -65,12 +64,12 @@ class WriteActivity : AppCompatActivity() {
 					fileInputStream.read(fileData)
 					fileInputStream.close()
 					val str = String(fileData)
-					if (str != "") {
+					if(str != ""){
 						CoroutineScope(Dispatchers.IO).launch {
 							database?.ReportDao()?.delete(rDate)
 						}
 					}
-				} catch (e: Exception) {
+				}catch (e: Exception) {
 				}
 				saveDiary(fname)
 				CoroutineScope(Dispatchers.IO).launch {
@@ -89,19 +88,14 @@ class WriteActivity : AppCompatActivity() {
 
 		}
 
-		binding.btnMusic.setOnLongClickListener {
-			viewFragment(MusicPopupFragment())
-			true
-		}
+
 	}
 
-	fun viewFragment(fragment: Fragment?) {
-		if (fragment != null) {
-			supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
-		}
-	}
+
+
 
 	// 달력 내용 제거
+
 
 
 	// 달력 내용 추가

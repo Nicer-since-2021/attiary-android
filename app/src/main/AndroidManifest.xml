@@ -5,45 +5,20 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".GlobalApplication"
+        android:name=".view.common.GlobalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Attiary">
-
+reo
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
 
         <activity
-            android:name=".view.write.WriteActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.main.HomeActivity"
-            android:exported="false" />
-        <activity android:name=".view.main.DiaryActivity" />
-        <activity
-            android:name=".view.main.ForFragmentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.ready.SignInActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.ready.SignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.MainActivity"
-            android:exported="true" /> <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-        <activity android:name=".view.ready.AppPassWordActivity" />
-        <activity android:name=".view.ready.SettingPasswordActivity" />
-        <activity
-            android:name=".view.ready.SplashActivity"
+            android:name=".view.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,6 +26,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.write.WriteActivity" />
+        <activity android:name=".view.signature.HomeActivity" />
+        <activity android:name=".view.signature.DiaryActivity" />
+        <activity android:name=".view.signature.MonthlyReportActivity"/>
+        <activity android:name=".view.auth.sign_in.SignInActivity" />
+        <activity android:name=".view.auth.sign_up.SignUpActivity" />
+        <activity android:name=".view.setting.lock.AppPassWordActivity" />
+        <activity android:name=".view.setting.lock.SettingPasswordActivity" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -67,4 +50,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>
