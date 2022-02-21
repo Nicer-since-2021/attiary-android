@@ -1,14 +1,14 @@
-package com.nicer.attiary.view.ready
+package com.nicer.attiary.view.setting.lock
 
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.nicer.attiary.data.app.AppLock
-import com.nicer.attiary.data.app.AppLockConst
-import com.nicer.attiary.data.app.lock
+import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.databinding.ActivitySettingPwBinding
+import com.nicer.attiary.util.lock.AppLock
+import com.nicer.attiary.util.lock.AppLockStatus
+import com.nicer.attiary.util.lock.lock
 
 
 class SettingPasswordActivity : AppCompatActivity() {
@@ -25,27 +25,25 @@ class SettingPasswordActivity : AppCompatActivity() {
 		// 잠금 설정 버튼을 눌렀을때
 		binding.btnSetLock.setOnClickListener {
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
-				putExtra(AppLockConst.AppLockCosnt.type, AppLockConst.AppLockCosnt.ENABLE_PASSLOCK)
+				putExtra(AppLockStatus.AppLockStatus.TYPE, AppLockStatus.AppLockStatus.ENABLE_PASSLOCK)
 			}
-			startActivityForResult(intent, AppLockConst.AppLockCosnt.ENABLE_PASSLOCK)
-
+			startActivityForResult(intent, AppLockStatus.AppLockStatus.ENABLE_PASSLOCK)
 		}
 
 		// 잠금 비활성화 버튼을 눌렀을때
 		binding.btnSetDelLock.setOnClickListener{
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
-				putExtra(AppLockConst.AppLockCosnt.type, AppLockConst.AppLockCosnt.DISABLE_PASSLOCK)
+				putExtra(AppLockStatus.AppLockStatus.TYPE, AppLockStatus.AppLockStatus.DISABLE_PASSLOCK)
 			}
-			startActivityForResult(intent, AppLockConst.AppLockCosnt.DISABLE_PASSLOCK)
+			startActivityForResult(intent, AppLockStatus.AppLockStatus.DISABLE_PASSLOCK)
 		}
 
 		// 암호 변경버튼을 눌렀을때
 		binding.btnChangePwd.setOnClickListener {
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
-				putExtra(AppLockConst.AppLockCosnt.type, AppLockConst.AppLockCosnt.CHANGE_PASSWORD)
+				putExtra(AppLockStatus.AppLockStatus.TYPE, AppLockStatus.AppLockStatus.CHANGE_PASSWORD)
 			}
-			startActivityForResult(intent, AppLockConst.AppLockCosnt.CHANGE_PASSWORD)
-
+			startActivityForResult(intent, AppLockStatus.AppLockStatus.CHANGE_PASSWORD)
 		}
 	}
 
@@ -54,39 +52,34 @@ class SettingPasswordActivity : AppCompatActivity() {
 		super.onActivityResult(requestCode, resultCode, data)
 
 		when(requestCode){
-			AppLockConst.AppLockCosnt.ENABLE_PASSLOCK ->
+			AppLockStatus.AppLockStatus.ENABLE_PASSLOCK ->
 				if(resultCode == RESULT_OK){
 					Toast.makeText(this, "암호 설정 완료", Toast.LENGTH_SHORT).show()
 					init()
 					lock  = false
 				}
 
-			AppLockConst.AppLockCosnt.DISABLE_PASSLOCK ->
+			AppLockStatus.AppLockStatus.DISABLE_PASSLOCK ->
 				if(resultCode == RESULT_OK){
 					Toast.makeText(this, "암호 삭제 완료", Toast.LENGTH_SHORT).show()
 					init()
 				}
 
-			AppLockConst.AppLockCosnt.CHANGE_PASSWORD ->
+			AppLockStatus.AppLockStatus.CHANGE_PASSWORD ->
 				if(resultCode == RESULT_OK){
 					Toast.makeText(this, "암호 변경 완료", Toast.LENGTH_SHORT).show()
 					lock = false
 				}
 
-			AppLockConst.AppLockCosnt.UNLOCK_PASSWORD ->
+			AppLockStatus.AppLockStatus.UNLOCK_PASSWORD ->
 				if(resultCode == RESULT_OK){
 					lock = false
 				}
 		}
-
 	}
-
-
 
 	// 버튼 비활성화
 	private fun init(){
-
-
 		if (AppLock(this).isPassLockSet()){
 			binding.btnSetLock.isEnabled = false
 			binding.btnSetDelLock.isEnabled = true
@@ -101,15 +94,14 @@ class SettingPasswordActivity : AppCompatActivity() {
 		}
 	}
 
-
 	// 액티비티가 onStart인 경우
 	override fun onResume() {
 		super.onResume()
 		if(lock && AppLock(this).isPassLockSet()){
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
-				putExtra(AppLockConst.AppLockCosnt.type, AppLockConst.AppLockCosnt.UNLOCK_PASSWORD)
+				putExtra(AppLockStatus.AppLockStatus.TYPE, AppLockStatus.AppLockStatus.UNLOCK_PASSWORD)
 			}
-			startActivityForResult(intent, AppLockConst.AppLockCosnt.UNLOCK_PASSWORD)
+			startActivityForResult(intent, AppLockStatus.AppLockStatus.UNLOCK_PASSWORD)
 		}
 
 	}
