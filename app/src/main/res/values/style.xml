@@ -2,7 +2,8 @@
 <resources>
 
     <style name="bgmPickerCustom">
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="colorControlNormal">@color/transparent</item>
         <item name="android:editTextColor">@color/gray_button</item>
     </style>
 </resources>
