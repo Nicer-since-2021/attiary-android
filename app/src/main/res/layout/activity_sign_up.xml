@@ -6,21 +6,23 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="10dp"
     android:background="@color/yellow_background"
-    tools:context=".view.ready.SignUpActivity">
+    tools:context=".view.auth.sign_up.SignUpActivity">
+
+    <!-- name -->
 
     <ImageButton
         android:id="@+id/buttonBack"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="30dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/back_button"
+        android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back_button" />
 
-    <!-- name -->
     <TextView
         android:id="@+id/textName"
         android:layout_width="wrap_content"

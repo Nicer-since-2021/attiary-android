@@ -1,4 +1,4 @@
-package com.nicer.attiary.view.ready
+package com.nicer.attiary.view.auth.sign_up
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,8 @@ import com.nicer.attiary.R
 import com.nicer.attiary.data.user.User
 import com.nicer.attiary.data.user.UserHelper
 import com.nicer.attiary.databinding.ActivitySignUpBinding
+import com.nicer.attiary.view.setting.lock.SettingPasswordActivity
+import com.nicer.attiary.view.signature.HomeActivity
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -52,6 +54,7 @@ class SignUpActivity : AppCompatActivity() {
 			val name = binding.editName.text.toString()
 			val user = saveUser(email, name)
 			Toast.makeText(this, "$user 저장됨!", Toast.LENGTH_SHORT).show()
+			startActivity(Intent(this, HomeActivity::class.java))
 		}
 	}
 
