@@ -19,5 +19,8 @@
     <string name="enter_pw">암호 입력</string>
     <string name="enter_pw_info">암호를 입력해주세요.</string>
     <string name="ratio_desc">이번 달에 느낀 감정 비율이야!</string>
+    <string name="ratio_toolbar"> 이 달의 마음 통계</string>
     <string name="happy_desc">이번 달 행복 그래프야!</string>
+
+
 </resources>
