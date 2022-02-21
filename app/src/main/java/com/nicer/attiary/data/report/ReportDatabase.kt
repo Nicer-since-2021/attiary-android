@@ -1,11 +1,9 @@
-package com.nicer.attiary.data.app
+package com.nicer.attiary.data.report
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(entities = [Report::class], version = 1, exportSchema = false)
 abstract class ReportDatabase: RoomDatabase() {

@@ -1,8 +1,7 @@
-package com.nicer.attiary.data.app
+package com.nicer.attiary.data.report
 
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import java.util.*
 
 @Dao
 interface ReportDao {
