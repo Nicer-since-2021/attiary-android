@@ -1,4 +1,4 @@
-package com.nicer.attiary.data.app
+package com.nicer.attiary.data.report
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

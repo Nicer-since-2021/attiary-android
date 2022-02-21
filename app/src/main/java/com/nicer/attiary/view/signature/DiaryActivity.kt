@@ -1,13 +1,11 @@
-package com.nicer.attiary.view.main
+package com.nicer.attiary.view.signature
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 import com.nicer.attiary.R
-import com.nicer.attiary.data.app.Report
-import com.nicer.attiary.data.app.ReportDatabase
+import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityDiaryBinding
 import com.nicer.attiary.view.write.WriteActivity
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +15,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-class DiaryActivity: AppCompatActivity() {
+class DiaryActivity : AppCompatActivity() {
 	lateinit var fname: String
 	lateinit var str: String
 	private var database: ReportDatabase? = null
@@ -37,7 +35,7 @@ class DiaryActivity: AppCompatActivity() {
 		binding.buttonBack.setOnClickListener {
 			finish()
 		}
-		var rDate = (year.toString()+month.toString()+dayOfMonth.toString()).toLong()
+		var rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
 		CoroutineScope(Dispatchers.IO).launch {
 			var report = database?.ReportDao()?.findByDate(rDate)
 			CoroutineScope(Dispatchers.Main).launch {
@@ -64,7 +62,7 @@ class DiaryActivity: AppCompatActivity() {
 	fun checkDay(cYear: Int, cMonth: Int, cDay: Int, userID: String) {
 		//저장할 파일 이름설정
 		fname = "" + userID + cYear + "-" + (cMonth + 1) + "" + "-" + cDay + ".txt"
-		var rDate = (cYear.toString()+cMonth.toString()+cDay.toString()).toLong()
+		var rDate = (cYear.toString() + cMonth.toString() + cDay.toString()).toLong()
 
 		var fileInputStream: FileInputStream
 		try {

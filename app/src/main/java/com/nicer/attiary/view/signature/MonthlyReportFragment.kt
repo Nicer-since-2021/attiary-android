@@ -1,4 +1,4 @@
-package com.nicer.attiary.view.report
+package com.nicer.attiary.view.signature
 
 import android.graphics.Color
 import android.os.Bundle

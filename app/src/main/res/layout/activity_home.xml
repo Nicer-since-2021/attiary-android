@@ -176,8 +176,8 @@
             android:fontFamily="@font/to_daughter_from_mom"
             android:text="휴식이 필요해요"
             android:textSize="25dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/depressionIndex" />
         <ProgressBar
             android:id="@+id/happinessIndex"

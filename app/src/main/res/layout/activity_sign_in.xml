@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/yellow_background"
-    tools:context=".view.ready.SignInActivity">
+    tools:context=".view.auth.sign_in.SignInActivity">
 
     <ImageButton
         android:id="@+id/btnKakaoSignin"
