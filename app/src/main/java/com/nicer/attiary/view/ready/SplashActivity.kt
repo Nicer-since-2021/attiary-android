@@ -14,6 +14,7 @@ class SplashActivity : AppCompatActivity() {
 		Handler().postDelayed({
 //			startActivity(Intent(this, SettingPasswordActivity::class.java))
 			startActivity(Intent(this, SignInActivity::class.java))
+
 			finish()
 		}, 2000)
 	}
