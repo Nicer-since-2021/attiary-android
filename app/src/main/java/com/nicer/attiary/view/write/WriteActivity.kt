@@ -8,9 +8,8 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.room.Entity
-import androidx.room.Room
+import androidx.fragment.app.Fragment
+import com.nicer.attiary.R
 import com.nicer.attiary.data.app.Report
 import com.nicer.attiary.data.app.ReportDatabase
 import com.nicer.attiary.data.user.User
@@ -93,11 +92,17 @@ class WriteActivity : AppCompatActivity() {
 
 		}
 
-
+		binding.btnMusic.setOnLongClickListener {
+			viewFragment(MusicPopupFragment())
+			true
+		}
 	}
 
-
-
+	fun viewFragment(fragment: Fragment?) {
+		if (fragment != null) {
+			supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
+		}
+	}
 
 	// 달력 내용 제거
 
