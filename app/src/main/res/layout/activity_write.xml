@@ -9,45 +9,46 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        app:contentInsetStart="0dp"
-        app:titleTextColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
         android:background="@color/yellow_top"
-        tools:ignore="MissingConstraints">
+        app:contentInsetStart="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/black"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-36dp">
 
         <TextView
             android:id="@+id/diaryTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:fontFamily="@font/im_heymin_regular"
             android:layout_gravity="center"
+            android:fontFamily="@font/im_heymin_regular"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="20dp" />
 
         <ImageButton
             android:id="@+id/backBtn"
-            android:background="@android:color/transparent"
-            android:layout_marginStart="10dp"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:srcCompat="@drawable/back_button"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter"/>
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/back_button"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="16dp" />
+
         <ImageButton
             android:id="@+id/saveBtn"
-            android:background="@android:color/transparent"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:srcCompat="@drawable/save_btn"
-            android:adjustViewBounds="true"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
-            android:scaleType="fitCenter"/>
-
-
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/save_btn" />
 
 
     </androidx.appcompat.widget.Toolbar>
