@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/yellow_background">
+    android:background="@color/yellow_background"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -14,9 +13,7 @@
         android:background="@color/yellow_top"
         app:contentInsetStart="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/black"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-36dp">
+        app:titleTextColor="@color/black">
 
         <TextView
             android:id="@+id/diaryTextView"
@@ -32,75 +29,93 @@
             android:id="@+id/backBtn"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_marginStart="10dp"
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/back_button"
-            tools:layout_editor_absoluteX="10dp"
-            tools:layout_editor_absoluteY="16dp" />
+            app:srcCompat="@drawable/back_button" />
 
         <ImageButton
             android:id="@+id/saveBtn"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_gravity="end"
+            android:layout_gravity="right"
             android:layout_marginEnd="10dp"
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/save_btn" />
 
+        <ImageButton
+            android:id="@+id/btnMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="end"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/music_button" />
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/attiMsg"
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="-10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/write_msg_img"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/attiMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="-20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="-25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:srcCompat="@drawable/write_msg_img" />
 
+    </FrameLayout>
 
-    <View
-        android:id="@+id/view4"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/attiMsg"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="180dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/border"
-        />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/contextEditText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="30dp"
-        android:background="@null"
-        android:ems="10"
-        android:textSize="25dp"
-        android:fontFamily="@font/to_daughter_from_mom"
-        android:gravity="top"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/attiMsg" />
+        <View
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/border"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <EditText
+            android:id="@+id/contextEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@null"
+            android:ems="10"
+            android:fontFamily="@font/to_daughter_from_mom"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:textSize="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
