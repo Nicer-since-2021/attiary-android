@@ -32,15 +32,6 @@
                 android:textColor="@color/black"
                 android:textSize="45dp" />
 
-            <ImageButton
-                android:id="@+id/musicBtn"
-                android:background="@android:color/transparent"
-                android:layout_marginStart="10dp"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                app:srcCompat="@drawable/music_button"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"/>
 
             <ImageButton
                 android:id="@+id/settingBtn"
