@@ -39,7 +39,7 @@
             android:id="@+id/saveBtn"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginEnd="10dp"
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
@@ -48,9 +48,10 @@
 
         <ImageButton
             android:id="@+id/btnMusic"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_gravity="end"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="right"
+            android:layout_marginEnd="20dp"
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
