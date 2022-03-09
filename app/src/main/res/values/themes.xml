@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.Attiary" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/yellow_top</item>
+        <item name="colorPrimary">@color/gray_button</item>
         <item name="colorPrimaryVariant">@color/yellow_box</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->

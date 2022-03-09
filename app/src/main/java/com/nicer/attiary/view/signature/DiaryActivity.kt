@@ -1,8 +1,10 @@
 package com.nicer.attiary.view.signature
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.R
 import com.nicer.attiary.data.report.ReportDatabase
@@ -81,15 +83,19 @@ class DiaryActivity : AppCompatActivity() {
 				startActivity(intent)
 			}
 			binding.deleteBtn.setOnClickListener {
-				removeDiary(fname)
-				var file = File(fname)
-				file.delete()
-				CoroutineScope(Dispatchers.IO).launch {
-					database?.ReportDao()?.delete(rDate)
-				}
-
-
-				finish()
+				val builder = AlertDialog.Builder(this)
+				builder.setMessage("정말 삭제하시겠습니까?")
+				builder.setNegativeButton("취소", null)
+				builder.setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
+					removeDiary(fname)
+					var file = File(fname)
+					file.delete()
+					CoroutineScope(Dispatchers.IO).launch {
+						database?.ReportDao()?.delete(rDate)
+					}
+					finish()
+				})
+				builder.show()
 			}
 		} catch (e: Exception) {
 			e.printStackTrace()
