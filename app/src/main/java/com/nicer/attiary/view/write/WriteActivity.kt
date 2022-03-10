@@ -1,6 +1,5 @@
 package com.nicer.attiary.view.write
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Rect
@@ -10,16 +9,14 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.nicer.attiary.R
+import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.report.Report
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityWriteBinding
 import com.nicer.attiary.view.signature.DiaryActivity
-import com.nicer.attiary.view.signature.userID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.FileInputStream
-import java.io.FileOutputStream
 
 class WriteActivity : AppCompatActivity() {
 	val binding by lazy { ActivityWriteBinding.inflate(layoutInflater) }
@@ -27,6 +24,7 @@ class WriteActivity : AppCompatActivity() {
 	lateinit var fname: String
 	lateinit var str: String
 	private var database: ReportDatabase? = null
+	var isExist : Boolean = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -47,8 +45,6 @@ class WriteActivity : AppCompatActivity() {
 		binding.contextEditText.setText(str)
 
 
-
-
 		binding.saveBtn.setOnClickListener {
 			if (binding.contextEditText.text.isBlank()) {
 				val builder = AlertDialog.Builder(this)
@@ -56,29 +52,18 @@ class WriteActivity : AppCompatActivity() {
 				builder.setPositiveButton("확인", null)
 				builder.show()
 			} else {
-				//저장
-				fname = "" + userID + year + "-" + (month + 1) + "" + "-" + dayOfMonth + ".txt"
-				try {
-					var fileInputStream: FileInputStream
-					fileInputStream = openFileInput(fname)
-					val fileData = ByteArray(fileInputStream.available())
-					fileInputStream.read(fileData)
-					fileInputStream.close()
-					val str = String(fileData)
-					if (str != "") {
-						CoroutineScope(Dispatchers.IO).launch {
-							database?.ReportDao()?.delete(rDate)
-						}
+				if (str!="null"){
+					CoroutineScope(Dispatchers.IO).launch {
+						database?.ReportDao()?.delete(rDate)
 					}
-				} catch (e: Exception) {
+					DiaryList(this).removeDiary(rDate)
 				}
-				saveDiary(fname)
 				CoroutineScope(Dispatchers.IO).launch {
 					database?.ReportDao()?.insert(
-						Report(rDate, "a", 50, "s", 30, "ax", 20, "ha", 10)
+						Report(rDate, binding.contextEditText.text.toString(), "a", 50, "s", 30, "ax", 20, "ha", 10, "")
 					)
 				}
-
+				DiaryList(this).addDiary(rDate, "a") //대표감정 전달
 				val intent: Intent = Intent(this, DiaryActivity::class.java)
 				intent.putExtra("year", year)
 				intent.putExtra("month", month)
@@ -101,40 +86,6 @@ class WriteActivity : AppCompatActivity() {
 		}
 	}
 
-	// 달력 내용 제거
-
-
-	// 달력 내용 추가
-	@SuppressLint("WrongConstant")
-	fun saveDiary(readDay: String?) {
-		var fileOutputStream: FileOutputStream
-		try {
-			fileOutputStream = openFileOutput(readDay, MODE_NO_LOCALIZED_COLLATORS)
-			val content = binding.contextEditText.text.toString()
-			fileOutputStream.write(content.toByteArray())
-			fileOutputStream.close()
-		} catch (e: java.lang.Exception) {
-			e.printStackTrace()
-		}
-	}
-
-//	private fun saveReport(date: Long): Report {
-//		//test code
-//		val report =
-//			Report.Builder(date)
-//				.firstEmotion("a")
-//				.firstPercent(90)
-//				.secondEmotion("s")
-//				.secondPercent(30)
-//				.thirdEmotion("ax")
-//				.thirdPercent(20)
-//				.fourthEmotion("ha")
-//				.fourthPercent(10)
-//				.build()
-//		database?.ReportDao()?.insert(report)
-//
-//		return report
-//	}
 
 	override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
 		val focusView = currentFocus
