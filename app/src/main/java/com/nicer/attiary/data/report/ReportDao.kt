@@ -11,7 +11,7 @@ interface ReportDao {
 	@Query("select * from report where date = :rDate")
 	fun findByDate(rDate: Long): Report
 
-	@Query("DELETE FROM report where date = :rDate")
+	@Query("delete from report where date = :rDate")
 	fun delete(rDate: Long)
 
 }
