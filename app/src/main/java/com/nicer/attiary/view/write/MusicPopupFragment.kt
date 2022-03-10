@@ -18,7 +18,7 @@ class MusicPopupFragment : Fragment() {
 
 		setPicker()
 
-		binding.btnClose.setOnClickListener {
+		binding.transBackView.setOnClickListener {
 			fragmentManager?.beginTransaction()?.remove(this)?.commit()
 		}
 		return binding.root
