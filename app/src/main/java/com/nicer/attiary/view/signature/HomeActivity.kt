@@ -2,9 +2,11 @@ package com.nicer.attiary.view.signature
 
 import android.content.Intent
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
+import com.nicer.attiary.R
 import com.nicer.attiary.databinding.ActivityHomeBinding
 import com.nicer.attiary.view.write.WriteActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -33,9 +35,16 @@ class HomeActivity : AppCompatActivity() {
 
 	val minMaxDecorator = MinMaxDecorator(enCalendarDay)
 
+	var mp: MediaPlayer? = null
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
+
+		mp = MediaPlayer.create(this, R.raw.bluedream)
+		mp?.isLooping = true
+		mp?.start()
+
 		binding.calendarView.addDecorators(minMaxDecorator)
 		binding.toolbar.bringToFront()
 
@@ -65,6 +74,9 @@ class HomeActivity : AppCompatActivity() {
 		}
 
 		binding.newButton.setOnClickListener {
+			mp?.release()
+			mp = null // 음악 정지
+
 			var year = currentYear
 			var month = currentMonth
 			var dayOfMonth = currentDate
@@ -119,6 +131,9 @@ class HomeActivity : AppCompatActivity() {
 				fileInputStream.close()
 				val str = String(fileData)
 				if (str == "") {
+					mp?.release()
+					mp = null // 음악 정지
+
 					val intent: Intent = Intent(this, WriteActivity::class.java)
 					intent.putExtra("year", year);
 					intent.putExtra("month", month);
@@ -126,6 +141,9 @@ class HomeActivity : AppCompatActivity() {
 					intent.putExtra("diary", "")
 					startActivity(intent)
 				} else {
+					mp?.release()
+					mp = null // DiaryActivity를 를 Fragment화 완료하면 지워야 할 코드
+
 					val intent: Intent = Intent(this, DiaryActivity::class.java)
 					intent.putExtra("year", year);
 					intent.putExtra("month", month);
@@ -134,6 +152,9 @@ class HomeActivity : AppCompatActivity() {
 				}
 
 			} catch (e: Exception) {
+				mp?.release()
+				mp = null // 음악 정지
+
 				e.printStackTrace()
 				val intent: Intent = Intent(this, WriteActivity::class.java)
 				intent.putExtra("year", year);
@@ -145,6 +166,9 @@ class HomeActivity : AppCompatActivity() {
 		}
 
 		binding.statsView.setOnClickListener {
+			mp?.release()
+			mp = null // MonthlyReportActivity 를 Fragment화 완료하면 지워야 할 코드
+			
 			startActivity(Intent(this, MonthlyReportActivity::class.java))
 		}
 	}
