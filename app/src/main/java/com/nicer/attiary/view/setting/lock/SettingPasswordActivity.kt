@@ -98,9 +98,9 @@ class SettingPasswordActivity : AppCompatActivity() {
 		super.onResume()
 		if(lock && AppLock(this).isPassLockSet()){
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
-				putExtra(AppLockStatus.AppLockStatus.TYPE, AppLockStatus.AppLockStatus.UNLOCK_PASSWORD)
+				putExtra("type", AppLock.AppLockStatus.UNLOCK_PASSWORD)
 			}
-			startActivityForResult(intent, AppLockStatus.AppLockStatus.UNLOCK_PASSWORD)
+			startActivityForResult(intent, AppLock.AppLockStatus.UNLOCK_PASSWORD)
 		}
 
 	}
