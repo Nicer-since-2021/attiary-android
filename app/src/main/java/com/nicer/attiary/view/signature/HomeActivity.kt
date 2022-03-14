@@ -2,6 +2,7 @@ package com.nicer.attiary.view.signature
 
 import android.content.Intent
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
@@ -27,17 +28,23 @@ class HomeActivity : AppCompatActivity() {
 	val currentYear = startTimeCalendar.get(Calendar.YEAR)
 	val currentMonth = startTimeCalendar.get(Calendar.MONTH)
 	val currentDate = startTimeCalendar.get(Calendar.DATE)
-	val enCalendarDay = CalendarDay(endTimeCalendar.get(Calendar.YEAR),
-		endTimeCalendar.get(Calendar.MONTH), endTimeCalendar.get(Calendar.DATE))
+	val enCalendarDay = CalendarDay(
+		endTimeCalendar.get(Calendar.YEAR),
+		endTimeCalendar.get(Calendar.MONTH), endTimeCalendar.get(Calendar.DATE)
+	)
 
 	val minMaxDecorator = MinMaxDecorator(enCalendarDay)
 
-	//
-
+	var mp: MediaPlayer? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
+
+		mp = MediaPlayer.create(this, R.raw.bluedream)
+		mp?.isLooping = true
+		mp?.start()
+
 		binding.calendarView.addDecorators(minMaxDecorator)
 		binding.toolbar.bringToFront()
 		//set database
@@ -46,7 +53,13 @@ class HomeActivity : AppCompatActivity() {
 
 		binding.calendarView.state().edit()
 			.setFirstDayOfWeek(Calendar.MONDAY)
-			.setMaximumDate(CalendarDay.from(currentYear, currentMonth, endTimeCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)))
+			.setMaximumDate(
+				CalendarDay.from(
+					currentYear,
+					currentMonth,
+					endTimeCalendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+				)
+			)
 			.setCalendarDisplayMode(CalendarMode.MONTHS)
 			.commit()
 		binding.calendarView.isDynamicHeightEnabled = true
@@ -64,6 +77,9 @@ class HomeActivity : AppCompatActivity() {
 
 
 		binding.newButton.setOnClickListener {
+			mp?.release()
+			mp = null // 음악 정지
+
 			var year = currentYear
 			var month = currentMonth
 			var dayOfMonth = currentDate
@@ -79,10 +95,12 @@ class HomeActivity : AppCompatActivity() {
 			var dayOfMonth = widget.selectedDate.day
 			var rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
 			nextView(year, month, dayOfMonth, rDate)
-
 		}
 
 		binding.statsView.setOnClickListener {
+			mp?.release()
+			mp = null // MonthlyReportActivity 를 Fragment화 완료하면 지워야 할 코드
+			
 			startActivity(Intent(this, MonthlyReportActivity::class.java))
 		}
 	}
