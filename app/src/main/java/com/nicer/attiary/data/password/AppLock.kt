@@ -1,8 +1,15 @@
-package com.nicer.attiary.util.lock
+package com.nicer.attiary.data.password
 
 import android.content.Context
 
 class AppLock(context: Context) {
+	object AppLockStatus {
+		var lock = true
+		val ENABLE_PASSLOCK = 1 //잠금설정
+		val DISABLE_PASSLOCK = 2 //잠금 비활성화
+		val CHANGE_PASSWORD = 3 //암호변경
+		val UNLOCK_PASSWORD = 4 //잠금해제
+	}
 
 	private var sharedPref = context.getSharedPreferences("appLock", Context.MODE_PRIVATE)
 

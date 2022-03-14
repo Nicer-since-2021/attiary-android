@@ -2,6 +2,7 @@ package com.nicer.attiary.view.setting.lock
 
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -9,8 +10,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.R
 import com.nicer.attiary.databinding.ActivityAppPasswordBinding
-import com.nicer.attiary.util.lock.AppLock
-import com.nicer.attiary.util.lock.AppLockStatus
+import com.nicer.attiary.data.password.AppLock
 
 
 class AppPassWordActivity : AppCompatActivity() {
@@ -24,7 +24,7 @@ class AppPassWordActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
-
+		/* 레이아웃 정비 */
 		binding.editPW1.showSoftInputOnFocus = false
 		binding.editPW2.showSoftInputOnFocus = false
 		binding.editPW3.showSoftInputOnFocus = false
@@ -48,7 +48,7 @@ class AppPassWordActivity : AppCompatActivity() {
 
 	}
 
-	// 버튼 클릭 했을때
+	/*숫자 버튼 클릭*/
 	private val btnListener = View.OnClickListener { view ->
 		var currentValue = -1
 		when (view.id) {
@@ -93,7 +93,7 @@ class AppPassWordActivity : AppCompatActivity() {
 		}
 	}
 
-	// 한 칸 지우기를 눌렀을때
+	/*DEL 버튼 클릭*/
 	private fun onDeleteKey() {
 		when {
 			binding.editPW1.isFocused -> {
@@ -118,7 +118,7 @@ class AppPassWordActivity : AppCompatActivity() {
 		}
 	}
 
-	// 모두 지우기
+	/*모두 지우기: 비밀번호 오류 혹은 재입력의 경우*/
 	private fun onClear() {
 		binding.editPW1.setText("")
 		binding.editPW2.setText("")
@@ -132,7 +132,7 @@ class AppPassWordActivity : AppCompatActivity() {
 
 	}
 
-	// 입력된 비밀번호를 합치기
+	/*입력된 최종 비밀번호*/
 	private fun inputedPassword(): String {
 		return "${binding.editPW1.text}${binding.editPW2.text}${binding.editPW3.text}${binding.editPW4.text}"
 	}
@@ -148,14 +148,15 @@ class AppPassWordActivity : AppCompatActivity() {
 		nextEditText.setText("")
 	}
 
+	/*기기의 뒤로가기 버튼 비활성화*/
 	override fun onBackPressed() {
-
 	}
 
 	// Intent Type 분류
 	private fun inputType(type: Int) {
+		val returnIntent = Intent()
 		when (type) {
-			AppLockStatus.AppLockStatus.ENABLE_PASSLOCK -> { // 잠금설정
+			AppLock.AppLockStatus.ENABLE_PASSLOCK -> { // 잠금설정
 				if (oldPwd.isEmpty()) {
 					oldPwd = inputedPassword()
 					onClear()
@@ -163,7 +164,8 @@ class AppPassWordActivity : AppCompatActivity() {
 				} else {
 					if (oldPwd == inputedPassword()) {
 						AppLock(this).setPassLock(inputedPassword())
-						setResult(Activity.RESULT_OK)
+						returnIntent.putExtra("returnCode", AppLock.AppLockStatus.ENABLE_PASSLOCK)
+						setResult(Activity.RESULT_OK, returnIntent)
 						finish()
 					} else {
 						onClear()
@@ -172,11 +174,12 @@ class AppPassWordActivity : AppCompatActivity() {
 				}
 			}
 
-			AppLockStatus.AppLockStatus.DISABLE_PASSLOCK -> { // 잠금삭제
+			AppLock.AppLockStatus.DISABLE_PASSLOCK -> { // 잠금삭제
 				if (AppLock(this).isPassLockSet()) {
 					if (AppLock(this).checkPassLock(inputedPassword())) {
 						AppLock(this).removePassLock()
-						setResult(Activity.RESULT_OK)
+						returnIntent.putExtra("returnCode", AppLock.AppLockStatus.DISABLE_PASSLOCK)
+						setResult(Activity.RESULT_OK, returnIntent)
 						finish()
 					} else {
 						binding.textInfoPW.text = getString(R.string.warning_pw_info)
@@ -188,16 +191,17 @@ class AppPassWordActivity : AppCompatActivity() {
 				}
 			}
 
-			AppLockStatus.AppLockStatus.UNLOCK_PASSWORD -> {
+			AppLock.AppLockStatus.UNLOCK_PASSWORD -> {
 				if (AppLock(this).checkPassLock(inputedPassword())) {
-					setResult(Activity.RESULT_OK)
+					returnIntent.putExtra("returnCode", AppLock.AppLockStatus.UNLOCK_PASSWORD)
+					setResult(Activity.RESULT_OK, returnIntent)
 					finish()
 				} else
 					binding.textInfoPW.text = getString(R.string.warning_pw_info)
 				onClear()
 			}
 
-			AppLockStatus.AppLockStatus.CHANGE_PASSWORD -> { // 비밀번호 변경
+			AppLock.AppLockStatus.CHANGE_PASSWORD -> { // 비밀번호 변경
 				if (AppLock(this).checkPassLock(inputedPassword()) && !changePwdUnlock) {
 					onClear()
 					changePwdUnlock = true
@@ -210,7 +214,8 @@ class AppPassWordActivity : AppCompatActivity() {
 					} else {
 						if (oldPwd == inputedPassword()) {
 							AppLock(this).setPassLock(inputedPassword())
-							setResult(Activity.RESULT_OK)
+							returnIntent.putExtra("returnCode", AppLock.AppLockStatus.CHANGE_PASSWORD)
+							setResult(Activity.RESULT_OK, returnIntent)
 							finish()
 						} else {
 							onClear()

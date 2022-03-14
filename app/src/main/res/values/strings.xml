@@ -21,6 +21,11 @@
     <string name="ratio_desc">이번 달에 느낀 감정 비율이야!</string>
     <string name="ratio_toolbar"> 이 달의 마음 통계</string>
     <string name="happy_desc">이번 달 행복 그래프야!</string>
+    <string name="sad_desc">이번 달 우울 그래프야!</string>
+    <string name="top3_desc">이번 달 중 가장 행복했던 날에는 \n어떤 일이 있었어?</string>
+    <string name="top1_diary">TOP 1 일기</string>
+    <string name="top2_diary">TOP 2 일기</string>
+    <string name="top3_diary">TOP 3 일기</string>
 
     <string name="music_text">지금 내 감정은..</string>
 </resources>

@@ -6,22 +6,22 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import androidx.appcompat.app.AppCompatActivity
-import com.nicer.attiary.R
+import com.nicer.attiary.data.diary.DiaryList
+import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityHomeBinding
 import com.nicer.attiary.view.write.WriteActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
-import java.io.FileInputStream
 import java.util.*
-
-var userID: String = "userID"
 
 class HomeActivity : AppCompatActivity() {
 
 	private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
-	lateinit var fname: String
+
+	var database: ReportDatabase? = null
+
 	var startTimeCalendar = Calendar.getInstance()
 	var endTimeCalendar = Calendar.getInstance()
 
@@ -47,6 +47,9 @@ class HomeActivity : AppCompatActivity() {
 
 		binding.calendarView.addDecorators(minMaxDecorator)
 		binding.toolbar.bringToFront()
+		//set database
+		database = ReportDatabase.getInstance(this)
+
 
 		binding.calendarView.state().edit()
 			.setFirstDayOfWeek(Calendar.MONDAY)
@@ -61,7 +64,6 @@ class HomeActivity : AppCompatActivity() {
 			.commit()
 		binding.calendarView.isDynamicHeightEnabled = true
 
-
 		binding.barFindText.text = monthToString(currentMonth)
 
 		binding.calendarView.setOnMonthChangedListener { widget, date ->
@@ -73,6 +75,7 @@ class HomeActivity : AppCompatActivity() {
 				binding.barFindText.text = "$year " + monthToString(month)
 		}
 
+
 		binding.newButton.setOnClickListener {
 			mp?.release()
 			mp = null // 음악 정지
@@ -80,89 +83,18 @@ class HomeActivity : AppCompatActivity() {
 			var year = currentYear
 			var month = currentMonth
 			var dayOfMonth = currentDate
-			fname = "" + userID + year + "-" + (month + 1) + "" + "-" + dayOfMonth + ".txt"
-			try {
-				var fileInputStream: FileInputStream
-				fileInputStream = openFileInput(fname)
-				val fileData = ByteArray(fileInputStream.available())
-				fileInputStream.read(fileData)
-				fileInputStream.close()
-				val str = String(fileData)
-				if (str == "") {
-					val intent: Intent = Intent(this, WriteActivity::class.java)
-					intent.putExtra("year", year);
-					intent.putExtra("month", month);
-					intent.putExtra("dayOfMonth", dayOfMonth);
-					intent.putExtra("diary", "")
-					startActivity(intent)
-				} else {
-					val intent: Intent = Intent(this, DiaryActivity::class.java)
-					intent.putExtra("year", year);
-					intent.putExtra("month", month);
-					intent.putExtra("dayOfMonth", dayOfMonth);
-					startActivity(intent)
-				}
+			var rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
 
-			} catch (e: Exception) {
-				e.printStackTrace()
-				val intent: Intent = Intent(this, WriteActivity::class.java)
-				intent.putExtra("year", year);
-				intent.putExtra("month", month);
-				intent.putExtra("dayOfMonth", dayOfMonth);
-				intent.putExtra("diary", "")
-				startActivity(intent)
-			}
+			nextView(year, month, dayOfMonth, rDate)
 		}
 
 
 		binding.calendarView.setOnDateChangedListener { widget, date, selected ->
-
-
 			var year = widget.selectedDate.year
 			var month = widget.selectedDate.month
 			var dayOfMonth = widget.selectedDate.day
-
-			fname = "" + userID + year + "-" + (month + 1) + "" + "-" + dayOfMonth + ".txt"
-			try {
-				var fileInputStream: FileInputStream
-				fileInputStream = openFileInput(fname)
-				val fileData = ByteArray(fileInputStream.available())
-				fileInputStream.read(fileData)
-				fileInputStream.close()
-				val str = String(fileData)
-				if (str == "") {
-					mp?.release()
-					mp = null // 음악 정지
-
-					val intent: Intent = Intent(this, WriteActivity::class.java)
-					intent.putExtra("year", year);
-					intent.putExtra("month", month);
-					intent.putExtra("dayOfMonth", dayOfMonth);
-					intent.putExtra("diary", "")
-					startActivity(intent)
-				} else {
-					mp?.release()
-					mp = null // DiaryActivity를 를 Fragment화 완료하면 지워야 할 코드
-
-					val intent: Intent = Intent(this, DiaryActivity::class.java)
-					intent.putExtra("year", year);
-					intent.putExtra("month", month);
-					intent.putExtra("dayOfMonth", dayOfMonth);
-					startActivity(intent)
-				}
-
-			} catch (e: Exception) {
-				mp?.release()
-				mp = null // 음악 정지
-
-				e.printStackTrace()
-				val intent: Intent = Intent(this, WriteActivity::class.java)
-				intent.putExtra("year", year);
-				intent.putExtra("month", month);
-				intent.putExtra("dayOfMonth", dayOfMonth);
-				intent.putExtra("diary", "")
-				startActivity(intent)
-			}
+			var rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
+			nextView(year, month, dayOfMonth, rDate)
 		}
 
 		binding.statsView.setOnClickListener {
@@ -190,6 +122,24 @@ class HomeActivity : AppCompatActivity() {
 			11 -> monthString = "December"
 		}
 		return monthString
+	}
+
+	fun nextView(year: Int, month: Int, dayOfMonth : Int, rDate: Long){
+		if(DiaryList(this).isExist(rDate)){
+			val intent: Intent = Intent(this, DiaryActivity::class.java)
+			intent.putExtra("year", year)
+			intent.putExtra("month", month)
+			intent.putExtra("dayOfMonth", dayOfMonth)
+			startActivity(intent)
+		}
+		else{
+			val intent: Intent = Intent(this, WriteActivity::class.java)
+			intent.putExtra("year", year);
+			intent.putExtra("month", month);
+			intent.putExtra("dayOfMonth", dayOfMonth);
+			intent.putExtra("diary", "")
+			startActivity(intent)
+		}
 	}
 }
 
