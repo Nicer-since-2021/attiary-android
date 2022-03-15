@@ -160,13 +160,13 @@
         <View
             android:id="@+id/happy_chart_back_view"
             android:layout_width="0dp"
-            android:layout_height="250dp"
+            android:layout_height="280dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:background="@color/yellow_box"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/happy_balloon" />
 
@@ -174,8 +174,10 @@
             android:id="@+id/happy_chart"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="15dp"
             app:layout_constraintBottom_toBottomOf="@+id/happy_chart_back_view"
             app:layout_constraintEnd_toEndOf="@+id/happy_chart_back_view"
             app:layout_constraintStart_toStartOf="@+id/happy_chart_back_view"
@@ -208,7 +210,7 @@
         <View
             android:id="@+id/sad_chart_back_view"
             android:layout_width="0dp"
-            android:layout_height="250dp"
+            android:layout_height="300dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
@@ -216,6 +218,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sad_balloon" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/sad_chart"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/sad_chart_back_view"
+            app:layout_constraintEnd_toEndOf="@+id/sad_chart_back_view"
+            app:layout_constraintStart_toStartOf="@+id/sad_chart_back_view"
+            app:layout_constraintTop_toTopOf="@+id/sad_chart_back_view" />
 
         <TextView
             android:id="@+id/sad_desc"

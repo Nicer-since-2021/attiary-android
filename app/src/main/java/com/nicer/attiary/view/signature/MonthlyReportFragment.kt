@@ -2,22 +2,20 @@ package com.nicer.attiary.view.signature
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.nicer.attiary.R
 import com.nicer.attiary.databinding.FragmentMonthlyReportBinding
-import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MonthlyReportFragment : Fragment() {
@@ -40,6 +38,7 @@ class MonthlyReportFragment : Fragment() {
 
 		makeEmotionChart(binding)
 		makeHappyChart(binding)
+		makeSadChart(binding)
 		return binding.root
 	}
 
@@ -92,46 +91,65 @@ class MonthlyReportFragment : Fragment() {
 		}
 	}
 
+	private fun dateToMilliSecond(year: Int, month: Int, day: Int): Float {
+		val calendar = Calendar.getInstance()
+		calendar.set(year, month - 1, day)
+		return calendar.timeInMillis.toFloat()
+	}
 
 	private fun makeHappyChart(binding: FragmentMonthlyReportBinding) {
-
-//		val calendar = Calendar.getInstance()
-//		val marchThird = calendar.set(2022, 3, 3)
-//		var date: Date = Date(2022, 3, 3)
-//		Log.d("[*] time", "$marchThird.timeInMillis")
-
+		/**
+		 * this is dummy data, get data from db
+		 */
 		val entries: MutableList<Entry> = ArrayList()
+		entries.add(Entry(dateToMilliSecond(2022, 3, 1), 50.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 2), 90.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 3), 25.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 4), 37.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 6), 56.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 7), 66.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 8), 80.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 10), 20.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 11), 8.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 12), 27.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 16), 14.toFloat()))
 
-		entries.add(Entry(1.toFloat(), 50.toFloat()))
-		entries.add(Entry(3.toFloat(), 25.toFloat()))
-		entries.add(Entry(5.toFloat(), 37.toFloat()))
-		entries.add(Entry(8.toFloat(), 56.toFloat()))
-		entries.add(Entry(11.toFloat(), 66.toFloat()))
-		entries.add(Entry(13.toFloat(), 80.toFloat()))
-		entries.add(Entry(16.toFloat(), 20.toFloat()))
-		entries.add(Entry(17.toFloat(), 8.toFloat()))
-		entries.add(Entry(21.toFloat(), 27.toFloat()))
-		entries.add(Entry(27.toFloat(), 23.toFloat()))
-		entries.add(Entry(30.toFloat(), 14.toFloat()))
 
-		val lineDataSet = LineDataSet(entries, "")
+		val lineDataSet = LineDataSet(entries, "행복 그래프")
+		//        graph smoothing params
+		lineDataSet.cubicIntensity = 0.5f
+		lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
 		lineDataSet.lineWidth = 2f
-		lineDataSet.circleRadius = 6f
-		lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"))
-//		lineDataSet.setCircleColorHole(Color.BLUE)
-		lineDataSet.color = Color.parseColor("#FFA1B4DC")
+		lineDataSet.circleRadius = 5f
+		lineDataSet.setCircleColor(Color.parseColor("#C0E1BE"))
+		lineDataSet.color = Color.parseColor("#B6DBB0")
 		lineDataSet.setDrawCircleHole(false)
 		lineDataSet.setDrawCircles(true)
 		lineDataSet.setDrawHorizontalHighlightIndicator(false)
 		lineDataSet.setDrawHighlightIndicators(false)
 		lineDataSet.setDrawValues(false)
-		lineDataSet.cubicIntensity = 1F
+
 
 		val lineData = LineData(lineDataSet)
 
+
 		val lineChart: LineChart = binding.happyChart
 		lineChart.data = lineData
+		// remove line data set's label
+		lineChart.legend.isEnabled = false
+		// remove description
 		lineChart.description.isEnabled = false
+		lineChart.isDoubleTapToZoomEnabled = false
+		lineChart.setDrawGridBackground(false)
+		lineChart.animateY(2000, Easing.EaseInCubic)
+
+
+		class DateAxisValueFormat : IndexAxisValueFormatter() {
+			override fun getFormattedValue(value: Float): String {
+				val date = Date(value.toLong())
+				return SimpleDateFormat("MM월 dd일", Locale.KOREA).format(date)
+			}
+		}
 
 		val xAxis: XAxis = lineChart.xAxis
 		xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -149,13 +167,79 @@ class MonthlyReportFragment : Fragment() {
 		yRAxis.setDrawAxisLine(false)
 		yRAxis.setDrawGridLines(false)
 
-		val description = Description()
-		description.isEnabled = false
+		lineChart.invalidate()
+	}
 
+	private fun makeSadChart(binding: FragmentMonthlyReportBinding) {
+		/**
+		 * this is dummy data, get data from db
+		 */
+		val entries: MutableList<Entry> = ArrayList()
+		entries.add(Entry(dateToMilliSecond(2022, 3, 1), 10.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 2), 5.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 3), 25.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 4), 37.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 6), 56.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 7), 66.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 8), 80.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 10), 60.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 11), 70.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 12), 50.toFloat()))
+		entries.add(Entry(dateToMilliSecond(2022, 3, 16), 67.toFloat()))
+
+
+		val lineDataSet = LineDataSet(entries, "우울 그래프")
+		//        graph smoothing params
+		lineDataSet.cubicIntensity = 0.5f
+		lineDataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+		lineDataSet.lineWidth = 2f
+		lineDataSet.circleRadius = 5f
+		lineDataSet.setCircleColor(Color.parseColor("#A6CEE3"))
+		lineDataSet.color = Color.parseColor("#A9C5FC")
+		lineDataSet.setDrawCircleHole(false)
+		lineDataSet.setDrawCircles(true)
+		lineDataSet.setDrawHorizontalHighlightIndicator(false)
+		lineDataSet.setDrawHighlightIndicators(false)
+		lineDataSet.setDrawValues(false)
+
+
+		val lineData = LineData(lineDataSet)
+
+
+		val lineChart: LineChart = binding.sadChart
+		lineChart.data = lineData
+		// remove line data set's label
+		lineChart.legend.isEnabled = false
+		// remove description
+		lineChart.description.isEnabled = false
 		lineChart.isDoubleTapToZoomEnabled = false
 		lineChart.setDrawGridBackground(false)
-		lineChart.description = description
 		lineChart.animateY(2000, Easing.EaseInCubic)
+
+
+		class DateAxisValueFormat : IndexAxisValueFormatter() {
+			override fun getFormattedValue(value: Float): String {
+				val date = Date(value.toLong())
+				return SimpleDateFormat("MM월 dd일", Locale.KOREA).format(date)
+			}
+		}
+
+		val xAxis: XAxis = lineChart.xAxis
+		xAxis.position = XAxis.XAxisPosition.BOTTOM
+		xAxis.textColor = Color.BLACK
+		xAxis.valueFormatter = DateAxisValueFormat()
+		xAxis.enableGridDashedLine(8f, 24f, 0f)
+
+		val yLAxis: YAxis = lineChart.axisLeft
+		yLAxis.textColor = Color.BLACK
+		yLAxis.axisMaximum = 100F
+		yLAxis.axisMinimum = 0F
+
+		val yRAxis: YAxis = lineChart.axisRight
+		yRAxis.setDrawLabels(false)
+		yRAxis.setDrawAxisLine(false)
+		yRAxis.setDrawGridLines(false)
+
 		lineChart.invalidate()
 	}
 }
