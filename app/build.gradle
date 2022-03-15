@@ -54,7 +54,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.2.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
-    
+
     def room_version = "2.4.1"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -69,4 +69,6 @@ dependencies {
     implementation "com.kakao.sdk:v2-user:2.8.5"
     implementation 'com.google.android.gms:play-services-auth:20.1.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    implementation 'androidx.fragment:fragment-ktx:1.4.1' // ViewModel
 }

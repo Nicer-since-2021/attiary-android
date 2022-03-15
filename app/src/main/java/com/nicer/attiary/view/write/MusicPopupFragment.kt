@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.nicer.attiary.databinding.FragmentMusicPopupBinding
 
 class MusicPopupFragment : Fragment() {
 	lateinit var binding: FragmentMusicPopupBinding
+	private val viewModel: MusicViewModel by activityViewModels()
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -18,7 +20,7 @@ class MusicPopupFragment : Fragment() {
 
 		setPicker()
 
-		binding.btnClose.setOnClickListener {
+		binding.transBackView.setOnClickListener {
 			fragmentManager?.beginTransaction()?.remove(this)?.commit()
 		}
 		return binding.root
@@ -33,9 +35,8 @@ class MusicPopupFragment : Fragment() {
 		picker.wrapSelectorWheel = true // 순환
 
 		// 변화값 감지
-//		picker.setOnValueChangedListener { picker, oldVal, newVal ->
-//			val text = "Changed from $oldVal to $newVal"
-//			Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
-//		}
+		picker.setOnValueChangedListener { picker, oldVal, newVal ->
+			viewModel.setEmotion(newVal)
+		}
 	}
 }
