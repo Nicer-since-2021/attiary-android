@@ -28,4 +28,12 @@
     <string name="top3_diary">TOP 3 일기</string>
 
     <string name="music_text">지금 내 감정은..</string>
+    <string name="happiness">기뻐요</string>
+    <string name="anger">화가 나요</string>
+    <string name="anxiety">불안해요</string>
+    <string name="hope">희망차요</string>
+    <string name="regret">후회돼요</string>
+    <string name="sadness">슬퍼요</string>
+    <string name="tiredness">지쳐요</string>
+    <string name="fromAtti">아띠가 하고 싶은 말이 있대요!</string>
 </resources>
