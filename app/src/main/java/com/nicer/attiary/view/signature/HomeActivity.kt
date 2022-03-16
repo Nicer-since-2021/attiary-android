@@ -5,16 +5,21 @@ import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.nicer.attiary.R
 import com.nicer.attiary.data.diary.DiaryList
+import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityHomeBinding
+import com.nicer.attiary.view.setting.lock.AppPassWordActivity
 import com.nicer.attiary.view.write.WriteActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import java.util.*
+
 
 class HomeActivity : AppCompatActivity() {
 
@@ -140,6 +145,25 @@ class HomeActivity : AppCompatActivity() {
 			intent.putExtra("diary", "")
 			startActivity(intent)
 		}
+	}
+
+	override fun onResume() {
+		super.onResume()
+		if (AppLock.AppLockStatus.lock && AppLock(this).isPassLockSet()) {
+			val intent = Intent(this, AppPassWordActivity::class.java).apply {
+				putExtra("type", AppLock.AppLockStatus.UNLOCK_PASSWORD)
+			}
+			startActivity(intent)
+		}
+		window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+	}
+
+	override fun onPause() {
+		super.onPause()
+		window.setFlags(
+			WindowManager.LayoutParams.FLAG_SECURE,
+			WindowManager.LayoutParams.FLAG_SECURE
+		)
 	}
 }
 

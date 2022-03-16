@@ -38,6 +38,12 @@ class AppPassWordActivity : AppCompatActivity() {
 		binding.imgLocked4.bringToFront()
 		binding.imgLocked4.isClickable = true
 
+		//잠금해제를 위해 실행된다면 취소 버튼 비활성화
+		if(intent.getIntExtra("type", 0)==AppLock.AppLockStatus.UNLOCK_PASSWORD){
+			binding.btnPwCancel.text=""
+			binding.btnPwCancel.isEnabled=false
+		}
+
 		val buttonArray = arrayListOf<Button>(binding.btn0, binding.btn1, binding.btn2, binding.btn3, binding.btn4, binding.btn5, binding.btn6, binding.btn7 ,binding.btn8, binding.btn9, binding.btnDel)
 		for (button in buttonArray){
 			button.setOnClickListener(btnListener)
@@ -195,6 +201,7 @@ class AppPassWordActivity : AppCompatActivity() {
 				if (AppLock(this).checkPassLock(inputedPassword())) {
 					returnIntent.putExtra("returnCode", AppLock.AppLockStatus.UNLOCK_PASSWORD)
 					setResult(Activity.RESULT_OK, returnIntent)
+					AppLock.AppLockStatus.lock = false
 					finish()
 				} else
 					binding.textInfoPW.text = getString(R.string.warning_pw_info)
