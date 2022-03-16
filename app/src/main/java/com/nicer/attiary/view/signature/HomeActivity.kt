@@ -2,12 +2,11 @@ package com.nicer.attiary.view.signature
 
 import android.content.Intent
 import android.graphics.Color
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import com.nicer.attiary.R
 import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.ReportDatabase
@@ -40,15 +39,15 @@ class HomeActivity : AppCompatActivity() {
 
 	val minMaxDecorator = MinMaxDecorator(enCalendarDay)
 
-	var mp: MediaPlayer? = null
+	lateinit var intent_music: Intent
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
-		mp = MediaPlayer.create(this, R.raw.bluedream)
-		mp?.isLooping = true
-		if (mp != null) mp?.start()
+		intent_music = Intent(this, MusicService::class.java)
+
+
 
 		binding.calendarView.addDecorators(minMaxDecorator)
 		binding.toolbar.bringToFront()
@@ -100,7 +99,11 @@ class HomeActivity : AppCompatActivity() {
 		}
 
 		binding.statsView.setOnClickListener {
-			startActivity(Intent(this, MonthlyReportActivity::class.java))
+			startActivity(
+				Intent(
+					this,
+					MonthlyReportActivity::class.java
+				).apply { addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION) })
 		}
 	}
 
@@ -126,6 +129,7 @@ class HomeActivity : AppCompatActivity() {
 	fun nextView(year: Int, month: Int, dayOfMonth: Int, rDate: Long) {
 		if (DiaryList(this).isExist(rDate)) {
 			val intent: Intent = Intent(this, DiaryActivity::class.java)
+			intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
 			intent.putExtra("year", year)
 			intent.putExtra("month", month)
 			intent.putExtra("dayOfMonth", dayOfMonth)
@@ -144,18 +148,18 @@ class HomeActivity : AppCompatActivity() {
 		super.onResume()
 		if (AppLock.AppLockStatus.lock && AppLock(this).isPassLockSet()) {
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
+				addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
 				putExtra("type", AppLock.AppLockStatus.UNLOCK_PASSWORD)
 			}
 			startActivity(intent)
 		}
 		window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
-		if (mp != null && mp?.isPlaying == false)
-			mp?.start()
+		startService(intent_music)
 	}
 
 	override fun onUserLeaveHint() {
 		super.onUserLeaveHint()
-		if (mp != null) mp?.pause()
+		stopService(intent_music)
 	}
 
 	override fun onPause() {
