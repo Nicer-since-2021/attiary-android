@@ -48,7 +48,7 @@ class HomeActivity : AppCompatActivity() {
 
 		mp = MediaPlayer.create(this, R.raw.bluedream)
 		mp?.isLooping = true
-		mp?.start()
+		if (mp != null) mp?.start()
 
 		binding.calendarView.addDecorators(minMaxDecorator)
 		binding.toolbar.bringToFront()
@@ -82,9 +82,6 @@ class HomeActivity : AppCompatActivity() {
 
 
 		binding.newButton.setOnClickListener {
-			mp?.release()
-			mp = null // 음악 정지
-
 			var year = currentYear
 			var month = currentMonth
 			var dayOfMonth = currentDate
@@ -103,9 +100,6 @@ class HomeActivity : AppCompatActivity() {
 		}
 
 		binding.statsView.setOnClickListener {
-			mp?.release()
-			mp = null // MonthlyReportActivity 를 Fragment화 완료하면 지워야 할 코드
-			
 			startActivity(Intent(this, MonthlyReportActivity::class.java))
 		}
 	}
@@ -129,15 +123,14 @@ class HomeActivity : AppCompatActivity() {
 		return monthString
 	}
 
-	fun nextView(year: Int, month: Int, dayOfMonth : Int, rDate: Long){
-		if(DiaryList(this).isExist(rDate)){
+	fun nextView(year: Int, month: Int, dayOfMonth: Int, rDate: Long) {
+		if (DiaryList(this).isExist(rDate)) {
 			val intent: Intent = Intent(this, DiaryActivity::class.java)
 			intent.putExtra("year", year)
 			intent.putExtra("month", month)
 			intent.putExtra("dayOfMonth", dayOfMonth)
 			startActivity(intent)
-		}
-		else{
+		} else {
 			val intent: Intent = Intent(this, WriteActivity::class.java)
 			intent.putExtra("year", year);
 			intent.putExtra("month", month);
@@ -156,6 +149,13 @@ class HomeActivity : AppCompatActivity() {
 			startActivity(intent)
 		}
 		window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+		if (mp != null && mp?.isPlaying == false)
+			mp?.start()
+	}
+
+	override fun onUserLeaveHint() {
+		super.onUserLeaveHint()
+		if (mp != null) mp?.pause()
 	}
 
 	override fun onPause() {
