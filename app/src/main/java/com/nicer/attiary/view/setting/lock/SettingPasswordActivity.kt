@@ -3,6 +3,7 @@ package com.nicer.attiary.view.setting.lock
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -93,23 +94,42 @@ class SettingPasswordActivity : AppCompatActivity() {
 		}
 	}
 
-	// 액티비티가 onStart인 경우
+//	// 액티비티가 onStart인 경우
+//	override fun onResume() {
+//		super.onResume()
+//		if(lock && AppLock(this).isPassLockSet()){
+//			val intent = Intent(this, AppPassWordActivity::class.java).apply {
+//				putExtra("type", AppLock.AppLockStatus.UNLOCK_PASSWORD)
+//			}
+//			startActivityForResult(intent, AppLock.AppLockStatus.UNLOCK_PASSWORD)
+//		}
+//
+//	}
+//
+//	// 액티비티가 onPause인경우
+//	override fun onPause() {
+//		super.onPause()
+//		if (AppLock(this).isPassLockSet()) {
+//			lock = true // 잠금으로 변경
+//		}
+//	}
+
 	override fun onResume() {
 		super.onResume()
-		if(lock && AppLock(this).isPassLockSet()){
+		if (AppLock.AppLockStatus.lock && AppLock(this).isPassLockSet()) {
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
-				putExtra(AppLockStatus.AppLockStatus.TYPE, AppLockStatus.AppLockStatus.UNLOCK_PASSWORD)
+				putExtra("type", AppLock.AppLockStatus.UNLOCK_PASSWORD)
 			}
-			startActivityForResult(intent, AppLockStatus.AppLockStatus.UNLOCK_PASSWORD)
+			startActivity(intent)
 		}
-
+		window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
 	}
 
-	// 액티비티가 onPause인경우
 	override fun onPause() {
 		super.onPause()
-		if (AppLock(this).isPassLockSet()) {
-			lock = true // 잠금으로 변경
-		}
+		window.setFlags(
+			WindowManager.LayoutParams.FLAG_SECURE,
+			WindowManager.LayoutParams.FLAG_SECURE
+		)
 	}
 }
