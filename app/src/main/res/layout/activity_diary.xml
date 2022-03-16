@@ -44,7 +44,7 @@ android:layout_height="match_parent">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/im_heymin_regular"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_gravity="center"
             android:textColor="@color/black" />
 
@@ -79,6 +79,18 @@ android:layout_height="match_parent">
 
     </androidx.appcompat.widget.Toolbar>
 
+    <ImageView
+        android:id="@+id/emotion"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/emotion_anger1"
+        app:layout_constraintHorizontal_bias="0.5" />
+
     <TextView
         android:id="@+id/diaryContent"
         android:layout_width="match_parent"
@@ -90,7 +102,7 @@ android:layout_height="match_parent">
         android:textColor="@color/black"
         android:fontFamily="@font/to_daughter_from_mom"
         android:ems="10"
-        android:textSize="25dp"
+        android:textSize="25sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
@@ -149,13 +161,13 @@ android:orientation="vertical">
         android:id="@+id/txtEmotion1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="슬퍼요"
-        android:textSize="25dp"
+        android:text=""
+        android:textSize="25sp"
         android:fontFamily="@font/to_daughter_from_mom"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentStart="true"/>
 
     <ProgressBar
         android:id="@+id/Index1"
@@ -166,24 +178,201 @@ android:orientation="vertical">
         android:progress="30"
         android:progressBackgroundTintMode="src_over"
         android:progressDrawable="@drawable/progress_sadness"
-        android:layout_marginLeft="120dp"
+        android:layout_marginStart="120dp"
         android:layout_marginTop="55dp"
-        android:layout_marginRight="80dp"
+        android:layout_marginEnd="80dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:id="@+id/percent1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="30%"
-        android:textSize="25dp"
+        android:text=""
+        android:textSize="25sp"
         android:fontFamily="@font/to_daughter_from_mom"
-        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginTop="50dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:id="@+id/txtEmotion2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="25sp"
+        android:fontFamily="@font/to_daughter_from_mom"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+    <ProgressBar
+        android:id="@+id/Index2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:max="100"
+        android:progress="30"
+        android:progressBackgroundTintMode="src_over"
+        android:progressDrawable="@drawable/progress_sadness"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="105dp"
+        android:layout_marginEnd="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:id="@+id/percent2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="25sp"
+        android:fontFamily="@font/to_daughter_from_mom"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        tools:ignore="RelativeOverlap" />
+    <TextView
+        android:id="@+id/txtEmotion3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="25sp"
+        android:fontFamily="@font/to_daughter_from_mom"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+    <ProgressBar
+        android:id="@+id/Index3"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:max="100"
+        android:progress="30"
+        android:progressBackgroundTintMode="src_over"
+        android:progressDrawable="@drawable/progress_sadness"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="155dp"
+        android:layout_marginEnd="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:id="@+id/percent3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="25sp"
+        android:fontFamily="@font/to_daughter_from_mom"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        tools:ignore="RelativeOverlap" />
+    <TextView
+        android:id="@+id/txtEmotion4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="25sp"
+        android:fontFamily="@font/to_daughter_from_mom"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"/>
+
+    <ProgressBar
+        android:id="@+id/Index4"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:max="100"
+        android:progress="30"
+        android:progressBackgroundTintMode="src_over"
+        android:progressDrawable="@drawable/progress_sadness"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="205dp"
+        android:layout_marginEnd="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:id="@+id/percent4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="25sp"
+        android:fontFamily="@font/to_daughter_from_mom"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        tools:ignore="RelativeOverlap" />
+
+    <TextView
+        android:id="@+id/bgFromAtti"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="250dp"
+        android:background="@drawable/top_round_atti"/>
+
+    <TextView
+        android:id="@+id/titleFromAtti"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/fromAtti"
+        android:textSize="17sp"
+        android:gravity="start"
+        android:fontFamily="@font/im_hyemin_bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="270dp" />
+
+
+    <ImageView
+        android:id="@+id/atti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="300dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="255dp"
+        android:layout_marginBottom="170dp"
+        android:src="@drawable/talking_atti"
+        app:layout_constraintHorizontal_bias="0.5" />
+
+    <TextView
+        android:id="@+id/commentFromAtti"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:fontFamily="@font/to_daughter_from_mom"
+        android:textSize="20sp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="310dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bottom_round_atti"/>
 
 
 

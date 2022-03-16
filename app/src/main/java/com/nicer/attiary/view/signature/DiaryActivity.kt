@@ -1,10 +1,12 @@
 package com.nicer.attiary.view.signature
 
 
-import android.content.DialogInterface
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.R
@@ -26,75 +28,37 @@ class DiaryActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
-		//set layout
-		binding.diaryContent.bringToFront()
 
-		//set database
+		val intent: Intent = getIntent()
+		val year = intent.getIntExtra("year", 0)
+		val month = intent.getIntExtra("month", 0)
+		val dayOfMonth = intent.getIntExtra("dayOfMonth", 0)
 		database = ReportDatabase.getInstance(this)
 
-
-		//HomeAvtivity로부터 받은 날짜 data
-		val intent: Intent = getIntent()
-		var year = intent.getIntExtra("year", 0)
-		var month = intent.getIntExtra("month", 0)
-		var dayOfMonth = intent.getIntExtra("dayOfMonth", 0)
-
-		//해당 날짜 표시
+		binding.diaryContent.bringToFront()
 		binding.diaryTextView.text = String.format("%d년 %d월 %d일", year, month + 1, dayOfMonth)
 
-		//일기 상태 확인
-		checkDay(year, month, dayOfMonth)
+		processDiary(year, month, dayOfMonth)
+		processReport(year, month, dayOfMonth)
 
 		binding.buttonBack.setOnClickListener {
 			finish()
 		}
-
-		/** database 접근 -> report 표시 **/
-
-		var rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
-		CoroutineScope(Dispatchers.IO).launch {
-			//날짜로 접근
-			var report = database?.ReportDao()?.findByDate(rDate)
-
-			CoroutineScope(Dispatchers.Main).launch {
-				//현재는 테스트 데이터로 통일되어 있음.
-				var e1 = report?.firstEmotion
-				var p1 = report?.firstPercent
-				CoroutineScope(Dispatchers.Main).launch {
-					when (e1) {
-						"a" -> {
-							binding.txtEmotion1.text = "화가 나요"
-							binding.Index1.progressDrawable = getDrawable(R.drawable.progress_anger)
-						}
-					}
-					binding.percent1.text = p1.toString() + "%"
-					if (p1 != null) {
-						binding.Index1.progress = p1
-					}
-				}
-
-			}
-		}
 	}
 
-	// 달력 내용 조회, 수정
-	fun checkDay(cYear: Int, cMonth: Int, cDay: Int) {
+	private fun processDiary(cYear: Int, cMonth: Int, cDay: Int) {
 
-		var rDate = (cYear.toString() + cMonth.toString() + cDay.toString()).toLong()
+		val rDate = (cYear.toString() + cMonth.toString() + cDay.toString()).toLong()
 		CoroutineScope(Dispatchers.IO).launch {
-			//날짜로 접근
-			var report = database?.ReportDao()?.findByDate(rDate)
+			val report = database?.ReportDao()?.findByDate(rDate)
 			CoroutineScope(Dispatchers.Main).launch {
 				str = report?.diaryContent.toString()
 				binding.diaryContent.text = str
 			}
-
 		}
 
-
-
 		binding.updateBtn.setOnClickListener {
-			val intent: Intent = Intent(this, WriteActivity::class.java)
+			val intent = Intent(this, WriteActivity::class.java)
 			intent.putExtra("year", cYear)
 			intent.putExtra("month", cMonth)
 			intent.putExtra("dayOfMonth", cDay)
@@ -106,17 +70,111 @@ class DiaryActivity : AppCompatActivity() {
 			val builder = AlertDialog.Builder(this)
 			builder.setMessage("정말 삭제하시겠습니까?")
 			builder.setNegativeButton("취소", null)
-			builder.setPositiveButton("확인", DialogInterface.OnClickListener { dialogInterface, i ->
+			builder.setPositiveButton("확인") { _, i ->
 				DiaryList(this).removeDiary(rDate)
 				CoroutineScope(Dispatchers.IO).launch {
 					database?.ReportDao()?.delete(rDate)
 					finish()
 				}
-			})
+			}
 			builder.show()
 		}
+	}
+
+	private fun processReport(cYear: Int, cMonth: Int, cDay: Int) {
+		val rDate = (cYear.toString() + cMonth.toString() + cDay.toString()).toLong()
+		CoroutineScope(Dispatchers.IO).launch {
+			val report = database?.ReportDao()?.findByDate(rDate)
+
+			CoroutineScope(Dispatchers.Main).launch {
+				//현재는 테스트 데이터로 통일되어 있음.
+				val e1 = report?.firstEmotion
+				val e2 = report?.secondEmotion
+				val e3 = report?.thirdEmotion
+				val e4 = report?.fourthEmotion
+				val p1 = report?.firstPercent
+				val p2 = report?.secondPercent
+				val p3 = report?.thirdPercent
+				val p4 = report?.fourthPercent
+				processEmotion(1, e1, p1)
+				processEmotion(2, e2, p2)
+				processEmotion(3, e3, p3)
+				processEmotion(4, e4, p4)
+				val comment = report?.commentFromAtti
+				binding.commentFromAtti.text = comment
+
+			}
+		}
+	}
+
+	@SuppressLint("SetTextI18n", "UseCompatLoadingForDrawables")
+	fun processEmotion(rank: Int, emotion: String?, percent: Int?){
+		lateinit var txtEmotion : TextView
+		lateinit var bar :ProgressBar
+		lateinit var txtPercent : TextView
+
+		when(rank){
+			1 -> {
+				txtEmotion = binding.txtEmotion1
+				bar = binding.Index1
+				txtPercent = binding.percent1
+			}
+			2 -> {
+				txtEmotion = binding.txtEmotion2
+				bar = binding.Index2
+				txtPercent = binding.percent2
+			}
+			3 -> {
+				txtEmotion = binding.txtEmotion3
+				bar = binding.Index3
+				txtPercent = binding.percent3
+			}
+			4 -> {
+				txtEmotion = binding.txtEmotion4
+				bar = binding.Index4
+				txtPercent = binding.percent4
+			}
+
+
+		}
+
+		when (emotion) {
+			"a" -> {
+				txtEmotion.text = getString(R.string.anger)
+				bar.progressDrawable = getDrawable(R.drawable.progress_anger)
+			}
+			"s" -> {
+				txtEmotion.text = getString(R.string.sadness)
+				bar.progressDrawable = getDrawable(R.drawable.progress_sadness)
+			}
+			"ax" -> {
+				txtEmotion.text = getString(R.string.anxiety)
+				bar.progressDrawable = getDrawable(R.drawable.progress_anxiety)
+			}
+			"t" -> {
+				txtEmotion.text = getString(R.string.tiredness)
+				bar.progressDrawable = getDrawable(R.drawable.progress_tiredness)
+			}
+			"r" -> {
+				txtEmotion.text = getString(R.string.regret)
+				bar.progressDrawable = getDrawable(R.drawable.progress_regret)
+			}
+			"ha" -> {
+				txtEmotion.text = getString(R.string.happiness)
+				bar.progressDrawable = getDrawable(R.drawable.progress_happiness_diary)
+			}
+			"ho" -> {
+				txtEmotion.text = getString(R.string.hope)
+				bar.progressDrawable = getDrawable(R.drawable.progress_hope)
+			}
+
+		}
+
+		(percent.toString() + "%").also { txtPercent.text = it }
+		if (percent != null) bar.progress = percent
 
 	}
+
 	override fun onResume() {
 		super.onResume()
 		if (AppLock.AppLockStatus.lock && AppLock(this).isPassLockSet()) {

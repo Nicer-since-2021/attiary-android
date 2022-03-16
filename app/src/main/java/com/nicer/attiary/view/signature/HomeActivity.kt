@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.data.diary.DiaryList
@@ -12,6 +11,7 @@ import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityHomeBinding
 import com.nicer.attiary.view.setting.lock.AppPassWordActivity
+import com.nicer.attiary.view.setting.lock.SettingPasswordActivity
 import com.nicer.attiary.view.write.WriteActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
@@ -25,20 +25,17 @@ class HomeActivity : AppCompatActivity() {
 	private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
 
 	var database: ReportDatabase? = null
-
-	var startTimeCalendar = Calendar.getInstance()
-	var endTimeCalendar = Calendar.getInstance()
-
-	val currentYear = startTimeCalendar.get(Calendar.YEAR)
-	val currentMonth = startTimeCalendar.get(Calendar.MONTH)
-	val currentDate = startTimeCalendar.get(Calendar.DATE)
-	val enCalendarDay = CalendarDay(
+	private var startTimeCalendar = Calendar.getInstance()
+	private var endTimeCalendar = Calendar.getInstance()
+	private val currentYear = startTimeCalendar.get(Calendar.YEAR)
+	private val currentMonth = startTimeCalendar.get(Calendar.MONTH)
+	private val currentDate = startTimeCalendar.get(Calendar.DATE)
+	private val enCalendarDay = CalendarDay(
 		endTimeCalendar.get(Calendar.YEAR),
-		endTimeCalendar.get(Calendar.MONTH), endTimeCalendar.get(Calendar.DATE)
+		endTimeCalendar.get(Calendar.MONTH),
+		endTimeCalendar.get(Calendar.DATE)
 	)
-
-	val minMaxDecorator = MinMaxDecorator(enCalendarDay)
-
+	private val minMaxDecorator = MinMaxDecorator(enCalendarDay)
 	lateinit var intent_music: Intent
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,14 +44,9 @@ class HomeActivity : AppCompatActivity() {
 
 		intent_music = Intent(this, MusicService::class.java)
 
-
-
 		binding.calendarView.addDecorators(minMaxDecorator)
 		binding.toolbar.bringToFront()
-		//set database
 		database = ReportDatabase.getInstance(this)
-
-
 		binding.calendarView.state().edit()
 			.setFirstDayOfWeek(Calendar.MONDAY)
 			.setMaximumDate(
@@ -67,35 +59,35 @@ class HomeActivity : AppCompatActivity() {
 			.setCalendarDisplayMode(CalendarMode.MONTHS)
 			.commit()
 		binding.calendarView.isDynamicHeightEnabled = true
-
 		binding.barFindText.text = monthToString(currentMonth)
-
-		binding.calendarView.setOnMonthChangedListener { widget, date ->
-			var year = date.year
-			var month = date.month
+		binding.calendarView.setOnMonthChangedListener { _, date ->
+			val year = date.year
+			val month = date.month
 			if (year == currentYear)
 				binding.barFindText.text = monthToString(month)
 			else
-				binding.barFindText.text = "$year " + monthToString(month)
+				("$year " + monthToString(month)).also { binding.barFindText.text = it }
 		}
-
 
 		binding.newButton.setOnClickListener {
-			var year = currentYear
-			var month = currentMonth
-			var dayOfMonth = currentDate
-			var rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
+			val year = currentYear
+			val month = currentMonth
+			val dayOfMonth = currentDate
+			val rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
 
 			nextView(year, month, dayOfMonth, rDate)
 		}
 
-
 		binding.calendarView.setOnDateChangedListener { widget, date, selected ->
-			var year = widget.selectedDate.year
-			var month = widget.selectedDate.month
-			var dayOfMonth = widget.selectedDate.day
-			var rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
+			val year = widget.selectedDate.year
+			val month = widget.selectedDate.month
+			val dayOfMonth = widget.selectedDate.day
+			val rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
 			nextView(year, month, dayOfMonth, rDate)
+		}
+
+		binding.settingBtn.setOnClickListener{
+			startActivity(Intent(this, SettingPasswordActivity::class.java))
 		}
 
 		binding.statsView.setOnClickListener {
@@ -107,7 +99,7 @@ class HomeActivity : AppCompatActivity() {
 		}
 	}
 
-	fun monthToString(month: Int): String {
+	private fun monthToString(month: Int): String {
 		lateinit var monthString: String
 		when (month) {
 			0 -> monthString = "January"
