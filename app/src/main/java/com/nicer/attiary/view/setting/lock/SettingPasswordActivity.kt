@@ -20,7 +20,6 @@ class SettingPasswordActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
-
 		init()
 
 		val activityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -52,7 +51,6 @@ class SettingPasswordActivity : AppCompatActivity() {
 			}
 		}
 
-		// 잠금 설정 버튼을 눌렀을때
 		binding.btnSetLock.setOnClickListener {
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
 				putExtra("type", AppLock.AppLockStatus.ENABLE_PASSLOCK)
@@ -60,7 +58,6 @@ class SettingPasswordActivity : AppCompatActivity() {
 			activityResult.launch(intent)
 		}
 
-		// 잠금 비활성화 버튼을 눌렀을때
 		binding.btnSetDelLock.setOnClickListener{
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
 				putExtra("type", AppLock.AppLockStatus.DISABLE_PASSLOCK)
@@ -68,7 +65,6 @@ class SettingPasswordActivity : AppCompatActivity() {
 			activityResult.launch(intent)
 		}
 
-		// 암호 변경버튼을 눌렀을때
 		binding.btnChangePwd.setOnClickListener {
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
 				putExtra("type", AppLock.AppLockStatus.CHANGE_PASSWORD)
@@ -78,45 +74,22 @@ class SettingPasswordActivity : AppCompatActivity() {
 
 	}
 
-	/* 버튼 활성 or 비활성화 */
 	private fun init(){
 		if (AppLock(this).isPassLockSet()){
 			binding.btnSetLock.isEnabled = false
 			binding.btnSetDelLock.isEnabled = true
 			binding.btnChangePwd.isEnabled = true
-			lock = true
 		}
 		else{
 			binding.btnSetLock.isEnabled = true
 			binding.btnSetDelLock.isEnabled = false
 			binding.btnChangePwd.isEnabled = false
-			lock = false
 		}
 	}
 
-//	// 액티비티가 onStart인 경우
-//	override fun onResume() {
-//		super.onResume()
-//		if(lock && AppLock(this).isPassLockSet()){
-//			val intent = Intent(this, AppPassWordActivity::class.java).apply {
-//				putExtra("type", AppLock.AppLockStatus.UNLOCK_PASSWORD)
-//			}
-//			startActivityForResult(intent, AppLock.AppLockStatus.UNLOCK_PASSWORD)
-//		}
-//
-//	}
-//
-//	// 액티비티가 onPause인경우
-//	override fun onPause() {
-//		super.onPause()
-//		if (AppLock(this).isPassLockSet()) {
-//			lock = true // 잠금으로 변경
-//		}
-//	}
-
 	override fun onResume() {
 		super.onResume()
-		if (AppLock.AppLockStatus.lock && AppLock(this).isPassLockSet()) {
+		if (lock && AppLock(this).isPassLockSet()) {
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
 				putExtra("type", AppLock.AppLockStatus.UNLOCK_PASSWORD)
 			}
