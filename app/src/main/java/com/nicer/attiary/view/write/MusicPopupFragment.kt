@@ -18,15 +18,12 @@ class MusicPopupFragment : Fragment() {
 	): View? {
 		binding = FragmentMusicPopupBinding.inflate(inflater, container, false)
 
-		setPicker()
+		SetPicker()
 
-		binding.transBackView.setOnClickListener {
-			fragmentManager?.beginTransaction()?.remove(this)?.commit()
-		}
 		return binding.root
 	}
 
-	private fun setPicker() {
+	private fun SetPicker() {
 		val picker = binding.numberPicker
 		val bgm_category = arrayOf("기쁨", "희망", "슬픔", "분노", "불안", "피곤", "후회")
 		picker.minValue = 0

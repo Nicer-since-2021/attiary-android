@@ -43,6 +43,12 @@ class WriteActivity : AppCompatActivity() {
 
 		binding.diaryTextView.text = String.format("%d년 %d월 %d일", year, month + 1, dayOfMonth)
 		binding.contextEditText.setText(str)
+
+		binding.contextEditText.setOnFocusChangeListener { view, hasFocus ->
+			if (hasFocus)
+				RemoveFragment()
+		}
+
 		binding.backBtn.setOnClickListener {
 			finish()
 		}
@@ -74,7 +80,7 @@ class WriteActivity : AppCompatActivity() {
 		}
 
 		binding.btnMusic.setOnLongClickListener {
-			viewFragment(MusicPopupFragment())
+			SetFragment(MusicPopupFragment())
 			true
 		}
 
@@ -84,13 +90,26 @@ class WriteActivity : AppCompatActivity() {
 		})
 	}
 
-	private fun viewFragment(fragment: Fragment?) {
-		if (fragment != null) {
-			supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
-		}
+
+	fun SetFragment(fragment: Fragment?) {
+		val transaction = supportFragmentManager.beginTransaction()
+		transaction
+			.setCustomAnimations(R.anim.musicpopup_open, R.anim.fade_out)
+			.replace(R.id.frameLayout, MusicPopupFragment())
+			.addToBackStack(null)
+			.commit()
 	}
 
-
+	fun RemoveFragment() {
+		val frameLayout = supportFragmentManager.findFragmentById(R.id.frameLayout)
+		if (frameLayout != null) {
+			val transaction = supportFragmentManager.beginTransaction()
+			transaction
+				.setCustomAnimations(R.anim.musicpopup_close, R.anim.musicpopup_close)
+				.remove(frameLayout)
+				.commit()
+		}
+	}
 
 	override fun onResume() {
 		super.onResume()
@@ -110,6 +129,4 @@ class WriteActivity : AppCompatActivity() {
 			WindowManager.LayoutParams.FLAG_SECURE
 		)
 	}
-
-
 }
