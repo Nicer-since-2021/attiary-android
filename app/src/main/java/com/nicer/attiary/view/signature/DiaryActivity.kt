@@ -23,12 +23,14 @@ import kotlinx.coroutines.launch
 class DiaryActivity : AppCompatActivity() {
 	var str: String = ""
 	var database: ReportDatabase? = null
+	lateinit var intent_music: Intent
 
 	private val binding by lazy { ActivityDiaryBinding.inflate(layoutInflater) }
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
+		intent_music = Intent(this, MusicService::class.java)
 		val intent: Intent = getIntent()
 		val year = intent.getIntExtra("year", 0)
 		val month = intent.getIntExtra("month", 0)
@@ -58,6 +60,7 @@ class DiaryActivity : AppCompatActivity() {
 		}
 
 		binding.updateBtn.setOnClickListener {
+			stopService(intent_music)
 			val intent = Intent(this, WriteActivity::class.java)
 			intent.putExtra("year", cYear)
 			intent.putExtra("month", cMonth)
@@ -108,12 +111,12 @@ class DiaryActivity : AppCompatActivity() {
 	}
 
 	@SuppressLint("SetTextI18n", "UseCompatLoadingForDrawables")
-	fun processEmotion(rank: Int, emotion: String?, percent: Int?){
-		lateinit var txtEmotion : TextView
-		lateinit var bar :ProgressBar
-		lateinit var txtPercent : TextView
+	fun processEmotion(rank: Int, emotion: String?, percent: Int?) {
+		lateinit var txtEmotion: TextView
+		lateinit var bar: ProgressBar
+		lateinit var txtPercent: TextView
 
-		when(rank){
+		when (rank) {
 			1 -> {
 				txtEmotion = binding.txtEmotion1
 				bar = binding.Index1
