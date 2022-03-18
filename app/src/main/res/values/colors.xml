@@ -11,6 +11,8 @@
     <color name="gray_register_line">#949393</color>
     <color name="blue_depression">#A9C5FC</color>
     <color name="ivory_progress_bg">#FCF8EF</color>
+    <color name="ivory_atti_top">#FFFAEE</color>
+    <color name="ivory_atti_bottom">#FFF2D4</color>
     <color name="green_happiness">#B6DBB0</color>
     <color name="red_anger">#FCB3A9</color>
     <color name="purple_anxiety">#BEA9FC</color>
