@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -50,7 +49,7 @@ class WriteActivity : AppCompatActivity() {
 
 		binding.contextEditText.setOnFocusChangeListener { view, hasFocus ->
 			if (hasFocus)
-				RemoveFragment()
+				removeFragment()
 		}
 
 		binding.backBtn.setOnClickListener {
@@ -84,7 +83,7 @@ class WriteActivity : AppCompatActivity() {
 		}
 
 		binding.btnMusic.setOnLongClickListener {
-			SetFragment(MusicPopupFragment())
+			setFragment(MusicPopupFragment())
 			true
 		}
 
@@ -102,8 +101,7 @@ class WriteActivity : AppCompatActivity() {
 		})
 	}
 
-
-	fun SetFragment(fragment: Fragment?) {
+	private fun setFragment(fragment: Fragment?) {
 		val transaction = supportFragmentManager.beginTransaction()
 		transaction
 			.setCustomAnimations(R.anim.musicpopup_open, R.anim.fade_out)
@@ -112,7 +110,7 @@ class WriteActivity : AppCompatActivity() {
 			.commit()
 	}
 
-	fun RemoveFragment() {
+	private fun removeFragment() {
 		val frameLayout = supportFragmentManager.findFragmentById(R.id.frameLayout)
 		if (frameLayout != null) {
 			val transaction = supportFragmentManager.beginTransaction()
@@ -142,7 +140,7 @@ class WriteActivity : AppCompatActivity() {
 		)
 	}
 
-	fun shuffleTrack() {
+	private fun shuffleTrack() {
 		MusicList.musicList.bgm_a_list = MusicList.musicList.bgm_a_list.shuffled()
 		MusicList.musicList.bgm_ax_list = MusicList.musicList.bgm_ax_list.shuffled()
 		MusicList.musicList.bgm_ha_list = MusicList.musicList.bgm_ha_list.shuffled()
@@ -153,7 +151,7 @@ class WriteActivity : AppCompatActivity() {
 		MusicList.musicList.bgm_t_list = MusicList.musicList.bgm_t_list.shuffled()
 	}
 
-	fun playTrack(list: List<Int>) {
+	private fun playTrack(list: List<Int>) {
 		var tmpList = list
 		if (tmpList.isEmpty()) {
 			tmpList = list.shuffled()
