@@ -32,7 +32,7 @@ class MusicPopupFragment : Fragment() {
 		picker.wrapSelectorWheel = true // 순환
 
 		// 변화값 감지
-		picker.setOnValueChangedListener { picker, oldVal, newVal ->
+		picker.setOnValueChangedListener { _, _, newVal ->
 			viewModel.setEmotion(newVal)
 		}
 	}
