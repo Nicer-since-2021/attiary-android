@@ -88,6 +88,16 @@ class WriteActivity : AppCompatActivity() {
 			true
 		}
 
+		binding.btnMusic.setOnClickListener {
+			if (mp?.isPlaying == true) {
+				mp?.pause()
+				binding.btnMusic.setImageResource(R.drawable.music_mute_button)
+			} else {
+				mp?.start()
+				binding.btnMusic.setImageResource(R.drawable.music_button)
+			}
+		}
+
 		// Fragment 통신
 		viewModel.getEmotion.observe(this, Observer { item ->
 			when (item) {
