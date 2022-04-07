@@ -46,6 +46,7 @@ class WriteActivity : AppCompatActivity() {
 		binding.contextEditText.setText(str)
 
 		shuffleTrack()
+		playTrack(MusicList.musicList.bgm_n_list)
 
 		binding.contextEditText.setOnFocusChangeListener { view, hasFocus ->
 			if (hasFocus)
