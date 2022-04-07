@@ -155,7 +155,7 @@ class WriteActivity : AppCompatActivity() {
 	private fun playTrack(list: List<Int>) {
 		var tmpList = list
 		if (tmpList.isEmpty()) {
-			tmpList = list.shuffled()
+			tmpList = list
 		}
 
 		val nextTrack = tmpList.first()
