@@ -17,6 +17,7 @@ import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityWriteBinding
 import com.nicer.attiary.view.setting.lock.AppPassWordActivity
 import com.nicer.attiary.view.signature.DiaryActivity
+import com.nicer.attiary.view.signature.MusicService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,12 +28,15 @@ class WriteActivity : AppCompatActivity() {
 	private val viewModel: MusicViewModel by viewModels()
 	lateinit var str: String
 	private var database: ReportDatabase? = null
+	lateinit var intent_music: Intent
 	var mp: MediaPlayer? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
+		intent_music = Intent(this, MusicService::class.java)
+		stopService(intent_music)
 		val intent: Intent = getIntent()
 		val year = intent.getIntExtra("year", 0)
 		val month = intent.getIntExtra("month", 0)
@@ -58,6 +62,7 @@ class WriteActivity : AppCompatActivity() {
 		}
 
 		binding.saveBtn.setOnClickListener {
+			startService(intent_music)
 			if (binding.contextEditText.text.isBlank()) {
 				val builder = AlertDialog.Builder(this)
 				builder.setMessage("내용을 입력하세요.")
