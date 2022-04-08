@@ -86,7 +86,7 @@ class HomeActivity : AppCompatActivity() {
 			nextView(year, month, dayOfMonth, rDate)
 		}
 
-		binding.settingBtn.setOnClickListener{
+		binding.settingBtn.setOnClickListener {
 			startActivity(Intent(this, SettingPasswordActivity::class.java))
 		}
 

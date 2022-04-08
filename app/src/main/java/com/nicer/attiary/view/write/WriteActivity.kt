@@ -68,14 +68,25 @@ class WriteActivity : AppCompatActivity() {
 				builder.setMessage("내용을 입력하세요.")
 				builder.setPositiveButton("확인", null)
 				builder.show()
-			}
-			else {
-				if (str!="null"){
+			} else {
+				if (str != "null") {
 					DiaryList(this).removeDiary(rDate)
 				}
 				CoroutineScope(Dispatchers.IO).launch {
 					database?.ReportDao()?.insert(
-						Report(rDate, binding.contextEditText.text.toString(), "a", 50, "s", 30, "ax", 20, "ha", 10, "아띠의 한 마디~")
+						Report(
+							rDate,
+							binding.contextEditText.text.toString(),
+							"a",
+							50,
+							"s",
+							30,
+							"ax",
+							20,
+							"ha",
+							10,
+							"아띠의 한 마디~"
+						)
 					)
 				}
 				DiaryList(this).addDiary(rDate, "a") //대표감정 전달
