@@ -141,6 +141,7 @@ class WriteActivity : AppCompatActivity() {
 			startActivity(intent)
 		}
 		window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+		if (mp?.isPlaying == false) mp?.start()
 	}
 
 	override fun onPause() {
@@ -149,6 +150,13 @@ class WriteActivity : AppCompatActivity() {
 			WindowManager.LayoutParams.FLAG_SECURE,
 			WindowManager.LayoutParams.FLAG_SECURE
 		)
+		mp?.pause()
+	}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		mp?.stop()
+		mp?.release()
 	}
 
 	private fun shuffleTrack() {
