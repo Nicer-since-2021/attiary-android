@@ -23,14 +23,12 @@ import kotlinx.coroutines.launch
 class DiaryActivity : AppCompatActivity() {
 	var str: String = ""
 	var database: ReportDatabase? = null
-	lateinit var intent_music: Intent
 
 	private val binding by lazy { ActivityDiaryBinding.inflate(layoutInflater) }
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
-		intent_music = Intent(this, MusicService::class.java)
 		val intent: Intent = getIntent()
 		val year = intent.getIntExtra("year", 0)
 		val month = intent.getIntExtra("month", 0)
@@ -60,7 +58,6 @@ class DiaryActivity : AppCompatActivity() {
 		}
 
 		binding.updateBtn.setOnClickListener {
-			stopService(intent_music)
 			val intent = Intent(this, WriteActivity::class.java)
 			intent.putExtra("year", cYear)
 			intent.putExtra("month", cMonth)

@@ -17,6 +17,7 @@ import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityWriteBinding
 import com.nicer.attiary.view.setting.lock.AppPassWordActivity
 import com.nicer.attiary.view.signature.DiaryActivity
+import com.nicer.attiary.view.signature.MusicService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,12 +28,15 @@ class WriteActivity : AppCompatActivity() {
 	private val viewModel: MusicViewModel by viewModels()
 	lateinit var str: String
 	private var database: ReportDatabase? = null
+	lateinit var intent_music: Intent
 	var mp: MediaPlayer? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
+		intent_music = Intent(this, MusicService::class.java)
+		stopService(intent_music)
 		val intent: Intent = getIntent()
 		val year = intent.getIntExtra("year", 0)
 		val month = intent.getIntExtra("month", 0)
@@ -58,19 +62,31 @@ class WriteActivity : AppCompatActivity() {
 		}
 
 		binding.saveBtn.setOnClickListener {
+			startService(intent_music)
 			if (binding.contextEditText.text.isBlank()) {
 				val builder = AlertDialog.Builder(this)
 				builder.setMessage("내용을 입력하세요.")
 				builder.setPositiveButton("확인", null)
 				builder.show()
-			}
-			else {
-				if (str!="null"){
+			} else {
+				if (str != "null") {
 					DiaryList(this).removeDiary(rDate)
 				}
 				CoroutineScope(Dispatchers.IO).launch {
 					database?.ReportDao()?.insert(
-						Report(rDate, binding.contextEditText.text.toString(), "a", 50, "s", 30, "ax", 20, "ha", 10, "아띠의 한 마디~")
+						Report(
+							rDate,
+							binding.contextEditText.text.toString(),
+							"a",
+							50,
+							"s",
+							30,
+							"ax",
+							20,
+							"ha",
+							10,
+							"아띠의 한 마디~"
+						)
 					)
 				}
 				DiaryList(this).addDiary(rDate, "a") //대표감정 전달
@@ -86,6 +102,16 @@ class WriteActivity : AppCompatActivity() {
 		binding.btnMusic.setOnLongClickListener {
 			setFragment(MusicPopupFragment())
 			true
+		}
+
+		binding.btnMusic.setOnClickListener {
+			if (mp?.isPlaying == true) {
+				mp?.pause()
+				binding.btnMusic.setImageResource(R.drawable.music_mute_button)
+			} else {
+				mp?.start()
+				binding.btnMusic.setImageResource(R.drawable.music_button)
+			}
 		}
 
 		// Fragment 통신
@@ -131,6 +157,7 @@ class WriteActivity : AppCompatActivity() {
 			startActivity(intent)
 		}
 		window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+		if (mp?.isPlaying == false) mp?.start()
 	}
 
 	override fun onPause() {
@@ -139,6 +166,13 @@ class WriteActivity : AppCompatActivity() {
 			WindowManager.LayoutParams.FLAG_SECURE,
 			WindowManager.LayoutParams.FLAG_SECURE
 		)
+		mp?.pause()
+	}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		mp?.stop()
+		mp?.release()
 	}
 
 	private fun shuffleTrack() {
