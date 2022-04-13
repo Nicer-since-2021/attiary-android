@@ -23,14 +23,14 @@ import kotlinx.coroutines.launch
 class SettingActivity : AppCompatActivity() {
 
 	val binding by lazy { ActivitySettingBinding.inflate(layoutInflater) }
-	var database: UserHelper? = null
+	var helper: UserHelper? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
 		init()
-		database = UserHelper.getInstance(this)
+		helper = UserHelper.getInstance(this)
 
 		val activityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
 			val returnCode = it.data?.getIntExtra("returnCode", 0)
@@ -152,7 +152,7 @@ class SettingActivity : AppCompatActivity() {
 			binding.changePWText.isVisible = false
 		}
 		CoroutineScope(Dispatchers.IO).launch {
-			var name = 	database?.userDao()?.getName()?.toList()?.get(0)
+			var name = 	helper?.userDao()?.getName()?.toList()?.get(0)
 			CoroutineScope(Dispatchers.Main).launch {
 				binding.nicknameText.text = name
 				binding.nicknameEdit.setText(name)

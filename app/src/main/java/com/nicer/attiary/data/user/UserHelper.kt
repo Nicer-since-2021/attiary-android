@@ -18,7 +18,7 @@ abstract class UserHelper: RoomDatabase() {
 					Instance = Room.databaseBuilder(
 						context,
 						UserHelper::class.java,
-						"report"
+						"user"
 					).build()
 					// migration // .addMigrations(MIGRATION_1_2)
 				}
