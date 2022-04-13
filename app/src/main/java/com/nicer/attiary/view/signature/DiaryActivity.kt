@@ -14,7 +14,7 @@ import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityDiaryBinding
-import com.nicer.attiary.view.setting.lock.AppPassWordActivity
+import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.write.WriteActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

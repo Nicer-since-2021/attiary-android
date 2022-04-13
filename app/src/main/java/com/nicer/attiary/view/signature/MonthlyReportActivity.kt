@@ -6,7 +6,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.databinding.ActivityMonthlyReportBinding
-import com.nicer.attiary.view.setting.lock.AppPassWordActivity
+import com.nicer.attiary.view.common.AppPassWordActivity
 
 // 추후에 지워야함!!!
 class MonthlyReportActivity : AppCompatActivity() {

@@ -10,8 +10,8 @@ import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityHomeBinding
-import com.nicer.attiary.view.setting.lock.AppPassWordActivity
-import com.nicer.attiary.view.setting.lock.SettingPasswordActivity
+import com.nicer.attiary.view.common.AppPassWordActivity
+import com.nicer.attiary.view.setting.lock.SettingActivity
 import com.nicer.attiary.view.write.WriteActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
@@ -87,7 +87,7 @@ class HomeActivity : AppCompatActivity() {
 		}
 
 		binding.settingBtn.setOnClickListener{
-			startActivity(Intent(this, SettingPasswordActivity::class.java))
+			startActivity(Intent(this, SettingActivity::class.java))
 		}
 
 		binding.statsView.setOnClickListener {
