@@ -7,15 +7,16 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 import com.nicer.attiary.R
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.user.User
 import com.nicer.attiary.data.user.UserHelper
 import com.nicer.attiary.databinding.ActivitySignUpBinding
-import com.nicer.attiary.view.setting.lock.AppPassWordActivity
-import com.nicer.attiary.view.setting.lock.SettingPasswordActivity
+import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.signature.HomeActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -26,9 +27,10 @@ class SignUpActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
-		helper = Room.databaseBuilder(this, UserHelper::class.java, "user")
-			.allowMainThreadQueries()
-			.build()
+//		helper = Room.databaseBuilder(this, UserHelper::class.java, "user")
+//			.allowMainThreadQueries()
+//			.build()
+		helper = UserHelper.getInstance(this)
 
 		binding.buttonBack.setOnClickListener {
 			finish()
@@ -89,7 +91,10 @@ class SignUpActivity : AppCompatActivity() {
 				.birthdayMonth(binding.spinnerMonth.selectedItem.toString().toInt())
 				.birthdayDay(binding.spinnerDay.selectedItem.toString().toInt())
 				.build()
-		helper?.userDao()?.insert(user)
+		CoroutineScope(Dispatchers.IO).launch {
+			helper?.userDao()?.insert(user)
+			user.userId
+		}
 		return user
 	}
 

@@ -15,7 +15,7 @@ import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.Report
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityWriteBinding
-import com.nicer.attiary.view.setting.lock.AppPassWordActivity
+import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.signature.DiaryActivity
 import com.nicer.attiary.view.signature.MusicService
 import kotlinx.coroutines.CoroutineScope
