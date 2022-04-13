@@ -17,4 +17,16 @@ interface UserDao {
 
 	@Delete
 	fun delete(user: User)
+
+	@Query("select email from User")
+	fun getEmail(): List<String>
+
+	@Query("select name from User")
+	fun getName(): List<String>
+
+	@Query("select birthday_day from User")
+	fun getBdayDay(): List<Int>
+
+	@Query("select birthday_month from User")
+	fun getBdayMonth(): List<Int>
 }

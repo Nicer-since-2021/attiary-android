@@ -1,4 +1,4 @@
-package com.nicer.attiary.view.setting.lock
+package com.nicer.attiary.view.common
 
 
 import android.app.Activity
