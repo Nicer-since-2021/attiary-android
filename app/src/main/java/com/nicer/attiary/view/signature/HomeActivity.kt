@@ -86,6 +86,7 @@ class HomeActivity : AppCompatActivity() {
 			nextView(year, month, dayOfMonth, rDate)
 		}
 
+
 		binding.settingBtn.setOnClickListener{
 			startActivity(Intent(this, SettingActivity::class.java))
 		}

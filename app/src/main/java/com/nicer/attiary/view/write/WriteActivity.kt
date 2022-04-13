@@ -2,8 +2,8 @@ package com.nicer.attiary.view.write
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +17,7 @@ import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityWriteBinding
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.signature.DiaryActivity
+import com.nicer.attiary.view.signature.MusicService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,11 +28,15 @@ class WriteActivity : AppCompatActivity() {
 	private val viewModel: MusicViewModel by viewModels()
 	lateinit var str: String
 	private var database: ReportDatabase? = null
+	lateinit var intent_music: Intent
+	var mp: MediaPlayer? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
+		intent_music = Intent(this, MusicService::class.java)
+		stopService(intent_music)
 		val intent: Intent = getIntent()
 		val year = intent.getIntExtra("year", 0)
 		val month = intent.getIntExtra("month", 0)
@@ -44,9 +49,12 @@ class WriteActivity : AppCompatActivity() {
 		binding.diaryTextView.text = String.format("%d년 %d월 %d일", year, month + 1, dayOfMonth)
 		binding.contextEditText.setText(str)
 
+		shuffleTrack()
+		playTrack(MusicList.musicList.bgm_n_list)
+
 		binding.contextEditText.setOnFocusChangeListener { view, hasFocus ->
 			if (hasFocus)
-				RemoveFragment()
+				removeFragment()
 		}
 
 		binding.backBtn.setOnClickListener {
@@ -54,19 +62,31 @@ class WriteActivity : AppCompatActivity() {
 		}
 
 		binding.saveBtn.setOnClickListener {
+			startService(intent_music)
 			if (binding.contextEditText.text.isBlank()) {
 				val builder = AlertDialog.Builder(this)
 				builder.setMessage("내용을 입력하세요.")
 				builder.setPositiveButton("확인", null)
 				builder.show()
-			}
-			else {
-				if (str!="null"){
+			} else {
+				if (str != "null") {
 					DiaryList(this).removeDiary(rDate)
 				}
 				CoroutineScope(Dispatchers.IO).launch {
 					database?.ReportDao()?.insert(
-						Report(rDate, binding.contextEditText.text.toString(), "a", 50, "s", 30, "ax", 20, "ha", 10, "아띠의 한 마디~")
+						Report(
+							rDate,
+							binding.contextEditText.text.toString(),
+							"a",
+							50,
+							"s",
+							30,
+							"ax",
+							20,
+							"ha",
+							10,
+							"아띠의 한 마디~"
+						)
 					)
 				}
 				DiaryList(this).addDiary(rDate, "a") //대표감정 전달
@@ -80,18 +100,35 @@ class WriteActivity : AppCompatActivity() {
 		}
 
 		binding.btnMusic.setOnLongClickListener {
-			SetFragment(MusicPopupFragment())
+			setFragment(MusicPopupFragment())
 			true
+		}
+
+		binding.btnMusic.setOnClickListener {
+			if (mp?.isPlaying == true) {
+				mp?.pause()
+				binding.btnMusic.setImageResource(R.drawable.music_mute_button)
+			} else {
+				mp?.start()
+				binding.btnMusic.setImageResource(R.drawable.music_button)
+			}
 		}
 
 		// Fragment 통신
 		viewModel.getEmotion.observe(this, Observer { item ->
-			Log.d("Selected Emotion", item.toString())
+			when (item) {
+				0 -> playTrack(MusicList.musicList.bgm_ha_list)
+				1 -> playTrack(MusicList.musicList.bgm_ho_list)
+				2 -> playTrack(MusicList.musicList.bgm_s_list)
+				3 -> playTrack(MusicList.musicList.bgm_a_list)
+				4 -> playTrack(MusicList.musicList.bgm_ax_list)
+				5 -> playTrack(MusicList.musicList.bgm_t_list)
+				6 -> playTrack(MusicList.musicList.bgm_r_list)
+			}
 		})
 	}
 
-
-	fun SetFragment(fragment: Fragment?) {
+	private fun setFragment(fragment: Fragment?) {
 		val transaction = supportFragmentManager.beginTransaction()
 		transaction
 			.setCustomAnimations(R.anim.musicpopup_open, R.anim.fade_out)
@@ -100,7 +137,7 @@ class WriteActivity : AppCompatActivity() {
 			.commit()
 	}
 
-	fun RemoveFragment() {
+	private fun removeFragment() {
 		val frameLayout = supportFragmentManager.findFragmentById(R.id.frameLayout)
 		if (frameLayout != null) {
 			val transaction = supportFragmentManager.beginTransaction()
@@ -120,6 +157,7 @@ class WriteActivity : AppCompatActivity() {
 			startActivity(intent)
 		}
 		window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+		if (mp?.isPlaying == false) mp?.start()
 	}
 
 	override fun onPause() {
@@ -128,5 +166,47 @@ class WriteActivity : AppCompatActivity() {
 			WindowManager.LayoutParams.FLAG_SECURE,
 			WindowManager.LayoutParams.FLAG_SECURE
 		)
+		mp?.pause()
+	}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		mp?.stop()
+		mp?.release()
+	}
+
+	private fun shuffleTrack() {
+		MusicList.musicList.bgm_a_list = MusicList.musicList.bgm_a_list.shuffled()
+		MusicList.musicList.bgm_ax_list = MusicList.musicList.bgm_ax_list.shuffled()
+		MusicList.musicList.bgm_ha_list = MusicList.musicList.bgm_ha_list.shuffled()
+		MusicList.musicList.bgm_ho_list = MusicList.musicList.bgm_ho_list.shuffled()
+		MusicList.musicList.bgm_n_list = MusicList.musicList.bgm_n_list.shuffled()
+		MusicList.musicList.bgm_r_list = MusicList.musicList.bgm_r_list.shuffled()
+		MusicList.musicList.bgm_s_list = MusicList.musicList.bgm_s_list.shuffled()
+		MusicList.musicList.bgm_t_list = MusicList.musicList.bgm_t_list.shuffled()
+	}
+
+	private fun playTrack(list: List<Int>) {
+		var tmpList = list
+		if (tmpList.isEmpty()) {
+			tmpList = list
+		}
+
+		val nextTrack = tmpList.first()
+		tmpList = tmpList - nextTrack
+
+		if (mp != null) {
+			mp?.stop()
+			mp?.release()
+		}
+
+		mp = MediaPlayer.create(this, nextTrack).apply {
+			setOnCompletionListener {
+				it.stop()
+				it.release()
+				playTrack(tmpList)
+			}
+			start()
+		}
 	}
 }

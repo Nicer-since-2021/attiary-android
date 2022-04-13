@@ -108,12 +108,12 @@ class DiaryActivity : AppCompatActivity() {
 	}
 
 	@SuppressLint("SetTextI18n", "UseCompatLoadingForDrawables")
-	fun processEmotion(rank: Int, emotion: String?, percent: Int?){
-		lateinit var txtEmotion : TextView
-		lateinit var bar :ProgressBar
-		lateinit var txtPercent : TextView
+	fun processEmotion(rank: Int, emotion: String?, percent: Int?) {
+		lateinit var txtEmotion: TextView
+		lateinit var bar: ProgressBar
+		lateinit var txtPercent: TextView
 
-		when(rank){
+		when (rank) {
 			1 -> {
 				txtEmotion = binding.txtEmotion1
 				bar = binding.Index1

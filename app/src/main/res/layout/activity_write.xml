@@ -46,7 +46,7 @@
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/save_btn" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/btnMusic"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -55,7 +55,7 @@
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/music_button" />
+            android:src="@drawable/music_button" />
 
     </androidx.appcompat.widget.Toolbar>
 
