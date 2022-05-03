@@ -88,7 +88,11 @@ class HomeActivity : AppCompatActivity() {
 
 
 		binding.settingBtn.setOnClickListener{
-			startActivity(Intent(this, SettingActivity::class.java))
+			startActivity(
+				Intent(
+					this,
+					SettingActivity::class.java
+				).apply { addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION) })
 		}
 
 		binding.statsView.setOnClickListener {
