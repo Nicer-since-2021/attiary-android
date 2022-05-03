@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.Switch
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -61,26 +62,18 @@ class SettingActivity : AppCompatActivity() {
 			}
 		}
 
-		binding.pwSwitch.setOnCheckedChangeListener{CompoundButton, onSwitch ->
-			if (onSwitch){
-				val intent = Intent(this, AppPassWordActivity::class.java).apply {
-					putExtra("type", AppLock.AppLockStatus.ENABLE_PASSLOCK)
-				}
-				activityResult.launch(intent)
-			}
-			else{
-				val intent = Intent(this, AppPassWordActivity::class.java).apply {
-					putExtra("type", AppLock.AppLockStatus.DISABLE_PASSLOCK)
-				}
-				activityResult.launch(intent)
-			}
+		binding.nicknameChangeBtn.setOnClickListener {
+			binding.nicknameEdit.isVisible = true
+			binding.nicknameSaveBtn.isVisible=true
+			binding.nicknameChangeBtn.isVisible = false
+			binding.nicknameText.isVisible=false
 		}
 
-		binding.changePWBtn.setOnClickListener {
-			val intent = Intent(this, AppPassWordActivity::class.java).apply {
-				putExtra("type", AppLock.AppLockStatus.CHANGE_PASSWORD)
-			}
-			activityResult.launch(intent)
+		binding.nicknameSaveBtn.setOnClickListener {
+			binding.nicknameEdit.isVisible = false
+			binding.nicknameSaveBtn.isVisible=false
+			binding.nicknameChangeBtn.isVisible = true
+			binding.nicknameText.isVisible=true
 		}
 
 		binding.changeBdayBtn.setOnClickListener {
@@ -103,18 +96,26 @@ class SettingActivity : AppCompatActivity() {
 			binding.changeBdayBtn.isVisible=true
 		}
 
-		binding.nicknameChangeBtn.setOnClickListener {
-			binding.nicknameEdit.isVisible = true
-			binding.nicknameSaveBtn.isVisible=true
-			binding.nicknameChangeBtn.isVisible = false
-			binding.nicknameText.isVisible=false
+		binding.pwSwitch.setOnCheckedChangeListener{CompoundButton, onSwitch ->
+			if (onSwitch){
+				val intent = Intent(this, AppPassWordActivity::class.java).apply {
+					putExtra("type", AppLock.AppLockStatus.ENABLE_PASSLOCK)
+				}
+				activityResult.launch(intent)
+			}
+			else{
+				val intent = Intent(this, AppPassWordActivity::class.java).apply {
+					putExtra("type", AppLock.AppLockStatus.DISABLE_PASSLOCK)
+				}
+				activityResult.launch(intent)
+			}
 		}
 
-		binding.nicknameSaveBtn.setOnClickListener {
-			binding.nicknameEdit.isVisible = false
-			binding.nicknameSaveBtn.isVisible=false
-			binding.nicknameChangeBtn.isVisible = true
-			binding.nicknameText.isVisible=true
+		binding.changePWBtn.setOnClickListener {
+			val intent = Intent(this, AppPassWordActivity::class.java).apply {
+				putExtra("type", AppLock.AppLockStatus.CHANGE_PASSWORD)
+			}
+			activityResult.launch(intent)
 		}
 
 		ArrayAdapter.createFromResource(
