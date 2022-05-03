@@ -7,6 +7,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.annotation.Nullable
 import com.nicer.attiary.R
+import com.nicer.attiary.view.common.GlobalApplication
 
 
 class MusicService : Service() {
@@ -21,18 +22,18 @@ class MusicService : Service() {
 		super.onCreate()
 		if (mp == null) mp = MediaPlayer.create(this, R.raw.bluedream)
 		mp?.isLooping = true
-
 	}
 
 	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-		mp?.start()
-		Log.d("TAG", "onStartCommand")
+		var sigCheck = GlobalApplication.musicPrefs.getString("sigMusic","")
+		if (sigCheck == "sON"){
+			mp?.start()
+		}
 		return super.onStartCommand(intent, flags, startId)
 	}
 
 	override fun onDestroy() {
 		mp?.stop()
-		Log.d("TAG", "onDestroy")
 		super.onDestroy()
 	}
 }

@@ -16,6 +16,8 @@ import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.password.AppLock.AppLockStatus.lock
 import com.nicer.attiary.data.user.UserHelper
 import com.nicer.attiary.view.common.AppPassWordActivity
+import com.nicer.attiary.view.common.GlobalApplication
+import com.nicer.attiary.view.signature.MusicService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,6 +27,7 @@ class SettingActivity : AppCompatActivity() {
 
 	val binding by lazy { ActivitySettingBinding.inflate(layoutInflater) }
 	var helper: UserHelper? = null
+	lateinit var intent_music: Intent
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -32,6 +35,7 @@ class SettingActivity : AppCompatActivity() {
 
 		init()
 		helper = UserHelper.getInstance(this)
+		intent_music = Intent(this, MusicService::class.java)
 
 		val activityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
 			val returnCode = it.data?.getIntExtra("returnCode", 0)
@@ -95,6 +99,20 @@ class SettingActivity : AppCompatActivity() {
 			binding.saveBdayBtn.isVisible=false
 			binding.changeBdayBtn.isVisible=true
 		}
+
+		binding.sigMusicSwitch.setOnCheckedChangeListener { _, isChecked ->
+			if (isChecked){
+				GlobalApplication.musicPrefs.setString("sigMusic", "sON")
+				startService(intent_music)
+			}
+			else{
+				GlobalApplication.musicPrefs.setString("sigMusic", "sOF")
+				stopService(intent_music)
+			}
+		}
+
+		val sigCheck = GlobalApplication.musicPrefs.getString("sigMusic","")
+		binding.sigMusicSwitch.isChecked = sigCheck == "sON"
 
 		binding.pwSwitch.setOnCheckedChangeListener{CompoundButton, onSwitch ->
 			if (onSwitch){
