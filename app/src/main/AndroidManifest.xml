@@ -32,25 +32,9 @@
         <activity android:name=".view.signature.HomeActivity" />
         <activity android:name=".view.signature.DiaryActivity" />
         <activity android:name=".view.signature.MonthlyReportActivity" />
-        <activity android:name=".view.auth.sign_in.SignInActivity" />
         <activity android:name=".view.auth.sign_up.SignUpActivity" />
         <activity android:name=".view.setting.lock.AppPassWordActivity" />
         <activity android:name=".view.setting.lock.SettingPasswordActivity" />
-        <activity
-            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
-                <data
-                    android:host="oauth"
-                    android:scheme="@string/kakao_native_app_key" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
