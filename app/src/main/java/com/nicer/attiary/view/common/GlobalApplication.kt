@@ -5,7 +5,6 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.nicer.attiary.data.setting.MusicSwitch
 
 class GlobalApplication : Application() {
-
 	companion object {
 		lateinit var musicPrefs: MusicSwitch
 	}
