@@ -14,8 +14,6 @@ class GlobalApplication : Application() {
 	override fun onCreate() {
 		super.onCreate()
 
-		// 카카오 SDK 초기화
-		KakaoSdk.init(this, getString(R.string.native_app_key))
 		ProcessLifecycleOwner.get().lifecycle.addObserver(ApplicationLifecycleObserver())
 	}
 }
