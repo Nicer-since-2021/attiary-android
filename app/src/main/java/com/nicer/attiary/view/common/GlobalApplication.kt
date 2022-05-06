@@ -1,19 +1,17 @@
 package com.nicer.attiary.view.common
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.kakao.sdk.common.KakaoSdk
-import com.nicer.attiary.R
+import com.nicer.attiary.data.setting.MusicSwitch
 
 class GlobalApplication : Application() {
 	companion object {
-		var appContext: Context? = null
+		lateinit var musicPrefs: MusicSwitch
 	}
 
 	override fun onCreate() {
 		super.onCreate()
-
+		musicPrefs = MusicSwitch(applicationContext)
 		ProcessLifecycleOwner.get().lifecycle.addObserver(ApplicationLifecycleObserver())
 	}
 }
