@@ -71,4 +71,8 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     implementation 'androidx.fragment:fragment-ktx:1.4.1' // ViewModel
+
+    implementation 'com.squareup.retrofit2:retrofit:2.6.2'                 // REST API
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'            // REST API json parser
+
 }
