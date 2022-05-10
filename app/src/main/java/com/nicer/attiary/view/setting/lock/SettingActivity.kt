@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.Switch
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,8 @@ import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.password.AppLock.AppLockStatus.lock
 import com.nicer.attiary.data.user.UserHelper
 import com.nicer.attiary.view.common.AppPassWordActivity
+import com.nicer.attiary.view.common.GlobalApplication
+import com.nicer.attiary.view.signature.MusicService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +27,7 @@ class SettingActivity : AppCompatActivity() {
 
 	val binding by lazy { ActivitySettingBinding.inflate(layoutInflater) }
 	var helper: UserHelper? = null
+	lateinit var intent_music: Intent
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -31,6 +35,7 @@ class SettingActivity : AppCompatActivity() {
 
 		init()
 		helper = UserHelper.getInstance(this)
+		intent_music = Intent(this, MusicService::class.java)
 
 		val activityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
 			val returnCode = it.data?.getIntExtra("returnCode", 0)
@@ -61,26 +66,18 @@ class SettingActivity : AppCompatActivity() {
 			}
 		}
 
-		binding.pwSwitch.setOnCheckedChangeListener{CompoundButton, onSwitch ->
-			if (onSwitch){
-				val intent = Intent(this, AppPassWordActivity::class.java).apply {
-					putExtra("type", AppLock.AppLockStatus.ENABLE_PASSLOCK)
-				}
-				activityResult.launch(intent)
-			}
-			else{
-				val intent = Intent(this, AppPassWordActivity::class.java).apply {
-					putExtra("type", AppLock.AppLockStatus.DISABLE_PASSLOCK)
-				}
-				activityResult.launch(intent)
-			}
+		binding.nicknameChangeBtn.setOnClickListener {
+			binding.nicknameEdit.isVisible = true
+			binding.nicknameSaveBtn.isVisible=true
+			binding.nicknameChangeBtn.isVisible = false
+			binding.nicknameText.isVisible=false
 		}
 
-		binding.changePWBtn.setOnClickListener {
-			val intent = Intent(this, AppPassWordActivity::class.java).apply {
-				putExtra("type", AppLock.AppLockStatus.CHANGE_PASSWORD)
-			}
-			activityResult.launch(intent)
+		binding.nicknameSaveBtn.setOnClickListener {
+			binding.nicknameEdit.isVisible = false
+			binding.nicknameSaveBtn.isVisible=false
+			binding.nicknameChangeBtn.isVisible = true
+			binding.nicknameText.isVisible=true
 		}
 
 		binding.changeBdayBtn.setOnClickListener {
@@ -103,18 +100,40 @@ class SettingActivity : AppCompatActivity() {
 			binding.changeBdayBtn.isVisible=true
 		}
 
-		binding.nicknameChangeBtn.setOnClickListener {
-			binding.nicknameEdit.isVisible = true
-			binding.nicknameSaveBtn.isVisible=true
-			binding.nicknameChangeBtn.isVisible = false
-			binding.nicknameText.isVisible=false
+		binding.sigMusicSwitch.setOnCheckedChangeListener { _, isChecked ->
+			if (isChecked){
+				GlobalApplication.musicPrefs.setString("sigMusic", "sON")
+				startService(intent_music)
+			}
+			else{
+				GlobalApplication.musicPrefs.setString("sigMusic", "sOF")
+				stopService(intent_music)
+			}
 		}
 
-		binding.nicknameSaveBtn.setOnClickListener {
-			binding.nicknameEdit.isVisible = false
-			binding.nicknameSaveBtn.isVisible=false
-			binding.nicknameChangeBtn.isVisible = true
-			binding.nicknameText.isVisible=true
+		val sigCheck = GlobalApplication.musicPrefs.getString("sigMusic","")
+		binding.sigMusicSwitch.isChecked = sigCheck == "sON"
+
+		binding.pwSwitch.setOnCheckedChangeListener{CompoundButton, onSwitch ->
+			if (onSwitch){
+				val intent = Intent(this, AppPassWordActivity::class.java).apply {
+					putExtra("type", AppLock.AppLockStatus.ENABLE_PASSLOCK)
+				}
+				activityResult.launch(intent)
+			}
+			else{
+				val intent = Intent(this, AppPassWordActivity::class.java).apply {
+					putExtra("type", AppLock.AppLockStatus.DISABLE_PASSLOCK)
+				}
+				activityResult.launch(intent)
+			}
+		}
+
+		binding.changePWBtn.setOnClickListener {
+			val intent = Intent(this, AppPassWordActivity::class.java).apply {
+				putExtra("type", AppLock.AppLockStatus.CHANGE_PASSWORD)
+			}
+			activityResult.launch(intent)
 		}
 
 		ArrayAdapter.createFromResource(

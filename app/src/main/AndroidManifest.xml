@@ -3,6 +3,7 @@
     package="com.nicer.attiary">
     <!-- 인터넷 사용 권한 설정 -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".view.common.GlobalApplication"
@@ -11,7 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Attiary">
+        android:theme="@style/Theme.Attiary"
+        android:usesCleartextTraffic="true">
 
         <meta-data
             android:name="android.max_aspect"
@@ -32,25 +34,13 @@
         <activity android:name=".view.signature.HomeActivity" />
         <activity android:name=".view.signature.DiaryActivity" />
         <activity android:name=".view.signature.MonthlyReportActivity" />
-        <activity android:name=".view.auth.sign_in.SignInActivity" />
         <activity android:name=".view.auth.sign_up.SignUpActivity" />
+
+        <activity android:name=".view.setting.lock.AppPassWordActivity" />
+        <activity android:name=".view.setting.lock.SettingPasswordActivity" />
+
         <activity android:name=".view.common.AppPassWordActivity" />
         <activity android:name=".view.setting.lock.SettingActivity" />
-        <activity
-            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
-                <data
-                    android:host="oauth"
-                    android:scheme="@string/kakao_native_app_key" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
