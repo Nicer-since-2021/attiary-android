@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Attiary</string>
+    <string name="app_name">아띠어리</string>
     <string name="click_this_btn">Click this button!</string>
     <string name="register_email">이메일 등록</string>
     <string name="register_email_edit">이메일을 입력하세요.</string>
