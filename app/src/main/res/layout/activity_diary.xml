@@ -333,15 +333,15 @@ android:orientation="vertical">
         android:id="@+id/titleFromAtti"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="270dp"
+        android:layout_marginEnd="50dp"
+        android:fontFamily="@font/im_hyemin_bold"
+        android:gravity="start"
         android:text="@string/fromAtti"
         android:textSize="17sp"
-        android:gravity="start"
-        android:fontFamily="@font/im_hyemin_bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginTop="270dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <ImageView
