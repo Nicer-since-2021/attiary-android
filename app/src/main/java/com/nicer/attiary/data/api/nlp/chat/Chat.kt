@@ -1,4 +1,4 @@
-package com.nicer.attiary.nlp.chat
+package com.nicer.attiary.data.api.nlp.chat
 
 import com.google.gson.annotations.SerializedName
 
