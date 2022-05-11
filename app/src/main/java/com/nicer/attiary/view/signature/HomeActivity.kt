@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.ReportDatabase
@@ -44,7 +45,7 @@ class HomeActivity : AppCompatActivity() {
 
 		binding.calendarView.addDecorators(minMaxDecorator)
 		binding.toolbar.bringToFront()
-		database = ReportDatabase.getInstance(this)
+		database = ReportDatabase.getInstance(this, Gson())
 		binding.calendarView.state().edit()
 			.setFirstDayOfWeek(Calendar.MONDAY)
 			.setMaximumDate(

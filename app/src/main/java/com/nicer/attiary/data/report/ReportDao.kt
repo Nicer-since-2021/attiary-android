@@ -13,5 +13,4 @@ interface ReportDao {
 
 	@Query("delete from report where date = :rDate")
 	fun delete(rDate: Long)
-
 }
