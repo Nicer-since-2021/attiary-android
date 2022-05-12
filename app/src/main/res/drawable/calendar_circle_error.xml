@@ -4,5 +4,5 @@
     android:shape="ring"
     android:thicknessRatio="2.8"
     android:useLevel="false" >
-    <solid android:color="@color/pink_hope" />
+    <solid android:color="@color/gray_error" />
 </shape>

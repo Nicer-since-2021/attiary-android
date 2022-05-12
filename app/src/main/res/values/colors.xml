@@ -18,7 +18,8 @@
     <color name="purple_anxiety">#BEA9FC</color>
     <color name="orange_tiredness">#FCD1A9</color>
     <color name="pink_hope">#F9C6EA</color>
-    <color name="gray_regret">#D8D8D8</color>
+    <color name="gray_error">#D8D8D8</color>
+    <color name="brown_regret">#D3AC7E</color>
     <color name="yellow_slide">#FCE1A4</color>
     <color name="transparent">#0000ffff</color>
     <color name="green">#B6DBB0</color>

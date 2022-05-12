@@ -30,6 +30,7 @@ import com.nicer.attiary.view.signature.MusicService
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -204,6 +205,117 @@ class WriteActivity : AppCompatActivity() {
 
             }
         }
+        
+		binding.saveBtn.setOnClickListener {
+			startService(intent_music)
+			hideKeyboard()
+			if (binding.contextEditText.text.isBlank()) {
+				val builder = AlertDialog.Builder(this)
+				builder.setMessage("내용을 입력하세요.")
+				builder.setPositiveButton("확인", null)
+				builder.show()
+			} else {
+				if (str != "null") {
+					DiaryList(this).removeDiary(CalendarDay(year, month, dayOfMonth))
+				}
+
+				binding.wholeView.bringToFront()
+				setLoadingFrag()
+
+				val content = binding.contextEditText.text.toString()
+				var emotions = hashMapOf<String, Int>()
+				var dDepression = 0
+
+				CoroutineScope(Dispatchers.IO).async {
+					RetrofitObject.getApiService().getReport(content)?.enqueue(object : Callback<Classification> {
+						override fun onResponse(call: Call<Classification>, response: Response<Classification>) {
+							Log.d("YMC", "ㅎ")
+							if (response.isSuccessful) {
+								var result: Classification? = response.body()
+								Log.d("YMC", "onResponse 성공: ")
+								emotions.put("anger", ((result?.anger)?.times(100))?.toInt()!!)
+								emotions.put("anxiety", ((result?.anxiety)?.times(100))?.toInt()!!)
+								emotions.put("hope", ((result?.hope)?.times(100))?.toInt()!!)
+								emotions.put("joy", ((result?.joy)?.times(100))?.toInt()!!)
+								emotions.put("regret", ((result?.regret)?.times(100))?.toInt()!!)
+								emotions.put("sadness", ((result?.sadness)?.times(100))?.toInt()!!)
+								emotions.put("tiredness", ((result?.tiredness)?.times(100))?.toInt()!!)
+								dDepression = (result?.depression)?.times(100)?.toInt()!!
+								Log.d("result", result.toString())
+							} else {
+								// 통신 실패
+								Log.d("YMC", "onResponse 실패")
+							}
+						}
+
+						override fun onFailure(call: Call<Classification>, t: Throwable) {
+							// 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+							Log.d("YMC", "onFailure 에러: " + t.message.toString());
+						}
+					})
+				}
+        
+
+				Handler(Looper.getMainLooper()).postDelayed({
+					try{
+						Log.d("emotions", emotions.toString())
+						val emotions2 = emotions.toList().sortedByDescending{ (_, value) -> value}.toMap() as HashMap<String, Int>
+						val e1 = emotions2.keys.elementAt(0)
+						val p1 = emotions2.getValue(e1)
+						var happiness = emotions.get("joy")?.plus(emotions.get("hope")!!)
+						var depression = emotions.get("anger")?.plus(emotions.get("sadness")!!)?.plus(emotions.get("anxiety")!!)?.plus(emotions.get("tiredness")!!)?.plus(emotions.get("regret")!!)?.plus(dDepression)
+						var representative = setRepresentative(e1, p1)
+						CoroutineScope(Dispatchers.IO).launch {
+							database?.ReportDao()?.insert(
+								Report(rDate, content, representative, emotions, happiness!!, depression!!, "")
+							)
+						}
+
+						if (p1==0){
+							DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), "neutrality")
+							Log.d("감정", "중립")
+						}
+
+						else
+							DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), e1)
+
+						val intent = Intent(this, DiaryActivity::class.java)
+						intent.putExtra("year", year)
+						intent.putExtra("month", month)
+						intent.putExtra("dayOfMonth", dayOfMonth)
+						startActivity(intent)
+						finish()
+					}catch (e: ClassCastException){
+						Log.d("[error]", "ClassCastException")
+
+						emotions.put("anger", 0)
+						emotions.put("anxiety", 0)
+						emotions.put("hope", 0)
+						emotions.put("joy", 0)
+						emotions.put("regret", 0)
+						emotions.put("sadness", 0)
+						emotions.put("tiredness", 0)
+
+						var happiness = emotions.get("joy")?.plus(emotions.get("hope")!!)
+						var depression = emotions.get("anger")?.plus(emotions.get("sadness")!!)?.plus(emotions.get("anxiety")!!)?.plus(emotions.get("tiredness")!!)?.plus(emotions.get("regret")!!)?.plus(dDepression)
+						var representative = "neutrality"
+						CoroutineScope(Dispatchers.IO).launch {
+							database?.ReportDao()?.insert(
+								Report(rDate, content, representative, emotions, happiness!!, depression!!, "")
+							)
+						}
+						DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), "error")
+						val intent = Intent(this, DiaryActivity::class.java)
+						intent.putExtra("year", year)
+						intent.putExtra("month", month)
+						intent.putExtra("dayOfMonth", dayOfMonth)
+						intent.putExtra("data", 0)
+						startActivity(intent)
+						finish()
+					}
+				}, 10000)
+			}
+		}
 
         binding.btnMusic.setOnLongClickListener {
             setFragment(MusicPopupFragment())
@@ -301,6 +413,14 @@ class WriteActivity : AppCompatActivity() {
                 .commit()
         }
     }
+
+	private fun setLoadingFrag() {
+		val transaction = supportFragmentManager.beginTransaction()
+		transaction
+			.replace(R.id.wholeView, LoadingFragment())
+			.addToBackStack(null)
+			.commit()
+	}
 
     override fun onResume() {
         super.onResume()
