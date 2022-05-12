@@ -30,7 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.write.WriteActivity" />
+        <activity android:name=".view.write.WriteActivity"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
         <activity android:name=".view.signature.HomeActivity" />
         <activity android:name=".view.signature.DiaryActivity" />
         <activity android:name=".view.signature.MonthlyReportActivity" />

@@ -150,6 +150,7 @@ class HomeActivity : AppCompatActivity() {
 		binding.calendarView.addDecorator(RegretDecorator(this))
 		binding.calendarView.addDecorator(SadnessDecorator(this))
 		binding.calendarView.addDecorator(TirednessDecorator(this))
+		binding.calendarView.addDecorator(ErrorDecorator(this))
 
 		super.onResume()
 		if (AppLock.AppLockStatus.lock && AppLock(this).isPassLockSet()) {
@@ -285,6 +286,19 @@ class TirednessDecorator(context: Context): DayViewDecorator {
 	val diary = DiaryList(context)
 	override fun shouldDecorate(day: CalendarDay?): Boolean {
 		return diary.isTiredness(day)
+	}
+
+	override fun decorate(view: DayViewFacade?) {
+		if (drawable != null)
+			view?.setSelectionDrawable(drawable)
+	}
+}
+
+class ErrorDecorator(context: Context): DayViewDecorator {
+	val drawable = context.getDrawable(R.drawable.calendar_circle_error)
+	val diary = DiaryList(context)
+	override fun shouldDecorate(day: CalendarDay?): Boolean {
+		return diary.isError(day)
 	}
 
 	override fun decorate(view: DayViewFacade?) {
