@@ -89,7 +89,6 @@ class WriteActivity : AppCompatActivity() {
 					DiaryList(this).removeDiary(CalendarDay(year, month, dayOfMonth))
 				}
 
-				//로딩화면
 				binding.wholeView.bringToFront()
 				setLoadingFrag()
 
@@ -125,6 +124,7 @@ class WriteActivity : AppCompatActivity() {
 						}
 					})
 				}
+        
 
 				Handler(Looper.getMainLooper()).postDelayed({
 					try{
@@ -140,6 +140,7 @@ class WriteActivity : AppCompatActivity() {
 								Report(rDate, content, representative, emotions, happiness!!, depression!!, "")
 							)
 						}
+
 						if (p1==0){
 							DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), "neutrality")
 							Log.d("감정", "중립")
@@ -174,7 +175,6 @@ class WriteActivity : AppCompatActivity() {
 							)
 						}
 						DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), "error")
-
 						val intent = Intent(this, DiaryActivity::class.java)
 						intent.putExtra("year", year)
 						intent.putExtra("month", month)
@@ -183,9 +183,7 @@ class WriteActivity : AppCompatActivity() {
 						startActivity(intent)
 						finish()
 					}
-				}, 100)
-
-
+				}, 10000)
 			}
 		}
 
