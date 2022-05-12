@@ -19,6 +19,7 @@ import com.nicer.attiary.R
 import com.nicer.attiary.data.api.nlp.RetrofitObject
 import com.nicer.attiary.data.api.nlp.chat.Chat
 import com.nicer.attiary.data.api.nlp.classification.Classification
+import com.nicer.attiary.data.api.nlp.classification.ShortClassification
 import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.Report
@@ -45,6 +46,7 @@ class WriteActivity : AppCompatActivity() {
     lateinit var sigmu_intent: Intent
     var emoMP: MediaPlayer? = null
     private var cnt: Int = 0
+    private var emo: Int = 2 //시작은 중립
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +79,7 @@ class WriteActivity : AppCompatActivity() {
 
         binding.saveBtn.setOnClickListener {
             hideKeyboard()
-            
+
             if (binding.contextEditText.text.isBlank()) {
                 val builder = AlertDialog.Builder(this)
                 builder.setMessage("내용을 입력하세요.")
@@ -270,13 +272,48 @@ class WriteActivity : AppCompatActivity() {
                         Log.d("YMC", "onFailure 에러: " + t.message.toString())
                     }
                 })
+
+                RetrofitObject.getApiService().getChatEmo(str_)
+                    .enqueue(object : Callback<ShortClassification> {
+                        override fun onResponse(
+                            call: Call<ShortClassification>,
+                            response: Response<ShortClassification>
+                        ) {
+                            if (response.isSuccessful) {
+                                var result: ShortClassification? = response.body()
+                                Log.d("YMC", "onResponse 성공: " + result?.emotion_no)
+
+                                if (emo != result?.emotion_no) {
+                                    emo = result?.emotion_no!!
+                                    when (emo) {
+                                        //0: 기쁨, 1: 희망, 2: 중립, 3: 분노, 4: 슬픔, 5: 불안, 6: 피곤, 7: 후회
+                                        0 -> playTrack(MusicList.musicList.bgm_ha_list)
+                                        1 -> playTrack(MusicList.musicList.bgm_ho_list)
+                                        2 -> playTrack(MusicList.musicList.bgm_n_list)
+                                        3 -> playTrack(MusicList.musicList.bgm_a_list)
+                                        4 -> playTrack(MusicList.musicList.bgm_s_list)
+                                        5 -> playTrack(MusicList.musicList.bgm_ax_list)
+                                        6 -> playTrack(MusicList.musicList.bgm_t_list)
+                                        7 -> playTrack(MusicList.musicList.bgm_r_list)
+                                    }
+                                }
+                            } else {
+                                // 통신 실패
+                                Log.d("YMC", "onResponse 실패")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<ShortClassification>, t: Throwable) {
+                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                            Log.d("YMC", "onFailure 에러: " + t.message.toString())
+                        }
+                    })
+
                 cnt = str.length
                 true
             } else {
                 false
             }
-
-
         }
 
         // Fragment 통신
@@ -367,11 +404,7 @@ class WriteActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
-        if (emoMP != null) {
-            emoMP?.stop()
-            emoMP?.release()
-        }
+        stopMP()
     }
 
     private fun shuffleTrack() {
@@ -386,6 +419,8 @@ class WriteActivity : AppCompatActivity() {
     }
 
     private fun playTrack(list: List<Int>) {
+        stopMP()
+
         var tmpList = list
         if (tmpList.isEmpty()) {
             tmpList = list
@@ -401,6 +436,13 @@ class WriteActivity : AppCompatActivity() {
                 playTrack(tmpList)
             }
             start()
+        }
+    }
+
+    private fun stopMP() {
+        if (emoMP != null) {
+            emoMP?.stop()
+            emoMP?.release()
         }
     }
 }
