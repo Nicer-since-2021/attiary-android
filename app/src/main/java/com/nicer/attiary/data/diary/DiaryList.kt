@@ -86,5 +86,12 @@ class DiaryList(context: Context) {
 		}
 		return false
 	}
+  
+	fun isError(rDate : CalendarDay?): Boolean {
+		if (sharedPref.getString(rDate.toString(), "") == "error") {
+			return true
+		}
+		return false
+	}
 
 }

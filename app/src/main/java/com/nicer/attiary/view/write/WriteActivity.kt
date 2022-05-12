@@ -30,6 +30,7 @@ import com.nicer.attiary.view.signature.MusicService
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlin.collections.HashMap
 import retrofit2.Call
@@ -88,37 +89,42 @@ class WriteActivity : AppCompatActivity() {
 					DiaryList(this).removeDiary(CalendarDay(year, month, dayOfMonth))
 				}
 
-				//로딩화면
+				binding.wholeView.bringToFront()
+				setLoadingFrag()
 
 				val content = binding.contextEditText.text.toString()
 				var emotions = hashMapOf<String, Int>()
 				var dDepression = 0
-				RetrofitObject.getApiService().getReport(content)?.enqueue(object : Callback<Classification> {
-					override fun onResponse(call: Call<Classification>, response: Response<Classification>) {
-						Log.d("YMC", "ㅎ")
-						if (response.isSuccessful) {
-							var result: Classification? = response.body()
-							Log.d("YMC", "onResponse 성공: ")
-							emotions.put("anger", ((result?.anger)?.times(100))?.toInt()!!)
-							emotions.put("anxiety", ((result?.anxiety)?.times(100))?.toInt()!!)
-							emotions.put("hope", ((result?.hope)?.times(100))?.toInt()!!)
-							emotions.put("joy", ((result?.joy)?.times(100))?.toInt()!!)
-							emotions.put("regret", ((result?.regret)?.times(100))?.toInt()!!)
-							emotions.put("sadness", ((result?.sadness)?.times(100))?.toInt()!!)
-							emotions.put("tiredness", ((result?.tiredness)?.times(100))?.toInt()!!)
-							dDepression = (result?.depression)?.times(100)?.toInt()!!
-							Log.d("result", result.toString())
-						} else {
-							// 통신 실패
-							Log.d("YMC", "onResponse 실패")
-						}
-					}
 
-					override fun onFailure(call: Call<Classification>, t: Throwable) {
-						// 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-						Log.d("YMC", "onFailure 에러: " + t.message.toString());
-					}
-				})
+				CoroutineScope(Dispatchers.IO).async {
+					RetrofitObject.getApiService().getReport(content)?.enqueue(object : Callback<Classification> {
+						override fun onResponse(call: Call<Classification>, response: Response<Classification>) {
+							Log.d("YMC", "ㅎ")
+							if (response.isSuccessful) {
+								var result: Classification? = response.body()
+								Log.d("YMC", "onResponse 성공: ")
+								emotions.put("anger", ((result?.anger)?.times(100))?.toInt()!!)
+								emotions.put("anxiety", ((result?.anxiety)?.times(100))?.toInt()!!)
+								emotions.put("hope", ((result?.hope)?.times(100))?.toInt()!!)
+								emotions.put("joy", ((result?.joy)?.times(100))?.toInt()!!)
+								emotions.put("regret", ((result?.regret)?.times(100))?.toInt()!!)
+								emotions.put("sadness", ((result?.sadness)?.times(100))?.toInt()!!)
+								emotions.put("tiredness", ((result?.tiredness)?.times(100))?.toInt()!!)
+								dDepression = (result?.depression)?.times(100)?.toInt()!!
+								Log.d("result", result.toString())
+							} else {
+								// 통신 실패
+								Log.d("YMC", "onResponse 실패")
+							}
+						}
+
+						override fun onFailure(call: Call<Classification>, t: Throwable) {
+							// 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+							Log.d("YMC", "onFailure 에러: " + t.message.toString());
+						}
+					})
+				}
+        
 
 				Handler(Looper.getMainLooper()).postDelayed({
 					try{
@@ -134,14 +140,24 @@ class WriteActivity : AppCompatActivity() {
 								Report(rDate, content, representative, emotions, happiness!!, depression!!, "")
 							)
 						}
-						if (p1==0)
-							DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), "neurality")
+
+						if (p1==0){
+							DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), "neutrality")
+							Log.d("감정", "중립")
+						}
+
 						else
 							DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), e1)
+
+						val intent = Intent(this, DiaryActivity::class.java)
+						intent.putExtra("year", year)
+						intent.putExtra("month", month)
+						intent.putExtra("dayOfMonth", dayOfMonth)
+						startActivity(intent)
+						finish()
 					}catch (e: ClassCastException){
 						Log.d("[error]", "ClassCastException")
-						//로딩화면 닫고
-						//서버가 불안정하니 다음에 다시 시도하라는 창: 일기내용만 저장해둘게요! 분석을 다시 시도하려면 수정 버튼을 누르고 다시 저장해보세요!
+
 						emotions.put("anger", 0)
 						emotions.put("anxiety", 0)
 						emotions.put("hope", 0)
@@ -158,19 +174,16 @@ class WriteActivity : AppCompatActivity() {
 								Report(rDate, content, representative, emotions, happiness!!, depression!!, "")
 							)
 						}
-						DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), "neutrality")
-					}finally {
-						//로딩화면 닫힘
+						DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), "error")
 						val intent = Intent(this, DiaryActivity::class.java)
 						intent.putExtra("year", year)
 						intent.putExtra("month", month)
 						intent.putExtra("dayOfMonth", dayOfMonth)
+						intent.putExtra("data", 0)
 						startActivity(intent)
 						finish()
 					}
 				}, 10000)
-
-
 			}
 		}
 
@@ -269,6 +282,14 @@ class WriteActivity : AppCompatActivity() {
                 .commit()
         }
     }
+
+	private fun setLoadingFrag() {
+		val transaction = supportFragmentManager.beginTransaction()
+		transaction
+			.replace(R.id.wholeView, LoadingFragment())
+			.addToBackStack(null)
+			.commit()
+	}
 
     override fun onResume() {
         super.onResume()
