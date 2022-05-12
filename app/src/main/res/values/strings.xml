@@ -54,4 +54,5 @@
     <string name="saveUnderline"><u>확인</u></string>
     <string name="pwWarning">※ 암호를 분실했을 경우 앱을 삭제하고 재설치 해야하며,\n 재설치 시 기존 일기 및 유저 데이터는 삭제됩니다.</string>
     <string name="emoMusicInstruction">일기 작성 시 감정을 감지하여 배경음악을 바꾸어주는 기능입니다.</string>
+    <string name="loading">잠시만 기다려주세요!\n 아띠가 열심히 연구 중이랍니다!</string>
 </resources>
