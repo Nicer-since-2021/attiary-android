@@ -51,6 +51,7 @@ class WriteActivity : AppCompatActivity() {
 
         sigmu_intent = Intent(this, MusicService::class.java)
         stopService(sigmu_intent)
+
         val intent: Intent = getIntent()
         val year = intent.getIntExtra("year", 0)
         val month = intent.getIntExtra("month", 0)
@@ -63,7 +64,6 @@ class WriteActivity : AppCompatActivity() {
         binding.contextEditText.setText(str)
 
         shuffleTrack()
-        playTrack(MusicList.musicList.bgm_n_list)
 
         binding.contextEditText.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus)
@@ -75,8 +75,6 @@ class WriteActivity : AppCompatActivity() {
         }
 
         binding.saveBtn.setOnClickListener {
-            emoMP?.stop()
-            emoMP?.release()
             startService(sigmu_intent)
 
             hideKeyboard()
@@ -313,9 +311,12 @@ class WriteActivity : AppCompatActivity() {
             startActivity(intent)
         }
         window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+
+        playTrack(MusicList.musicList.bgm_n_list)
         if (emoMP != null && emoMP?.isPlaying == false) {
             emoMP?.start()
         }
+
         cnt = 0
     }
 
