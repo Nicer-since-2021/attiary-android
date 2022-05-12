@@ -56,6 +56,4 @@ class User {
 	override fun toString(): String {
 		return "User(email='$email', name='$name', birthdayMonth=$birthdayMonth, birthdayDay=$birthdayDay)"
 	}
-
-
 }

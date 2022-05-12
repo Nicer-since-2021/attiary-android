@@ -16,14 +16,14 @@ import com.nicer.attiary.databinding.ActivityHomeBinding
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.setting.lock.SettingActivity
 import com.nicer.attiary.view.write.WriteActivity
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import com.prolificinteractive.materialcalendarview.CalendarMode
-import com.prolificinteractive.materialcalendarview.DayViewDecorator
-import com.prolificinteractive.materialcalendarview.DayViewFacade
+import com.prolificinteractive.materialcalendarview.*
 import java.util.*
+import com.nicer.attiary.R
+import com.nicer.attiary.util.RDate
 
 
 class HomeActivity : AppCompatActivity() {
+
     private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
 
     var database: ReportDatabase? = null
@@ -72,19 +72,14 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding.newButton.setOnClickListener {
-            val year = currentYear
-            val month = currentMonth
-            val dayOfMonth = currentDate
-            val rDate = CalendarDay(year, month, dayOfMonth)
-
-            nextView(year, month, dayOfMonth, rDate)
+            nextView(currentYear, currentMonth, currentDate, RDate.toRDate(currentYear, currentMonth, currentDate))
         }
 
         binding.calendarView.setOnDateChangedListener { widget, date, selected ->
             val year = widget.selectedDate.year
             val month = widget.selectedDate.month
             val dayOfMonth = widget.selectedDate.day
-            val rDate = CalendarDay(year, month, dayOfMonth)
+            val rDate = RDate.toRDate(year, month, dayOfMonth)
             nextView(year, month, dayOfMonth, rDate)
         }
 
@@ -126,7 +121,7 @@ class HomeActivity : AppCompatActivity() {
         return monthString
     }
 
-    fun nextView(year: Int, month: Int, dayOfMonth: Int, rDate: CalendarDay) {
+    fun nextView(year: Int, month: Int, dayOfMonth: Int, rDate: String) {
         if (DiaryList(this).isExist(rDate)) {
             val intent: Intent = Intent(this, DiaryActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
@@ -197,7 +192,7 @@ class AngerDecorator(context: Context) : DayViewDecorator {
     val drawable = context.getDrawable(R.drawable.calendar_circle_anger)
     val diary = DiaryList(context)
     override fun shouldDecorate(day: CalendarDay?): Boolean {
-        return diary.isAnger(day)
+        return diary.isAnger(RDate.toRDate(day!!.year, day.month, day.day))
     }
 
     override fun decorate(view: DayViewFacade?) {
@@ -210,7 +205,7 @@ class AnxietyDecorator(context: Context) : DayViewDecorator {
     val drawable = context.getDrawable(R.drawable.calendar_circle_anxiety)
     val diary = DiaryList(context)
     override fun shouldDecorate(day: CalendarDay?): Boolean {
-        return diary.isAnxiety(day)
+        return diary.isAnxiety(RDate.toRDate(day!!.year, day.month, day.day))
     }
 
     override fun decorate(view: DayViewFacade?) {
@@ -223,7 +218,7 @@ class HopeDecorator(context: Context) : DayViewDecorator {
     val drawable = context.getDrawable(R.drawable.calendar_circle_hope)
     val diary = DiaryList(context)
     override fun shouldDecorate(day: CalendarDay?): Boolean {
-        return diary.isHope(day)
+        return diary.isHope(RDate.toRDate(day!!.year, day.month, day.day))
     }
 
     override fun decorate(view: DayViewFacade?) {
@@ -236,7 +231,7 @@ class JoyDecorator(context: Context) : DayViewDecorator {
     val drawable = context.getDrawable(R.drawable.calendar_circle_joy)
     val diary = DiaryList(context)
     override fun shouldDecorate(day: CalendarDay?): Boolean {
-        return diary.isJoy(day)
+        return diary.isJoy(RDate.toRDate(day!!.year, day.month, day.day))
     }
 
     override fun decorate(view: DayViewFacade?) {
@@ -249,7 +244,7 @@ class NeutralityDecorator(context: Context) : DayViewDecorator {
     val drawable = context.getDrawable(R.drawable.calendar_circle_neutrality)
     val diary = DiaryList(context)
     override fun shouldDecorate(day: CalendarDay?): Boolean {
-        return diary.isNeutrality(day)
+        return diary.isNeutrality(RDate.toRDate(day!!.year, day.month, day.day))
     }
 
     override fun decorate(view: DayViewFacade?) {
@@ -262,7 +257,7 @@ class RegretDecorator(context: Context) : DayViewDecorator {
     val drawable = context.getDrawable(R.drawable.calendar_circle_regret)
     val diary = DiaryList(context)
     override fun shouldDecorate(day: CalendarDay?): Boolean {
-        return diary.isRegret(day)
+        return diary.isRegret(RDate.toRDate(day!!.year, day.month, day.day))
     }
 
     override fun decorate(view: DayViewFacade?) {
@@ -275,7 +270,7 @@ class SadnessDecorator(context: Context) : DayViewDecorator {
     val drawable = context.getDrawable(R.drawable.calendar_circle_sadness)
     val diary = DiaryList(context)
     override fun shouldDecorate(day: CalendarDay?): Boolean {
-        return diary.isSadness(day)
+        return diary.isSadness(RDate.toRDate(day!!.year, day.month, day.day))
     }
 
     override fun decorate(view: DayViewFacade?) {
@@ -288,7 +283,7 @@ class TirednessDecorator(context: Context) : DayViewDecorator {
     val drawable = context.getDrawable(R.drawable.calendar_circle_tiredness)
     val diary = DiaryList(context)
     override fun shouldDecorate(day: CalendarDay?): Boolean {
-        return diary.isTiredness(day)
+        return diary.isTiredness(RDate.toRDate(day!!.year, day.month, day.day))
     }
 
     override fun decorate(view: DayViewFacade?) {
