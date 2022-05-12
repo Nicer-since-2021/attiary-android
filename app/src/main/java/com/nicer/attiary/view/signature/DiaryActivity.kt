@@ -3,6 +3,7 @@ package com.nicer.attiary.view.signature
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.text.method.ScrollingMovementMethod
 import android.view.WindowManager
 import android.widget.ProgressBar
@@ -15,6 +16,7 @@ import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityDiaryBinding
+import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.write.WriteActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -35,6 +37,7 @@ class DiaryActivity : AppCompatActivity() {
 		val year = intent.getIntExtra("year", 0)
 		val month = intent.getIntExtra("month", 0)
 		val dayOfMonth = intent.getIntExtra("dayOfMonth", 0)
+
 		val data = intent.getIntExtra("data", 1)
 
 		if (data == 0){
@@ -44,6 +47,7 @@ class DiaryActivity : AppCompatActivity() {
 
 		database = ReportDatabase.getInstance(this, Gson())
 		binding.diaryContent.setMovementMethod(ScrollingMovementMethod())
+
 
 		binding.diaryContent.bringToFront()
 		binding.diaryTextView.text = String.format("%d년 %d월 %d일", year, month + 1, dayOfMonth)
@@ -75,12 +79,14 @@ class DiaryActivity : AppCompatActivity() {
 		}
 	}
 
+
 	private fun processDiary(cYear: Int, cMonth: Int, cDay: Int) {
 
-		val rDate = (cYear.toString() + cMonth.toString() + cDay.toString()).toLong()
+		val rDate = RDate.toRDate(cYear, cMonth, cDay)
 		CoroutineScope(Dispatchers.IO).launch {
 			val report = database?.ReportDao()?.findByDate(rDate)
 			CoroutineScope(Dispatchers.Main).launch {
+				Log.d("diary_view", "${report?.reportId}")
 				str = report?.diaryContent.toString()
 				binding.diaryContent.text = str
 			}
@@ -100,7 +106,7 @@ class DiaryActivity : AppCompatActivity() {
 			builder.setMessage("정말 삭제하시겠습니까?")
 			builder.setNegativeButton("취소", null)
 			builder.setPositiveButton("확인") { _, i ->
-				DiaryList(this).removeDiary(CalendarDay(cYear, cMonth, cDay))
+				DiaryList(this).removeDiary(RDate.toRDate(cYear, cMonth, cDay))
 				CoroutineScope(Dispatchers.IO).launch {
 					database?.ReportDao()?.delete(rDate)
 					finish()
@@ -111,7 +117,7 @@ class DiaryActivity : AppCompatActivity() {
 	}
 
 	private fun processReport(cYear: Int, cMonth: Int, cDay: Int) {
-		val rDate = (cYear.toString() + cMonth.toString() + cDay.toString()).toLong()
+		val rDate = RDate.toRDate(cYear, cMonth, cDay)
 		CoroutineScope(Dispatchers.IO).launch {
 			val report = database?.ReportDao()?.findByDate(rDate)
 			CoroutineScope(Dispatchers.Main).launch {
