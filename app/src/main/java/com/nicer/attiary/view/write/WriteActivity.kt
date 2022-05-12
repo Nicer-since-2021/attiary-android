@@ -357,6 +357,7 @@ class WriteActivity : AppCompatActivity() {
         }
 
         binding.btnMusic.setOnLongClickListener {
+            binding.contextEditText.clearFocus()
             setFragment(MusicPopupFragment())
             true
         }
