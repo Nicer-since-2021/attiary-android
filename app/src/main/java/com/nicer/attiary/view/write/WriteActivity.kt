@@ -16,14 +16,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import com.nicer.attiary.R
+import com.nicer.attiary.data.api.nlp.RetrofitObject
+import com.nicer.attiary.data.api.nlp.chat.Chat
+import com.nicer.attiary.data.api.nlp.classification.Classification
 import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.Report
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityWriteBinding
-import com.nicer.attiary.data.api.nlp.chat.Chat
-import com.nicer.attiary.data.api.nlp.RetrofitObject
-import com.nicer.attiary.data.api.nlp.classification.Classification
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.signature.DiaryActivity
 import com.nicer.attiary.view.signature.MusicService
@@ -31,7 +31,6 @@ import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.collections.HashMap
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,16 +41,16 @@ class WriteActivity : AppCompatActivity() {
     private val viewModel: MusicViewModel by viewModels()
     lateinit var str: String
     private var database: ReportDatabase? = null
-    lateinit var intent_music: Intent
-    var mp: MediaPlayer? = null
+    lateinit var sigmu_intent: Intent
+    var emoMP: MediaPlayer? = null
     private var cnt: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        intent_music = Intent(this, MusicService::class.java)
-        stopService(intent_music)
+        sigmu_intent = Intent(this, MusicService::class.java)
+        stopService(sigmu_intent)
         val intent: Intent = getIntent()
         val year = intent.getIntExtra("year", 0)
         val month = intent.getIntExtra("month", 0)
@@ -75,18 +74,21 @@ class WriteActivity : AppCompatActivity() {
             finish()
         }
 
-		binding.saveBtn.setOnClickListener {
-			startService(intent_music)
-			hideKeyboard()
-			if (binding.contextEditText.text.isBlank()) {
-				val builder = AlertDialog.Builder(this)
-				builder.setMessage("내용을 입력하세요.")
-				builder.setPositiveButton("확인", null)
-				builder.show()
-			} else {
-				if (str != "null") {
-					DiaryList(this).removeDiary(CalendarDay(year, month, dayOfMonth))
-				}
+        binding.saveBtn.setOnClickListener {
+            emoMP?.stop()
+            emoMP?.release()
+            startService(sigmu_intent)
+
+            hideKeyboard()
+            if (binding.contextEditText.text.isBlank()) {
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage("내용을 입력하세요.")
+                builder.setPositiveButton("확인", null)
+                builder.show()
+            } else {
+                if (str != "null") {
+                    DiaryList(this).removeDiary(CalendarDay(year, month, dayOfMonth))
+                }
 
 				//로딩화면
 
@@ -180,11 +182,11 @@ class WriteActivity : AppCompatActivity() {
         }
 
         binding.btnMusic.setOnClickListener {
-            if (mp?.isPlaying == true) {
-                mp?.pause()
+            if (emoMP?.isPlaying == true) {
+                emoMP?.pause()
                 binding.btnMusic.setImageResource(R.drawable.music_mute_button)
             } else {
-                mp?.start()
+                emoMP?.start()
                 binding.btnMusic.setImageResource(R.drawable.music_button)
             }
         }
@@ -279,7 +281,9 @@ class WriteActivity : AppCompatActivity() {
             startActivity(intent)
         }
         window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
-        if (mp?.isPlaying == false) mp?.start()
+        if (emoMP != null && emoMP?.isPlaying == false) {
+            emoMP?.start()
+        }
         cnt = 0
     }
 
@@ -289,13 +293,18 @@ class WriteActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_SECURE,
             WindowManager.LayoutParams.FLAG_SECURE
         )
-        mp?.pause()
+        if (emoMP?.isPlaying == true) {
+            emoMP?.pause()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mp?.stop()
-        mp?.release()
+
+        if (emoMP != null) {
+            emoMP?.stop()
+            emoMP?.release()
+        }
     }
 
     private fun shuffleTrack() {
@@ -318,12 +327,7 @@ class WriteActivity : AppCompatActivity() {
         val nextTrack = tmpList.first()
         tmpList = tmpList - nextTrack
 
-        if (mp != null) {
-            mp?.stop()
-            mp?.release()
-        }
-
-        mp = MediaPlayer.create(this, nextTrack).apply {
+        emoMP = MediaPlayer.create(this, nextTrack).apply {
             setOnCompletionListener {
                 it.stop()
                 it.release()
