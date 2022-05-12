@@ -5,16 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.ArrayAdapter
-import android.widget.Switch
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.nicer.attiary.R
-import com.nicer.attiary.databinding.ActivitySettingBinding
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.password.AppLock.AppLockStatus.lock
 import com.nicer.attiary.data.user.UserHelper
+import com.nicer.attiary.databinding.ActivitySettingBinding
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.common.GlobalApplication
 import com.nicer.attiary.view.signature.MusicService
@@ -25,17 +24,17 @@ import kotlinx.coroutines.launch
 
 class SettingActivity : AppCompatActivity() {
 
-	val binding by lazy { ActivitySettingBinding.inflate(layoutInflater) }
-	var helper: UserHelper? = null
-	lateinit var intent_music: Intent
+    val binding by lazy { ActivitySettingBinding.inflate(layoutInflater) }
+    var helper: UserHelper? = null
+    lateinit var sigmu_intent: Intent
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(binding.root)
 
-		init()
-		helper = UserHelper.getInstance(this)
-		intent_music = Intent(this, MusicService::class.java)
+        init()
+        helper = UserHelper.getInstance(this)
+        sigmu_intent = Intent(this, MusicService::class.java)
 
 		val activityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
 			val returnCode = it.data?.getIntExtra("returnCode", 0)
@@ -100,16 +99,15 @@ class SettingActivity : AppCompatActivity() {
 			binding.changeBdayBtn.isVisible=true
 		}
 
-		binding.sigMusicSwitch.setOnCheckedChangeListener { _, isChecked ->
-			if (isChecked){
-				GlobalApplication.musicPrefs.setString("sigMusic", "sON")
-				startService(intent_music)
-			}
-			else{
-				GlobalApplication.musicPrefs.setString("sigMusic", "sOF")
-				stopService(intent_music)
-			}
-		}
+        binding.sigMusicSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                GlobalApplication.musicPrefs.setString("sigMusic", "sON")
+                startService(sigmu_intent)
+            } else {
+                GlobalApplication.musicPrefs.setString("sigMusic", "sOF")
+                stopService(sigmu_intent)
+            }
+        }
 
 		val sigCheck = GlobalApplication.musicPrefs.getString("sigMusic","")
 		binding.sigMusicSwitch.isChecked = sigCheck == "sON"
