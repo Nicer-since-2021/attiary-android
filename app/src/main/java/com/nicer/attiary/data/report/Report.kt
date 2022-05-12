@@ -13,6 +13,7 @@ class Report {
     var reportId: Long? = null
 
     @ColumnInfo(name = "date")
+
     var rDate: String? = null
 
     var diaryContent: String=""

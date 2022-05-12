@@ -4,6 +4,7 @@ package com.nicer.attiary.view.signature
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.text.method.ScrollingMovementMethod
 import android.view.WindowManager
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -18,6 +19,7 @@ import com.nicer.attiary.databinding.ActivityDiaryBinding
 import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.write.WriteActivity
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,7 +37,17 @@ class DiaryActivity : AppCompatActivity() {
 		val year = intent.getIntExtra("year", 0)
 		val month = intent.getIntExtra("month", 0)
 		val dayOfMonth = intent.getIntExtra("dayOfMonth", 0)
+
+		val data = intent.getIntExtra("data", 1)
+
+		if (data == 0){
+			binding.wholeView.bringToFront()
+			setErrorFrag()
+		}
+
 		database = ReportDatabase.getInstance(this, Gson())
+		binding.diaryContent.setMovementMethod(ScrollingMovementMethod())
+
 
 		binding.diaryContent.bringToFront()
 		binding.diaryTextView.text = String.format("%d년 %d월 %d일", year, month + 1, dayOfMonth)
@@ -45,6 +57,25 @@ class DiaryActivity : AppCompatActivity() {
 
 		binding.buttonBack.setOnClickListener {
 			finish()
+		}
+		binding.wholeView.bringToFront()
+	}
+
+	private fun setErrorFrag() {
+		val transaction = supportFragmentManager.beginTransaction()
+		transaction
+			.replace(R.id.wholeView, ErrorFragment())
+			.addToBackStack(null)
+			.commit()
+	}
+
+	private fun removeErrorFrag() {
+		val frameLayout = supportFragmentManager.findFragmentById(R.id.wholeView)
+		if (frameLayout != null) {
+			val transaction = supportFragmentManager.beginTransaction()
+			transaction
+				.remove(frameLayout)
+				.commit()
 		}
 	}
 

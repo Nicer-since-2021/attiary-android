@@ -19,4 +19,5 @@ interface ReportDao {
 
 	@Query("SELECT * FROM report ORDER BY date DESC, happiness DESC LIMIT 3")
 	fun findHappinessTop3(): MutableList<Report>
+
 }
