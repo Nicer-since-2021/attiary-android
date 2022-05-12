@@ -1,11 +1,13 @@
 package com.nicer.attiary.view.signature
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.ReportDatabase
@@ -13,15 +15,12 @@ import com.nicer.attiary.databinding.ActivityHomeBinding
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.setting.lock.SettingActivity
 import com.nicer.attiary.view.write.WriteActivity
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import com.prolificinteractive.materialcalendarview.CalendarMode
-import com.prolificinteractive.materialcalendarview.DayViewDecorator
-import com.prolificinteractive.materialcalendarview.DayViewFacade
+import com.prolificinteractive.materialcalendarview.*
 import java.util.*
+import com.nicer.attiary.R
 
 
 class HomeActivity : AppCompatActivity() {
-
 	private val binding by lazy { ActivityHomeBinding.inflate(layoutInflater) }
 
 	var database: ReportDatabase? = null
@@ -46,7 +45,7 @@ class HomeActivity : AppCompatActivity() {
 
 		binding.calendarView.addDecorators(minMaxDecorator)
 		binding.toolbar.bringToFront()
-		database = ReportDatabase.getInstance(this)
+		database = ReportDatabase.getInstance(this, Gson())
 		binding.calendarView.state().edit()
 			.setFirstDayOfWeek(Calendar.MONDAY)
 			.setMaximumDate(
@@ -73,7 +72,7 @@ class HomeActivity : AppCompatActivity() {
 			val year = currentYear
 			val month = currentMonth
 			val dayOfMonth = currentDate
-			val rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
+			val rDate = CalendarDay(year, month, dayOfMonth)
 
 			nextView(year, month, dayOfMonth, rDate)
 		}
@@ -82,7 +81,7 @@ class HomeActivity : AppCompatActivity() {
 			val year = widget.selectedDate.year
 			val month = widget.selectedDate.month
 			val dayOfMonth = widget.selectedDate.day
-			val rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
+			val rDate = CalendarDay(year, month, dayOfMonth)
 			nextView(year, month, dayOfMonth, rDate)
 		}
 
@@ -102,6 +101,7 @@ class HomeActivity : AppCompatActivity() {
 					MonthlyReportActivity::class.java
 				).apply { addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION) })
 		}
+
 	}
 
 	private fun monthToString(month: Int): String {
@@ -123,7 +123,7 @@ class HomeActivity : AppCompatActivity() {
 		return monthString
 	}
 
-	fun nextView(year: Int, month: Int, dayOfMonth: Int, rDate: Long) {
+	fun nextView(year: Int, month: Int, dayOfMonth: Int, rDate: CalendarDay) {
 		if (DiaryList(this).isExist(rDate)) {
 			val intent: Intent = Intent(this, DiaryActivity::class.java)
 			intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
@@ -142,6 +142,15 @@ class HomeActivity : AppCompatActivity() {
 	}
 
 	override fun onResume() {
+		binding.calendarView.addDecorator(AngerDecorator(this))
+		binding.calendarView.addDecorator(AnxietyDecorator(this))
+		binding.calendarView.addDecorator(HopeDecorator(this))
+		binding.calendarView.addDecorator(JoyDecorator(this))
+		binding.calendarView.addDecorator(NeutralityDecorator(this))
+		binding.calendarView.addDecorator(RegretDecorator(this))
+		binding.calendarView.addDecorator(SadnessDecorator(this))
+		binding.calendarView.addDecorator(TirednessDecorator(this))
+
 		super.onResume()
 		if (AppLock.AppLockStatus.lock && AppLock(this).isPassLockSet()) {
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
@@ -177,5 +186,109 @@ class MinMaxDecorator(max: CalendarDay) : DayViewDecorator {
 	override fun decorate(view: DayViewFacade?) {
 		view?.addSpan(object : ForegroundColorSpan(Color.parseColor("#E5E4E4")) {})
 		view?.setDaysDisabled(true)
+	}
+}
+
+class AngerDecorator(context: Context): DayViewDecorator {
+	val drawable = context.getDrawable(R.drawable.calendar_circle_anger)
+	val diary = DiaryList(context)
+	override fun shouldDecorate(day: CalendarDay?): Boolean {
+		return diary.isAnger(day)
+	}
+
+	override fun decorate(view: DayViewFacade?) {
+		if(drawable != null)
+			view?.setSelectionDrawable(drawable)
+	}
+}
+
+class AnxietyDecorator(context: Context): DayViewDecorator {
+	val drawable = context.getDrawable(R.drawable.calendar_circle_anxiety)
+	val diary = DiaryList(context)
+	override fun shouldDecorate(day: CalendarDay?): Boolean {
+		return diary.isAnxiety(day)
+	}
+
+	override fun decorate(view: DayViewFacade?) {
+		if(drawable != null)
+			view?.setSelectionDrawable(drawable)
+	}
+}
+
+class HopeDecorator(context: Context): DayViewDecorator {
+	val drawable = context.getDrawable(R.drawable.calendar_circle_hope)
+	val diary = DiaryList(context)
+	override fun shouldDecorate(day: CalendarDay?): Boolean {
+		return diary.isHope(day)
+	}
+
+	override fun decorate(view: DayViewFacade?) {
+		if(drawable != null)
+			view?.setSelectionDrawable(drawable)
+	}
+}
+
+class JoyDecorator(context: Context): DayViewDecorator {
+	val drawable = context.getDrawable(R.drawable.calendar_circle_joy)
+	val diary = DiaryList(context)
+	override fun shouldDecorate(day: CalendarDay?): Boolean {
+		return diary.isJoy(day)
+	}
+
+	override fun decorate(view: DayViewFacade?) {
+		if(drawable != null)
+			view?.setSelectionDrawable(drawable)
+	}
+}
+
+class NeutralityDecorator(context: Context): DayViewDecorator {
+	val drawable = context.getDrawable(R.drawable.calendar_circle_neutrality)
+	val diary = DiaryList(context)
+	override fun shouldDecorate(day: CalendarDay?): Boolean {
+		return diary.isNeutrality(day)
+	}
+
+	override fun decorate(view: DayViewFacade?) {
+		if(drawable != null)
+			view?.setSelectionDrawable(drawable)
+	}
+}
+
+class RegretDecorator(context: Context): DayViewDecorator {
+	val drawable = context.getDrawable(R.drawable.calendar_circle_regret)
+	val diary = DiaryList(context)
+	override fun shouldDecorate(day: CalendarDay?): Boolean {
+		return diary.isRegret(day)
+	}
+
+	override fun decorate(view: DayViewFacade?) {
+		if(drawable != null)
+			view?.setSelectionDrawable(drawable)
+	}
+}
+
+class SadnessDecorator(context: Context): DayViewDecorator {
+	val drawable = context.getDrawable(R.drawable.calendar_circle_sadness)
+	val diary = DiaryList(context)
+	override fun shouldDecorate(day: CalendarDay?): Boolean {
+		return diary.isSadness(day)
+	}
+
+	override fun decorate(view: DayViewFacade?) {
+		if (drawable != null)
+			view?.setSelectionDrawable(drawable)
+	}
+}
+
+class TirednessDecorator(context: Context): DayViewDecorator {
+	val drawable = context.getDrawable(R.drawable.calendar_circle_tiredness)
+	val diary = DiaryList(context)
+	override fun shouldDecorate(day: CalendarDay?): Boolean {
+		return diary.isTiredness(day)
+	}
+
+	override fun decorate(view: DayViewFacade?) {
+		if (drawable != null)
+			view?.setSelectionDrawable(drawable)
 	}
 }

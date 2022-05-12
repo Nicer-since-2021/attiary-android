@@ -56,7 +56,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/msg"
             android:layout_centerVertical="true"
-            app:mcv_selectionColor="@color/yellow_top"
+            app:mcv_selectionColor="@color/transparent"
             app:mcv_dateTextAppearance="@style/CalendarDateTextStyle"
             app:mcv_weekDayTextAppearance="@style/CalendarWeeksTextStyle"
             tools:ignore="MissingConstraints" >
@@ -181,7 +181,7 @@
             android:max="100"
             android:progress="70"
             android:progressBackgroundTintMode="src_over"
-            android:progressDrawable="@drawable/progress_happiness_home"
+            android:progressDrawable="@drawable/progress_happiness"
             android:scaleY="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
