@@ -28,7 +28,6 @@ import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.signature.DiaryActivity
 import com.nicer.attiary.view.signature.MusicService
-import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -77,7 +76,7 @@ class WriteActivity : AppCompatActivity() {
         }
 
 		binding.saveBtn.setOnClickListener {
-			startService(intent_music)
+			// startService(intent_music)
 			hideKeyboard()
 			if (binding.contextEditText.text.isBlank()) {
 				val builder = AlertDialog.Builder(this)
@@ -90,7 +89,6 @@ class WriteActivity : AppCompatActivity() {
 				}
 
 				//로딩화면
-
 				val content = binding.contextEditText.text.toString()
 				var emotions = hashMapOf<String, Int>()
 				var dDepression = 0
@@ -174,7 +172,7 @@ class WriteActivity : AppCompatActivity() {
 
 			}
 		}
-=======
+
         binding.saveBtn.setOnClickListener {
             hideKeyboard()
             
