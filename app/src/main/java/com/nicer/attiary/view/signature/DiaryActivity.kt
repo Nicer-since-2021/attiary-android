@@ -3,6 +3,7 @@ package com.nicer.attiary.view.signature
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -14,9 +15,9 @@ import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityDiaryBinding
+import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.write.WriteActivity
-import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,12 +48,14 @@ class DiaryActivity : AppCompatActivity() {
 		}
 	}
 
+
 	private fun processDiary(cYear: Int, cMonth: Int, cDay: Int) {
 
-		val rDate = (cYear.toString() + cMonth.toString() + cDay.toString()).toLong()
+		val rDate = RDate.toRDate(cYear, cMonth, cDay)
 		CoroutineScope(Dispatchers.IO).launch {
 			val report = database?.ReportDao()?.findByDate(rDate)
 			CoroutineScope(Dispatchers.Main).launch {
+				Log.d("diary_view", "${report?.reportId}")
 				str = report?.diaryContent.toString()
 				binding.diaryContent.text = str
 			}
@@ -72,7 +75,7 @@ class DiaryActivity : AppCompatActivity() {
 			builder.setMessage("정말 삭제하시겠습니까?")
 			builder.setNegativeButton("취소", null)
 			builder.setPositiveButton("확인") { _, i ->
-				DiaryList(this).removeDiary(CalendarDay(cYear, cMonth, cDay))
+				DiaryList(this).removeDiary(RDate.toRDate(cYear, cMonth, cDay))
 				CoroutineScope(Dispatchers.IO).launch {
 					database?.ReportDao()?.delete(rDate)
 					finish()
@@ -83,7 +86,7 @@ class DiaryActivity : AppCompatActivity() {
 	}
 
 	private fun processReport(cYear: Int, cMonth: Int, cDay: Int) {
-		val rDate = (cYear.toString() + cMonth.toString() + cDay.toString()).toLong()
+		val rDate = RDate.toRDate(cYear, cMonth, cDay)
 		CoroutineScope(Dispatchers.IO).launch {
 			val report = database?.ReportDao()?.findByDate(rDate)
 			CoroutineScope(Dispatchers.Main).launch {

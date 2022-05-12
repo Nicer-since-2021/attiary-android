@@ -16,22 +16,21 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import com.nicer.attiary.R
+import com.nicer.attiary.data.api.nlp.RetrofitObject
+import com.nicer.attiary.data.api.nlp.chat.Chat
+import com.nicer.attiary.data.api.nlp.classification.Classification
 import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.Report
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityWriteBinding
-import com.nicer.attiary.data.api.nlp.chat.Chat
-import com.nicer.attiary.data.api.nlp.RetrofitObject
-import com.nicer.attiary.data.api.nlp.classification.Classification
+import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.signature.DiaryActivity
 import com.nicer.attiary.view.signature.MusicService
-import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.collections.HashMap
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,7 +55,7 @@ class WriteActivity : AppCompatActivity() {
         val year = intent.getIntExtra("year", 0)
         val month = intent.getIntExtra("month", 0)
         val dayOfMonth = intent.getIntExtra("dayOfMonth", 0)
-        val rDate = (year.toString() + month.toString() + dayOfMonth.toString()).toLong()
+        val rDate = RDate.toRDate(year, month, dayOfMonth)
         str = intent.getStringExtra("diary").toString()
         database = ReportDatabase.getInstance(this, Gson())
 
@@ -85,7 +84,7 @@ class WriteActivity : AppCompatActivity() {
 				builder.show()
 			} else {
 				if (str != "null") {
-					DiaryList(this).removeDiary(CalendarDay(year, month, dayOfMonth))
+					DiaryList(this).removeDiary(RDate.toRDate(year, month, dayOfMonth))
 				}
 
 				//로딩화면
@@ -131,13 +130,13 @@ class WriteActivity : AppCompatActivity() {
 						var representative = setRepresentative(e1, p1)
 						CoroutineScope(Dispatchers.IO).launch {
 							database?.ReportDao()?.insert(
-								Report(rDate, content, representative, emotions, happiness!!, depression!!, "")
+                                Report.Builder(rDate, content, representative, emotions, happiness!!, depression!!, "").build()
 							)
 						}
 						if (p1==0)
-							DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), "neurality")
+							DiaryList(this).addDiary(RDate.toRDate(year, month, dayOfMonth), "neurality")
 						else
-							DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), e1)
+							DiaryList(this).addDiary(RDate.toRDate(year, month, dayOfMonth), e1)
 					}catch (e: ClassCastException){
 						Log.d("[error]", "ClassCastException")
 						//로딩화면 닫고
@@ -155,10 +154,10 @@ class WriteActivity : AppCompatActivity() {
 						var representative = "neutrality"
 						CoroutineScope(Dispatchers.IO).launch {
 							database?.ReportDao()?.insert(
-								Report(rDate, content, representative, emotions, happiness!!, depression!!, "")
+                                Report.Builder(rDate, content, representative, emotions, happiness!!, depression!!, "").build()
 							)
 						}
-						DiaryList(this).addDiary(CalendarDay(year, month, dayOfMonth), "neutrality")
+						DiaryList(this).addDiary(RDate.toRDate(year, month, dayOfMonth), "neutrality")
 					}finally {
 						//로딩화면 닫힘
 						val intent = Intent(this, DiaryActivity::class.java)
@@ -236,7 +235,7 @@ class WriteActivity : AppCompatActivity() {
         })
     }
 
-	fun hideKeyboard() {
+    fun hideKeyboard() {
 		val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
 		imm.hideSoftInputFromWindow(binding.contextEditText.windowToken, 0)
 	}
