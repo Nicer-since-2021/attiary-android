@@ -223,7 +223,7 @@ class WriteActivity : AppCompatActivity() {
         // 엔터키 누를 때마다 Chatbot 응답 전송
         binding.contextEditText.setOnKeyListener { _, keyCode, event ->
 
-            if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+            if ((event.action == KeyEvent.ACTION_UP) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 Log.d("YMC", "엔터키 입력")
                 val str = binding.contextEditText.text.toString()
                 val str_ = str.substring(cnt)
