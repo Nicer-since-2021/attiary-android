@@ -127,10 +127,17 @@ class WriteActivity : AppCompatActivity() {
 						val p1 = emotions2.getValue(e1)
 						var happiness = emotions.get("joy")?.plus(emotions.get("hope")!!)
 						var depression = emotions.get("anger")?.plus(emotions.get("sadness")!!)?.plus(emotions.get("anxiety")!!)?.plus(emotions.get("tiredness")!!)?.plus(emotions.get("regret")!!)?.plus(dDepression)
+                        if (100 < happiness!!) {
+                            happiness = 100
+                        }
+                        if (100 < depression!!) {
+                            depression = 100
+                        }
 						var representative = setRepresentative(e1, p1)
 						CoroutineScope(Dispatchers.IO).launch {
 							database?.ReportDao()?.insert(
-                                Report.Builder(rDate, content, representative, emotions, happiness!!, depression!!, "").build()
+                                Report.Builder(rDate, content, representative, emotions, happiness!!,
+                                    depression!!, "").build()
 							)
 						}
 						if (p1==0)
@@ -151,6 +158,12 @@ class WriteActivity : AppCompatActivity() {
 
 						var happiness = emotions.get("joy")?.plus(emotions.get("hope")!!)
 						var depression = emotions.get("anger")?.plus(emotions.get("sadness")!!)?.plus(emotions.get("anxiety")!!)?.plus(emotions.get("tiredness")!!)?.plus(emotions.get("regret")!!)?.plus(dDepression)
+                        if (100 < happiness!!) {
+                            happiness = 100
+                        }
+                        if (100 < depression!!) {
+                            depression = 100
+                        }
 						var representative = "neutrality"
 						CoroutineScope(Dispatchers.IO).launch {
 							database?.ReportDao()?.insert(
@@ -256,6 +269,12 @@ class WriteActivity : AppCompatActivity() {
                         var depression = emotions.get("anger")?.plus(emotions.get("sadness")!!)
                             ?.plus(emotions.get("anxiety")!!)?.plus(emotions.get("tiredness")!!)
                             ?.plus(emotions.get("regret")!!)?.plus(dDepression)
+                        if (100 < happiness!!) {
+                            happiness = 100
+                        }
+                        if (100 < depression!!) {
+                            depression = 100
+                        }
                         var representative = setRepresentative(e1, p1)
                         CoroutineScope(Dispatchers.IO).launch {
                             database?.ReportDao()?.insert(
@@ -291,6 +310,12 @@ class WriteActivity : AppCompatActivity() {
                         var depression = emotions.get("anger")?.plus(emotions.get("sadness")!!)
                             ?.plus(emotions.get("anxiety")!!)?.plus(emotions.get("tiredness")!!)
                             ?.plus(emotions.get("regret")!!)?.plus(dDepression)
+                        if (100 < happiness!!) {
+                            happiness = 100
+                        }
+                        if (100 < depression!!) {
+                            depression = 100
+                        }
                         var representative = "neutrality"
                         CoroutineScope(Dispatchers.IO).launch {
                             database?.ReportDao()?.insert(
