@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -15,10 +14,10 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.gson.Gson
 import com.nicer.attiary.R
-import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityMonthlyReportBinding
+import com.nicer.attiary.util.Emotion
 import com.nicer.attiary.view.common.AppPassWordActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -68,101 +67,88 @@ class MonthlyReportActivity : AppCompatActivity() {
         )
     }
 
-    private val ATTIARY_CHART_THEME = intArrayOf(
-        Color.rgb(216, 216, 216), // 후회
-        Color.rgb(252, 179, 169), // 분노
-        Color.rgb(252, 209, 169), // 피곤
-        Color.rgb(182, 219, 176), // 기쁨
-        Color.rgb(169, 197, 252), // 슬픔
-        Color.rgb(249, 198, 234), // 희망
-        Color.rgb(190, 169, 252) // 불안
-    )
-
     private fun makeEmotionChart() {
         with(binding) {
-            pieChart.setUsePercentValues(true)
-            pieChart.description.isEnabled = false
-            pieChart.setExtraOffsets(10F, 15F, 10F, 15F)
+            CoroutineScope(Dispatchers.IO).launch {
+                val emotionList: List<Emotion> =
+                    listOf(
+                        Emotion.REGRET,
+                        Emotion.ANGER,
+                        Emotion.TIREDNESS,
+                        Emotion.JOY,
+                        Emotion.SADNESS,
+                        Emotion.ANXIETY
+                    )
+                val reports = database?.ReportDao()?.findTop10(10)!!
 
-            pieChart.dragDecelerationFrictionCoef = 0.95f
-
-            pieChart.isDrawHoleEnabled = false
-            pieChart.setHoleColor(Color.WHITE)
-            pieChart.transparentCircleRadius = 61f
-
-            val yValues = ArrayList<PieEntry>()
-
-            val diary = DiaryList(applicationContext)
-            val map = diary.findAll(30) // 최대 개수 지정, 순서 지정할 수 없으므로 추가 로직 구현해야함.
-            for (m in map) {
-                Log.d("그래프정보", "${m.key}, ${m.value}")
-            }
-            val emotionList: List<String> =
-                listOf("regret", "anger", "tiredness", "joy", "sadness", "hope", "anxiety")
-            val emotionFlag: MutableList<Boolean> = MutableList(7) { false }
-            for ((idx, emotion) in emotionList.withIndex()) {
-                if (map.containsKey(emotion)) {
-                    yValues.add(PieEntry(map[emotion]!!, toKorEmotion(emotion)))
+                // 1. map으로 각 최고 감정의 개수 세기
+                val map: HashMap<String, Float> = HashMap()
+                for (report in reports) {
+                    for (emotion in emotionList) {
+                        val reportEmotion =
+                            report.representative.substring(0, report.representative.length - 1)
+                        Log.d("파이차트 데이터", reportEmotion)
+                        if (reportEmotion == emotion.en) {
+                            val cnt = map[emotion.en]
+                            if (cnt == null) {
+                                map[emotion.en] = 1F
+                            } else {
+                                map[emotion.en] = cnt + 1F
+                            }
+                        }
+                    }
                 }
-                emotionFlag[idx] = true
-            }
-
-            pieChart.animateY(1000, Easing.EaseInOutCubic)
-
-            val dataSet = PieDataSet(yValues, "emotion")
-            dataSet.sliceSpace = 0f
-            dataSet.selectionShift = 0f
-            dataSet.colors = getPieChartColor(emotionFlag)
-
-            val data = PieData(dataSet)
-
-            // % 비율 숫자 관련
-            data.setDrawValues(false)
-            data.setValueTextSize(13f)
-            data.setValueTextColor(Color.BLACK)
-
-            // label 설정
-            pieChart.setDrawEntryLabels(true)
-            pieChart.setEntryLabelColor(Color.BLACK)
-            pieChart.setEntryLabelTextSize(15f)
-            pieChart.setEntryLabelTypeface(resources.getFont(R.font.im_heymin_regular))
-
-            pieChart.setDrawMarkers(false)
-            pieChart.description.isEnabled = false
-            pieChart.legend.isEnabled = false
-            pieChart.data = data
-        }
-    }
-
-    private fun getPieChartColor(emotionFlag: MutableList<Boolean>): MutableList<Int> {
-        val colors: MutableList<Int> = ArrayList<Int>()
-        for (idx in 0..6) {
-            if (emotionFlag[idx]) {
-                when (idx) {
-                    0 -> colors.add(Color.rgb(216, 216, 216))
-                    1 -> colors.add(Color.rgb(252, 179, 169))
-                    2 -> colors.add(Color.rgb(252, 209, 169))
-                    3 -> colors.add(Color.rgb(182, 219, 176))
-                    4 -> colors.add(Color.rgb(169, 197, 252))
-                    5 -> colors.add(Color.rgb(249, 198, 234))
-                    6 -> colors.add(Color.rgb(190, 169, 252))
+                for (m in map) {
+                    Log.d("파이차트 데이터", "${m.key}, ${m.value}")
                 }
+
+                // 2. 그래프 데이터와 그래프 색 지정
+                val yValues = ArrayList<PieEntry>()
+                val colors: MutableList<Int> = ArrayList<Int>()
+                for (emotion in emotionList) {
+                    if (map.containsKey(emotion.en)) {
+                        yValues.add(PieEntry(map[emotion.en]!!, emotion.kr))
+                        colors.add(emotion.color)
+                    }
+                }
+
+                // 3. 그래프 그리기
+                pieChart.setUsePercentValues(true)
+                pieChart.description.isEnabled = false
+                pieChart.setExtraOffsets(10F, 15F, 10F, 15F)
+
+                pieChart.dragDecelerationFrictionCoef = 0.95f
+
+                pieChart.isDrawHoleEnabled = false
+                pieChart.setHoleColor(Color.WHITE)
+                pieChart.transparentCircleRadius = 61f
+
+                // pieChart.animateY(1000, Easing.EaseInOutCubic)
+
+                val dataSet = PieDataSet(yValues, "emotion")
+                dataSet.sliceSpace = 0f
+                dataSet.selectionShift = 0f
+                dataSet.colors = colors
+
+                val data = PieData(dataSet)
+
+                // % 비율 숫자 관련
+                data.setDrawValues(false)
+                data.setValueTextSize(13f)
+                data.setValueTextColor(Color.BLACK)
+
+                // label 설정
+                pieChart.setDrawEntryLabels(true)
+                pieChart.setEntryLabelColor(Color.BLACK)
+                pieChart.setEntryLabelTextSize(15f)
+                pieChart.setEntryLabelTypeface(resources.getFont(R.font.im_heymin_regular))
+
+                pieChart.setDrawMarkers(false)
+                pieChart.description.isEnabled = false
+                pieChart.legend.isEnabled = false
+                pieChart.data = data
             }
         }
-        return colors
-    }
-
-    private fun toKorEmotion(emotion: String): String {
-        when (emotion) {
-            "regret" -> return "후회"
-            "anger" -> return "분노"
-            "tiredness" -> return "피곤"
-            "joy" -> return "기쁨"
-            "sadness" -> return "슬픔"
-            "hope" -> return "희망"
-            "anxiety" -> return "불안"
-        }
-        return "중립"
     }
 
     private fun dateToMilliSecond(year: Int, month: Int, day: Int): Float {
@@ -328,20 +314,18 @@ class MonthlyReportActivity : AppCompatActivity() {
                     val builder = AlertDialog.Builder(this@MonthlyReportActivity)
                     builder.setMessage("작성된 일기가 없습니다.")
                     builder.setPositiveButton("확인") { _, _ ->
-                        finish()
                     }
                     builder.show()
                 } else {
-                    val y = reports[0].rDate?.substring(0 until 4)?.toInt()
-                    val m = reports[0].rDate?.substring(4 until 6)?.toInt()
-                    val d = reports[0].rDate?.substring(6 until 8)?.toInt()
+                    val y = reports[0].rDate.substring(0 until 4).toInt()
+                    val m = reports[0].rDate.substring(4 until 6).toInt()
+                    val d = reports[0].rDate.substring(6 until 8).toInt()
                     Log.d("top1 happiness", "${y}-${m}-${d} ${reports[0].happiness}")
                     val intent = Intent(this@MonthlyReportActivity, DiaryActivity::class.java)
                     intent.putExtra("year", y)
-                    intent.putExtra("month", m!! - 1)
+                    intent.putExtra("month", m - 1)
                     intent.putExtra("dayOfMonth", d)
                     startActivity(intent)
-                    finish()
                 }
             }
             binding.diaryTop2Btn.setOnClickListener {
@@ -350,19 +334,17 @@ class MonthlyReportActivity : AppCompatActivity() {
                     val builder = AlertDialog.Builder(this@MonthlyReportActivity)
                     builder.setMessage("작성된 일기가 없습니다.")
                     builder.setPositiveButton("확인") { _, _ ->
-                        finish()
                     }
                     builder.show()
                 } else {
-                    val y = reports[1].rDate?.substring(0 until 4)?.toInt()
-                    val m = reports[1].rDate?.substring(4 until 6)?.toInt()
-                    val d = reports[1].rDate?.substring(6 until 8)?.toInt()
+                    val y = reports[1].rDate.substring(0 until 4).toInt()
+                    val m = reports[1].rDate.substring(4 until 6).toInt()
+                    val d = reports[1].rDate.substring(6 until 8).toInt()
                     val intent = Intent(this@MonthlyReportActivity, DiaryActivity::class.java)
                     intent.putExtra("year", y)
-                    intent.putExtra("month", m!! - 1)
+                    intent.putExtra("month", m - 1)
                     intent.putExtra("dayOfMonth", d)
                     startActivity(intent)
-                    finish()
                 }
             }
             binding.diaryTop3Btn.setOnClickListener {
@@ -371,19 +353,17 @@ class MonthlyReportActivity : AppCompatActivity() {
                     val builder = AlertDialog.Builder(this@MonthlyReportActivity)
                     builder.setMessage("작성된 일기가 없습니다.")
                     builder.setPositiveButton("확인") { _, _ ->
-                        finish()
                     }
                     builder.show()
                 } else {
-                    val y = reports[2].rDate?.substring(0 until 4)?.toInt()
-                    val m = reports[2].rDate?.substring(4 until 6)?.toInt()
-                    val d = reports[2].rDate?.substring(6 until 8)?.toInt()
+                    val y = reports[2].rDate.substring(0 until 4).toInt()
+                    val m = reports[2].rDate.substring(4 until 6).toInt()
+                    val d = reports[2].rDate.substring(6 until 8).toInt()
                     val intent = Intent(this@MonthlyReportActivity, DiaryActivity::class.java)
                     intent.putExtra("year", y)
-                    intent.putExtra("month", m!! - 1)
+                    intent.putExtra("month", m - 1)
                     intent.putExtra("dayOfMonth", d)
                     startActivity(intent)
-                    finish()
                 }
             }
         }

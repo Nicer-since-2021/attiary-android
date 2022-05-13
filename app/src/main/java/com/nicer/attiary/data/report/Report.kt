@@ -1,20 +1,20 @@
 package com.nicer.attiary.data.report
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
+import androidx.annotation.NonNull
+import androidx.room.*
+import org.jetbrains.annotations.NotNull
 
 
-@Entity(tableName = "report")
+@Entity(tableName = "report", indices = [Index(value = arrayOf("date"), unique = true)])
 class Report {
+    @NonNull
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "report_id")
-    var reportId: Long? = null
+    var reportId: Long = 0
 
+    @NotNull
     @ColumnInfo(name = "date")
-
-    var rDate: String? = null
+    var rDate: String = ""
 
     var diaryContent: String=""
 

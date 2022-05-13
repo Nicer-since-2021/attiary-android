@@ -28,7 +28,6 @@ import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.signature.DiaryActivity
 import com.nicer.attiary.view.signature.MusicService
-import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -77,7 +76,7 @@ class WriteActivity : AppCompatActivity() {
         }
 
 		binding.saveBtn.setOnClickListener {
-			startService(intent_music)
+			// startService(intent_music)
 			hideKeyboard()
 			if (binding.contextEditText.text.isBlank()) {
 				val builder = AlertDialog.Builder(this)
@@ -90,7 +89,6 @@ class WriteActivity : AppCompatActivity() {
 				}
 
 				//로딩화면
-
 				val content = binding.contextEditText.text.toString()
 				var emotions = hashMapOf<String, Int>()
 				var dDepression = 0
@@ -129,10 +127,17 @@ class WriteActivity : AppCompatActivity() {
 						val p1 = emotions2.getValue(e1)
 						var happiness = emotions.get("joy")?.plus(emotions.get("hope")!!)
 						var depression = emotions.get("anger")?.plus(emotions.get("sadness")!!)?.plus(emotions.get("anxiety")!!)?.plus(emotions.get("tiredness")!!)?.plus(emotions.get("regret")!!)?.plus(dDepression)
+                        if (100 < happiness!!) {
+                            happiness = 100
+                        }
+                        if (100 < depression!!) {
+                            depression = 100
+                        }
 						var representative = setRepresentative(e1, p1)
 						CoroutineScope(Dispatchers.IO).launch {
 							database?.ReportDao()?.insert(
-                                Report.Builder(rDate, content, representative, emotions, happiness!!, depression!!, "").build()
+                                Report.Builder(rDate, content, representative, emotions, happiness!!,
+                                    depression!!, "").build()
 							)
 						}
 						if (p1==0)
@@ -153,6 +158,12 @@ class WriteActivity : AppCompatActivity() {
 
 						var happiness = emotions.get("joy")?.plus(emotions.get("hope")!!)
 						var depression = emotions.get("anger")?.plus(emotions.get("sadness")!!)?.plus(emotions.get("anxiety")!!)?.plus(emotions.get("tiredness")!!)?.plus(emotions.get("regret")!!)?.plus(dDepression)
+                        if (100 < happiness!!) {
+                            happiness = 100
+                        }
+                        if (100 < depression!!) {
+                            depression = 100
+                        }
 						var representative = "neutrality"
 						CoroutineScope(Dispatchers.IO).launch {
 							database?.ReportDao()?.insert(
@@ -174,7 +185,7 @@ class WriteActivity : AppCompatActivity() {
 
 			}
 		}
-=======
+
         binding.saveBtn.setOnClickListener {
             hideKeyboard()
             
@@ -258,6 +269,12 @@ class WriteActivity : AppCompatActivity() {
                         var depression = emotions.get("anger")?.plus(emotions.get("sadness")!!)
                             ?.plus(emotions.get("anxiety")!!)?.plus(emotions.get("tiredness")!!)
                             ?.plus(emotions.get("regret")!!)?.plus(dDepression)
+                        if (100 < happiness!!) {
+                            happiness = 100
+                        }
+                        if (100 < depression!!) {
+                            depression = 100
+                        }
                         var representative = setRepresentative(e1, p1)
                         CoroutineScope(Dispatchers.IO).launch {
                             database?.ReportDao()?.insert(
@@ -293,6 +310,12 @@ class WriteActivity : AppCompatActivity() {
                         var depression = emotions.get("anger")?.plus(emotions.get("sadness")!!)
                             ?.plus(emotions.get("anxiety")!!)?.plus(emotions.get("tiredness")!!)
                             ?.plus(emotions.get("regret")!!)?.plus(dDepression)
+                        if (100 < happiness!!) {
+                            happiness = 100
+                        }
+                        if (100 < depression!!) {
+                            depression = 100
+                        }
                         var representative = "neutrality"
                         CoroutineScope(Dispatchers.IO).launch {
                             database?.ReportDao()?.insert(
