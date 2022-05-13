@@ -54,6 +54,8 @@ class WriteActivity : AppCompatActivity() {
 
         sigmu_intent = Intent(this, MusicService::class.java)
         stopService(sigmu_intent)
+        shuffleTrack()
+        playTrack(MusicList.musicList.bgm_n_list)
 
         val intent: Intent = getIntent()
         val year = intent.getIntExtra("year", 0)
@@ -65,8 +67,6 @@ class WriteActivity : AppCompatActivity() {
 
         binding.diaryTextView.text = String.format("%d년 %d월 %d일", year, month + 1, dayOfMonth)
         binding.contextEditText.setText(str)
-
-        shuffleTrack()
 
         binding.contextEditText.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus)
@@ -90,10 +90,7 @@ class WriteActivity : AppCompatActivity() {
                     DiaryList(this).removeDiary(CalendarDay(year, month, dayOfMonth))
                 }
 
-                if (emoMP?.isPlaying == true) {
-                    emoMP?.stop()
-                    emoMP?.release()
-                }
+                stopMP()
                 startService(sigmu_intent)
 
                 binding.wholeView.bringToFront()
@@ -255,24 +252,31 @@ class WriteActivity : AppCompatActivity() {
                 Log.d("YMC", "엔터키 입력")
                 val str = binding.contextEditText.text.toString()
                 val str_ = str.substring(cnt)
-                RetrofitObject.getApiService().getChatRes(str_).enqueue(object : Callback<Chat> {
-                    override fun onResponse(call: Call<Chat>, response: Response<Chat>) {
-                        if (response.isSuccessful) {
-                            var result: Chat? = response.body()
-                            Log.d("YMC", "onResponse 성공: " + result?.answer)
-                            binding.attiMsgTxt.text = result?.answer
-                        } else {
-                            // 통신 실패
-                            Log.d("YMC", "onResponse 실패")
+
+                // 아띠
+                RetrofitObject.getApiService().getChatRes(str_)
+                    .enqueue(object : Callback<Chat> {
+                        override fun onResponse(
+                            call: Call<Chat>,
+                            response: Response<Chat>
+                        ) {
+                            if (response.isSuccessful) {
+                                var result: Chat? = response.body()
+                                Log.d("YMC", "onResponse 성공: " + result?.answer)
+                                binding.attiMsgTxt.text = result?.answer
+                            } else {
+                                // 통신 실패
+                                Log.d("YMC", "onResponse 실패")
+                            }
                         }
-                    }
 
-                    override fun onFailure(call: Call<Chat>, t: Throwable) {
-                        // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                        Log.d("YMC", "onFailure 에러: " + t.message.toString())
-                    }
-                })
+                        override fun onFailure(call: Call<Chat>, t: Throwable) {
+                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                            Log.d("YMC", "onFailure 에러: " + t.message.toString())
+                        }
+                    })
 
+                // 음악
                 RetrofitObject.getApiService().getChatEmo(str_)
                     .enqueue(object : Callback<ShortClassification> {
                         override fun onResponse(
@@ -383,7 +387,6 @@ class WriteActivity : AppCompatActivity() {
         }
         window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
 
-        playTrack(MusicList.musicList.bgm_n_list)
         if (emoMP != null && emoMP?.isPlaying == false) {
             emoMP?.start()
         }
@@ -397,7 +400,7 @@ class WriteActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_SECURE,
             WindowManager.LayoutParams.FLAG_SECURE
         )
-        if (emoMP?.isPlaying == true) {
+        if (emoMP != null && emoMP?.isPlaying == true) {
             emoMP?.pause()
         }
     }
@@ -443,6 +446,7 @@ class WriteActivity : AppCompatActivity() {
         if (emoMP != null) {
             emoMP?.stop()
             emoMP?.release()
+            emoMP = null
         }
     }
 }
