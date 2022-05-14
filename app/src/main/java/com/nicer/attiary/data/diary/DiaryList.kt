@@ -95,6 +95,13 @@ class DiaryList(context: Context) {
 		return false
 	}
 
+	fun isError(rDate : String?): Boolean {
+		if (sharedPref.getString(rDate, "") == "error") {
+			return true
+		}
+		return false
+	}
+
 	fun findAll(cnt:Int) :HashMap<String, Float> {
 		var totalCnt = 0.0
 		val map: HashMap<String, Float> = HashMap<String, Float>()

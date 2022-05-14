@@ -13,13 +13,12 @@ import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityHomeBinding
+import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.setting.lock.SettingActivity
 import com.nicer.attiary.view.write.WriteActivity
 import com.prolificinteractive.materialcalendarview.*
 import java.util.*
-import com.nicer.attiary.R
-import com.nicer.attiary.util.RDate
 
 
 class HomeActivity : AppCompatActivity() {
@@ -296,7 +295,7 @@ class ErrorDecorator(context: Context) : DayViewDecorator {
     val drawable = context.getDrawable(R.drawable.calendar_circle_error)
     val diary = DiaryList(context)
     override fun shouldDecorate(day: CalendarDay?): Boolean {
-        return diary.isError(day)
+        return diary.isError(RDate.toRDate(day!!.year, day.month, day.day))
     }
 
     override fun decorate(view: DayViewFacade?) {
