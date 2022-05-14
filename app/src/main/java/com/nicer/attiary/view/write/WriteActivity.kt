@@ -461,4 +461,3 @@ class WriteActivity : AppCompatActivity() {
         }
     }
 }
-
