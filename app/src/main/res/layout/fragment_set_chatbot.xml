@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/white"
+        app:contentInsetStart="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/black">
+
+        <TextView
+            android:id="@+id/settingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/im_hyemin_bold"
+            android:text="@string/chatBotModel"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="start"
+            android:layout_marginStart="10dp"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/back_button" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_register_line"
+        android:layout_marginTop="?actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/consolationImg"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/atti_mode_consolation"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/line2"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="90dp"/>
+
+    <TextView
+        android:id="@+id/consolationName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/line2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/consolationImg"
+        android:layout_marginTop="20dp"
+        android:text = "@string/consolationAtti"
+        android:fontFamily="@font/im_hyemin_bold"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/consolationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/line2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/consolationName"
+        android:layout_marginTop="80dp"
+        android:text = "@string/consolationDescribe"
+        android:gravity="center"
+        android:fontFamily="@font/im_heymin_regular"
+        android:textSize="14sp"
+        />
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/gray_register_line"
+        android:layout_marginTop="100dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="120dp"/>
+
+    <ImageView
+        android:id="@+id/sympathyImg"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/atti_mode_sympathy"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/line2"
+        android:layout_marginTop="90dp"/>
+
+    <TextView
+        android:id="@+id/sympathyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/line2"
+        app:layout_constraintTop_toBottomOf="@id/sympathyImg"
+        android:layout_marginTop="20dp"
+        android:text = "@string/sympathyAtti"
+        android:fontFamily="@font/im_hyemin_bold"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/sympathyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/line2"
+        app:layout_constraintTop_toBottomOf="@id/sympathyName"
+        android:layout_marginTop="70dp"
+        android:text = "@string/sympathyDescribe"
+        android:gravity="center"
+        android:fontFamily="@font/im_heymin_regular"
+        android:textSize="14sp"
+        />
+    <RadioGroup
+        android:id="@+id/radioGruop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/consolationText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="80dp">
+        <RadioButton
+            android:id="@+id/consolationRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chooseConsolation"
+            android:fontFamily="@font/im_heymin_regular"
+            android:textSize="10sp"
+            android:layout_marginEnd="50dp"
+            />
+        <RadioButton
+            android:id="@+id/SympathyRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chooseSympathy"
+            android:fontFamily="@font/im_heymin_regular"
+            android:textSize="10sp"
+            android:layout_marginStart="30dp"/>
+
+
+    </RadioGroup>
+
+    <Button
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        android:id="@+id/saveBtn"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="@string/save"
+        android:fontFamily="@font/im_hyemin_bold"
+        android:textColor="@color/black"
+        android:background="@drawable/round_btn"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
