@@ -13,6 +13,7 @@ import com.nicer.attiary.data.user.User
 import com.nicer.attiary.data.user.UserHelper
 import com.nicer.attiary.databinding.ActivitySignUpBinding
 import com.nicer.attiary.view.common.AppPassWordActivity
+import com.nicer.attiary.view.common.GlobalApplication
 import com.nicer.attiary.view.signature.HomeActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -79,9 +80,18 @@ class SignUpActivity : AppCompatActivity() {
 		binding.buttonSubmit.setOnClickListener {
 			val email = binding.editEmail.text.toString()
 			val name = binding.editName.text.toString()
-			val user = saveUser(email, name)
-			Toast.makeText(this, "$user 저장됨!", Toast.LENGTH_SHORT).show()
-			startActivity(Intent(this, HomeActivity::class.java))
+			if(name == null){
+				val builder = AlertDialog.Builder(this)
+				builder.setMessage("내용을 입력하세요.")
+				builder.setPositiveButton("확인", null)
+				builder.show()
+			}else{
+				val user = saveUser(email, name)
+				GlobalApplication.settingPrefs.setString("nickname", name)
+				Toast.makeText(this, "$user 저장됨!", Toast.LENGTH_SHORT).show()
+				startActivity(Intent(this, HomeActivity::class.java))
+				finish()
+			}
 		}
 	}
 

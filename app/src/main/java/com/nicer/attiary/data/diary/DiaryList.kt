@@ -95,6 +95,10 @@ class DiaryList(context: Context) {
 		return false
 	}
 
+	fun getNumDiary() : Int {
+		return sharedPref.all.size
+	}
+
 	fun findAll(cnt:Int) :HashMap<String, Float> {
 		var totalCnt = 0.0
 		val map: HashMap<String, Float> = HashMap<String, Float>()

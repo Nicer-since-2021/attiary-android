@@ -38,6 +38,15 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <FrameLayout
+        android:id="@+id/wholeView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <View
         android:id="@+id/line1"
         android:layout_width="match_parent"
@@ -58,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@id/line1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"/>
 
     <EditText
@@ -68,12 +77,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="화연"
+        android:maxLength="10"
         android:textColor="@color/black"
         android:textSize="25sp"
         app:layout_constraintTop_toBottomOf="@id/line1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"/>
 
     <Button
@@ -87,8 +97,9 @@
         android:textSize="10dp"
         app:layout_constraintTop_toBottomOf="@id/line1"
         app:layout_constraintStart_toEndOf="@id/nicknameText"
-        android:layout_marginTop="53dp"
-        android:layout_marginStart="10dp"/>
+        android:layout_marginTop="43dp"
+        android:layout_marginStart="10dp"
+        android:stateListAnimator="@null"/>
 
     <Button
         android:id="@+id/nicknameSaveBtn"
@@ -102,8 +113,9 @@
         android:textSize="10sp"
         app:layout_constraintTop_toBottomOf="@id/line1"
         app:layout_constraintStart_toEndOf="@id/nicknameEdit"
-        android:layout_marginTop="55dp"
-        android:layout_marginStart="8dp"/>
+        android:layout_marginTop="42dp"
+        android:layout_marginStart="8dp"
+        android:stateListAnimator="@null"/>
 
     <TextView
         android:id="@+id/dDayTitleText"
@@ -116,7 +128,7 @@
         app:layout_constraintTop_toBottomOf="@id/line1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="100dp"/>
 
     <TextView
@@ -130,7 +142,7 @@
         app:layout_constraintTop_toBottomOf="@id/line1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="70dp"
         android:layout_marginStart="80dp"/>
 
     <TextView
@@ -143,7 +155,7 @@
         android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@id/line1"
         app:layout_constraintStart_toEndOf="@id/dDayText"
-        android:layout_marginTop="85dp" />
+        android:layout_marginTop="70dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -468,9 +480,9 @@
                 app:srcCompat="@drawable/shifting_btn"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="18dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="23dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="10dp"
                 app:layout_constraintStart_toStartOf="parent" />

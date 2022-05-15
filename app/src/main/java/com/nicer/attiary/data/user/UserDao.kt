@@ -1,10 +1,7 @@
 package com.nicer.attiary.data.user
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import androidx.room.Query
 import java.util.*
 
 @Dao
@@ -13,7 +10,7 @@ interface UserDao {
 	fun insert(user: User)
 
 	@Query("select * from user where user_id = :userId")
-	fun findByUserId(userId: Long): Optional<User>
+	fun findByUserId(userId: Long): User
 
 	@Delete
 	fun delete(user: User)
@@ -29,4 +26,13 @@ interface UserDao {
 
 	@Query("select birthday_month from User")
 	fun getBdayMonth(): List<Int>
+
+	@Query ("update user set name = :newName where user_id = 1" )
+	fun updateName(newName: String)
+
+	@Query ("update user set birthday_day = :newDay where user_id = 1" )
+	fun updateBdayDay(newDay: Int)
+
+	@Query ("update user set birthday_month = :newMonth where user_id = 1" )
+	fun updateBdayMonth(newMonth: Int)
 }

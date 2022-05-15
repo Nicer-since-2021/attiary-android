@@ -1,15 +1,19 @@
-package com.nicer.attiary.view.setting.lock
+package com.nicer.attiary.view.setting
 
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.nicer.attiary.R
+import com.nicer.attiary.data.diary.DiaryList
 import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.password.AppLock.AppLockStatus.lock
 import com.nicer.attiary.data.user.UserHelper
@@ -33,8 +37,10 @@ class SettingActivity : AppCompatActivity() {
 		setContentView(binding.root)
 
         init()
+		var isNotCanceled = true
         helper = UserHelper.getInstance(this)
         sigmu_intent = Intent(this, MusicService::class.java)
+		binding.wholeView.bringToFront()
 
 		val activityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
 			val returnCode = it.data?.getIntExtra("returnCode", 0)
@@ -42,13 +48,11 @@ class SettingActivity : AppCompatActivity() {
 				when (returnCode){
 					AppLock.AppLockStatus.ENABLE_PASSLOCK ->{
 						Toast.makeText(this, "암호 설정 완료", Toast.LENGTH_SHORT).show()
-						init()
 						lock  = false
 					}
 
 					AppLock.AppLockStatus.DISABLE_PASSLOCK ->{
 						Toast.makeText(this, "암호 삭제 완료", Toast.LENGTH_SHORT).show()
-						init()
 					}
 
 					AppLock.AppLockStatus.UNLOCK_PASSWORD ->
@@ -60,6 +64,10 @@ class SettingActivity : AppCompatActivity() {
 					{
 						Toast.makeText(this, "암호 변경 완료", Toast.LENGTH_SHORT).show()
 						lock = false
+					}
+					AppLock.AppLockStatus.CANCEL ->
+					{
+						isNotCanceled = false
 					}
 				}
 			}
@@ -73,6 +81,11 @@ class SettingActivity : AppCompatActivity() {
 		}
 
 		binding.nicknameSaveBtn.setOnClickListener {
+			CoroutineScope(Dispatchers.IO).launch {
+				helper?.userDao()?.updateName(binding.nicknameEdit.text.toString())
+			}
+			GlobalApplication.settingPrefs.setString("nickname", binding.nicknameEdit.text.toString())
+			init()
 			binding.nicknameEdit.isVisible = false
 			binding.nicknameSaveBtn.isVisible=false
 			binding.nicknameChangeBtn.isVisible = true
@@ -89,7 +102,26 @@ class SettingActivity : AppCompatActivity() {
 			binding.changeBdayBtn.isVisible=false
 		}
 
+		ArrayAdapter.createFromResource(
+			this, R.array.months_array, android.R.layout.simple_spinner_item
+		).also { adapter ->
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+			binding.spinnerMonth.adapter = adapter
+		}
+
+		ArrayAdapter.createFromResource(
+			this, R.array.days_array, android.R.layout.simple_spinner_item
+		).also { adapter ->
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+			binding.spinnerDay.adapter = adapter
+		}
+
 		binding.saveBdayBtn.setOnClickListener {
+			CoroutineScope(Dispatchers.IO).launch {
+				helper?.userDao()?.updateBdayDay(binding.spinnerDay.selectedItem.toString().toInt())
+				helper?.userDao()?.updateBdayMonth(binding.spinnerMonth.selectedItem.toString().toInt())
+			}
+			init()
 			binding.spinnerDay.isVisible=false
 			binding.spinnerMonth.isVisible=false
 			binding.textDay.isVisible=false
@@ -101,30 +133,34 @@ class SettingActivity : AppCompatActivity() {
 
         binding.sigMusicSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                GlobalApplication.musicPrefs.setString("sigMusic", "sON")
+                GlobalApplication.settingPrefs.setString("sigMusic", "sON")
                 startService(sigmu_intent)
             } else {
-                GlobalApplication.musicPrefs.setString("sigMusic", "sOF")
+                GlobalApplication.settingPrefs.setString("sigMusic", "sOF")
                 stopService(sigmu_intent)
             }
         }
 
-		val sigCheck = GlobalApplication.musicPrefs.getString("sigMusic","")
-		binding.sigMusicSwitch.isChecked = sigCheck == "sON"
+		binding.chatBotSelectBtn.setOnClickListener{
+			setChatbotFragment()
+		}
 
 		binding.pwSwitch.setOnCheckedChangeListener{CompoundButton, onSwitch ->
-			if (onSwitch){
-				val intent = Intent(this, AppPassWordActivity::class.java).apply {
-					putExtra("type", AppLock.AppLockStatus.ENABLE_PASSLOCK)
+			if (isNotCanceled){
+				if (onSwitch){
+					val intent = Intent(this, AppPassWordActivity::class.java).apply {
+						putExtra("type", AppLock.AppLockStatus.ENABLE_PASSLOCK)
+					}
+					activityResult.launch(intent)
 				}
-				activityResult.launch(intent)
-			}
-			else{
-				val intent = Intent(this, AppPassWordActivity::class.java).apply {
-					putExtra("type", AppLock.AppLockStatus.DISABLE_PASSLOCK)
+				else{
+					val intent = Intent(this, AppPassWordActivity::class.java).apply {
+						putExtra("type", AppLock.AppLockStatus.DISABLE_PASSLOCK)
+					}
+					activityResult.launch(intent)
 				}
-				activityResult.launch(intent)
 			}
+			isNotCanceled = true
 		}
 
 		binding.changePWBtn.setOnClickListener {
@@ -159,26 +195,51 @@ class SettingActivity : AppCompatActivity() {
 		binding.myAccountTitleText.isVisible = false
 		binding.logoutBtn.isVisible = false
 		binding.line3.isVisible = false
+		val sigCheck = GlobalApplication.settingPrefs.getString("sigMusic","")
+		binding.sigMusicSwitch.isChecked = sigCheck == "sON"
+		binding.dDayText.text = "♥${DiaryList(this).getNumDiary().toString()}"
+
 
 		if (AppLock(this).isPassLockSet()){
 			binding.changePWBtn.isVisible = true
 			binding.changePWText.isVisible = true
+			binding.pwSwitch.isChecked = true
 		}
 		else{
 			binding.changePWBtn.isVisible = false
 			binding.changePWText.isVisible = false
+			binding.pwSwitch.isChecked = false
 		}
+		var name = GlobalApplication.settingPrefs.getString("nickname", "")
+		binding.nicknameText.text = name
+		binding.nicknameEdit.setText(name)
 		CoroutineScope(Dispatchers.IO).launch {
-			var name = 	helper?.userDao()?.getName()?.toList()?.get(0)
+			var bDayDay = helper?.userDao()?.findByUserId(1)?.birthdayDay
+			var bDayMonth = helper?.userDao()?.findByUserId(1)?.birthdayMonth
 			CoroutineScope(Dispatchers.Main).launch {
-				binding.nicknameText.text = name
-				binding.nicknameEdit.setText(name)
+				binding.bdayText.text = "$bDayMonth 월 $bDayDay 일"
 			}
 		}
 	}
 
+	private fun setChatbotFragment() {
+		val transaction = supportFragmentManager.beginTransaction()
+		transaction
+			.replace(R.id.wholeView, SetChatbotFragment())
+			.addToBackStack(null)
+			.commit()
+	}
+
+	override fun onTouchEvent(event: MotionEvent): Boolean {
+		val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+		imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+		return true
+	}
+
+
 	override fun onResume() {
 		super.onResume()
+		init()
 		if (lock && AppLock(this).isPassLockSet()) {
 			val intent = Intent(this, AppPassWordActivity::class.java).apply {
 				putExtra("type", AppLock.AppLockStatus.UNLOCK_PASSWORD)

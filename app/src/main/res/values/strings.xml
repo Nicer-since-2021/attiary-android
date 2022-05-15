@@ -57,4 +57,13 @@
     <string name="loading">잠시만 기다려주세요!\n 아띠가 열심히 연구 중이랍니다!</string>
     <string name="serverError1">죄송합니다…\n지금 연구실에 문제가 생겼어요.</string>
     <string name="serverError2">일단 일기 내용을 저장해둘게요! 다음에 다시 시도해주세요. \n\n해당 날짜 일기에 들어가 수정 버튼을 누른 뒤 재저장해주시면\n아띠가 다시 노력해볼게요!</string>
+    <string name="sympathyAtti">공감형 아띠</string>
+    <string name="sympathyDescribe">조금 더 발랄한 성격을 \n 가지고 있어요. \n\n 내용에 따라 \n다양한 반응을 보는 재미가 \n있을지도 몰라요. \n\n 아띠와 함께 꾸준히 일기를 써봐요. \n\n 언제든 기다리고 있을게요.</string>
+    <string name="consolationAtti">위로형 아띠</string>
+    <string name="consolationDescribe">세상 따뜻한 성격을 \n 가지고 있어요. \n\n분노, 불안, 후회, 슬픔, 피곤 등 \n 부정적인 감정이\n 많이 느껴지는 날에 \n불러주세요. \n\n 아띠가 위로해드릴게요.</string>
+    <string name="attiTalk">오늘은 어떤 하루였나요?</string>
+    <string name="chooseSympathy">오늘은 일상적인 하루였어요.</string>
+    <string name="chooseConsolation">오늘은 특히 힘들었어요.</string>
+    <string name="setRepresentative">대표 감정 선택</string>
+    <string name="setRepresentativeD">아띠가 감지한 감정 대신 원하는 감정을\n대표 감정으로 설정할 수 있어요.</string>
 </resources>

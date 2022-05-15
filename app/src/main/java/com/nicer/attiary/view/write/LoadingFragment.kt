@@ -23,7 +23,7 @@ class LoadingFragment : Fragment() {
 		Thread {
 			for (i in 0..100) {
 				try {
-					Thread.sleep(100)
+					Thread.sleep(50)
 				} catch (e: InterruptedException) {
 					e.printStackTrace()
 				}

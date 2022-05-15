@@ -10,6 +10,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.google.gson.Gson
 import com.nicer.attiary.R
 import com.nicer.attiary.data.diary.DiaryList
@@ -19,7 +21,6 @@ import com.nicer.attiary.databinding.ActivityDiaryBinding
 import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.write.WriteActivity
-import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,7 +42,7 @@ class DiaryActivity : AppCompatActivity() {
 		val data = intent.getIntExtra("data", 1)
 
 		if (data == 0){
-			binding.wholeView.bringToFront()
+			binding.errorFragment.bringToFront()
 			setErrorFrag()
 		}
 
@@ -58,7 +59,31 @@ class DiaryActivity : AppCompatActivity() {
 		binding.buttonBack.setOnClickListener {
 			finish()
 		}
-		binding.wholeView.bringToFront()
+		binding.errorFragment.bringToFront()
+
+		binding.emotion.setOnClickListener{
+			val rDate = RDate.toRDate(year,month,dayOfMonth)
+			binding.setEmotionFrag.bringToFront()
+			setEmotionFragment()
+			supportFragmentManager
+				.setFragmentResultListener("requestKey", this) { requestKey, bundle ->
+					val result = bundle.getString("bundleKey")
+					processEmoji(result!!)
+					CoroutineScope(Dispatchers.IO).launch {
+						database?.ReportDao()?.updateRepresentative(result!!, rDate)
+					}
+					updateDiaryList(result!!, rDate, "anger")
+					updateDiaryList(result!!, rDate, "anxiety")
+					updateDiaryList(result!!, rDate, "hope")
+					updateDiaryList(result!!, rDate, "joy")
+					updateDiaryList(result!!, rDate, "neutrality")
+					updateDiaryList(result!!, rDate, "regret")
+					updateDiaryList(result!!, rDate, "sadness")
+					updateDiaryList(result!!, rDate, "tiredness")
+				}
+
+		}
+
 	}
 
 	private fun setErrorFrag() {
@@ -69,13 +94,18 @@ class DiaryActivity : AppCompatActivity() {
 			.commit()
 	}
 
-	private fun removeErrorFrag() {
-		val frameLayout = supportFragmentManager.findFragmentById(R.id.wholeView)
-		if (frameLayout != null) {
-			val transaction = supportFragmentManager.beginTransaction()
-			transaction
-				.remove(frameLayout)
-				.commit()
+	private fun setEmotionFragment() {
+		val transaction = supportFragmentManager.beginTransaction()
+		transaction
+			.replace(R.id.setEmotionFrag, SetEmotionFragment())
+			.addToBackStack(null)
+			.commit()
+	}
+
+	private fun updateDiaryList(result: String, rDate: String, emotion: String) {
+		if (result.contains(emotion)) {
+			DiaryList(this).removeDiary(rDate)
+			DiaryList(this).addDiary(rDate, emotion)
 		}
 	}
 
