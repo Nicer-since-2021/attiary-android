@@ -61,6 +61,7 @@
         android:fontFamily="@font/im_heymin_regular"
         android:gravity="center"
         android:hint="@string/register_name_edit"
+        android:maxLength="10"
         android:inputType="textPersonName"
         android:textColor="@color/black"
         android:textColorHint="@color/gray_button"
