@@ -7,6 +7,8 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.nicer.attiary.R
 import com.nicer.attiary.view.auth.sign_up.SignUpActivity
+import com.nicer.attiary.view.common.GlobalApplication
+import com.nicer.attiary.view.signature.HomeActivity
 
 class SplashActivity : AppCompatActivity() {
 
@@ -14,8 +16,10 @@ class SplashActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_splash)
 		Handler(Looper.getMainLooper()).postDelayed({
-//			startActivity(Intent(this, SettingPasswordActivity::class.java))
-			startActivity(Intent(this, SignUpActivity::class.java))
+			if (GlobalApplication.settingPrefs.isExist())
+				startActivity(Intent(this, HomeActivity::class.java))
+			else
+				startActivity(Intent(this, SignUpActivity::class.java))
 			finish()
 		}, 2000)
 	}
