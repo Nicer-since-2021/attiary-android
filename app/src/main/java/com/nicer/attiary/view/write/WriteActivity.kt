@@ -46,7 +46,7 @@ class WriteActivity : AppCompatActivity() {
     lateinit var sigmu_intent: Intent
     var emoMP: MediaPlayer? = null
     private var cnt: Int = 0
-    private var emo: Int = 2 //시작은 중립
+    private var emo: Int = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +55,7 @@ class WriteActivity : AppCompatActivity() {
         sigmu_intent = Intent(this, MusicService::class.java)
         stopService(sigmu_intent)
         shuffleTrack()
-        playTrack(MusicList.musicList.bgm_n_list)
+        viewModel.setEmotion(emo)
 
         val intent: Intent = getIntent()
         val year = intent.getIntExtra("year", 0)
@@ -300,17 +300,8 @@ class WriteActivity : AppCompatActivity() {
 
                                 if (emo != result?.emotion_no) {
                                     emo = result?.emotion_no!!
-                                    when (emo) {
-                                        //0: 기쁨, 1: 희망, 2: 중립, 3: 분노, 4: 슬픔, 5: 불안, 6: 피곤, 7: 후회
-                                        0 -> playTrack(MusicList.musicList.bgm_ha_list)
-                                        1 -> playTrack(MusicList.musicList.bgm_ho_list)
-                                        2 -> playTrack(MusicList.musicList.bgm_n_list)
-                                        3 -> playTrack(MusicList.musicList.bgm_a_list)
-                                        4 -> playTrack(MusicList.musicList.bgm_s_list)
-                                        5 -> playTrack(MusicList.musicList.bgm_ax_list)
-                                        6 -> playTrack(MusicList.musicList.bgm_t_list)
-                                        7 -> playTrack(MusicList.musicList.bgm_r_list)
-                                    }
+                                    selectTrack(emo)
+                                    viewModel.setEmotion(result.emotion_no)
                                 }
                             } else {
                                 // 통신 실패
@@ -333,15 +324,7 @@ class WriteActivity : AppCompatActivity() {
 
         // Fragment 통신
         viewModel.getEmotion.observe(this, Observer { item ->
-            when (item) {
-                0 -> playTrack(MusicList.musicList.bgm_ha_list)
-                1 -> playTrack(MusicList.musicList.bgm_ho_list)
-                2 -> playTrack(MusicList.musicList.bgm_s_list)
-                3 -> playTrack(MusicList.musicList.bgm_a_list)
-                4 -> playTrack(MusicList.musicList.bgm_ax_list)
-                5 -> playTrack(MusicList.musicList.bgm_t_list)
-                6 -> playTrack(MusicList.musicList.bgm_r_list)
-            }
+            selectTrack(item)
         })
     }
 
@@ -458,6 +441,20 @@ class WriteActivity : AppCompatActivity() {
             emoMP?.stop()
             emoMP?.release()
             emoMP = null
+        }
+    }
+
+    fun selectTrack(item: Int) {
+        when (item) {
+            //0: 기쁨, 1: 희망, 2: 중립, 3: 분노, 4: 슬픔, 5: 불안, 6: 피곤, 7: 후회
+            0 -> playTrack(MusicList.musicList.bgm_ha_list)
+            1 -> playTrack(MusicList.musicList.bgm_ho_list)
+            2 -> playTrack(MusicList.musicList.bgm_n_list)
+            3 -> playTrack(MusicList.musicList.bgm_a_list)
+            4 -> playTrack(MusicList.musicList.bgm_s_list)
+            5 -> playTrack(MusicList.musicList.bgm_ax_list)
+            6 -> playTrack(MusicList.musicList.bgm_t_list)
+            7 -> playTrack(MusicList.musicList.bgm_r_list)
         }
     }
 }
