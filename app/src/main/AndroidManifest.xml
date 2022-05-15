@@ -39,7 +39,7 @@
         <activity android:name=".view.auth.sign_up.SignUpActivity" />
 
         <activity android:name=".view.common.AppPassWordActivity" />
-        <activity android:name=".view.setting.lock.SettingActivity" />
+        <activity android:name=".view.setting.SettingActivity" />
     </application>
 
 </manifest>

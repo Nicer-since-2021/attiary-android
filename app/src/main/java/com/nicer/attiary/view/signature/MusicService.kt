@@ -23,13 +23,13 @@ class MusicService : Service() {
         mp?.isLooping = true
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        var sigCheck = GlobalApplication.musicPrefs.getString("sigMusic", "")
-        if (sigCheck == "sON") {
-            mp?.start()
-        }
-        return super.onStartCommand(intent, flags, startId)
-    }
+	override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+		var sigCheck = GlobalApplication.settingPrefs.getString("sigMusic","")
+		if (sigCheck == "sON"){
+			mp?.start()
+		}
+		return super.onStartCommand(intent, flags, startId)
+	}
 
     override fun onDestroy() {
         mp?.stop()
