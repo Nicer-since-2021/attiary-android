@@ -76,6 +76,7 @@ class MonthlyReportActivity : AppCompatActivity() {
                         Emotion.ANGER,
                         Emotion.TIREDNESS,
                         Emotion.JOY,
+                        Emotion.HOPE,
                         Emotion.SADNESS,
                         Emotion.ANXIETY
                     )
