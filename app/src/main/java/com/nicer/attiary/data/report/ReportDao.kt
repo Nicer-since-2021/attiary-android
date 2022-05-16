@@ -20,8 +20,9 @@ interface ReportDao {
 	@Query("SELECT * FROM report ORDER BY date DESC, happiness DESC LIMIT 3")
 	fun findHappinessTop3(): MutableList<Report>
 
+	@Query("SELECT * FROM report where date like :yearMonth")
+	fun findByYearAndMonth(yearMonth: String): MutableList<Report>
+
 	@Query ("update report set representative = :emotion where date = :rDate" )
 	fun updateRepresentative(emotion: String, rDate: String)
-
-
 }

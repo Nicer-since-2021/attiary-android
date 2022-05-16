@@ -25,6 +25,7 @@ import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.Report
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityWriteBinding
+import com.nicer.attiary.util.Emotion
 import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.signature.DiaryActivity
@@ -160,7 +161,8 @@ class WriteActivity : AppCompatActivity() {
                         if (100 < depression!!) {
                             depression = 100
                         }
-                        var representative = setRepresentative(e1, p1)
+                        val representative = setRepresentative(e1, p1)
+                        val commentFromAtti = Emotion.getComment(e1)
                         CoroutineScope(Dispatchers.IO).launch {
                             database?.ReportDao()?.insert(
                                 Report.Builder(
@@ -170,7 +172,7 @@ class WriteActivity : AppCompatActivity() {
                                     emotions,
                                     happiness!!,
                                     depression!!,
-                                    ""
+                                    commentFromAtti
                                 ).build()
                             )
                         }
@@ -220,7 +222,7 @@ class WriteActivity : AppCompatActivity() {
                                     emotions,
                                     happiness!!,
                                     depression!!,
-                                    ""
+                                    Emotion.getComment(representative)
                                 ).build()
                             )
                         }

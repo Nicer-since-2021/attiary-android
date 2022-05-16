@@ -98,20 +98,4 @@ class DiaryList(context: Context) {
 	fun getNumDiary() : Int {
 		return sharedPref.all.size
 	}
-
-	fun findAll(cnt:Int) :HashMap<String, Float> {
-		var totalCnt = 0.0
-		val map: HashMap<String, Float> = HashMap<String, Float>()
-		val iter = sharedPref.all.keys.iterator()
-		while (iter.hasNext()) {
-			val key = iter.next()
-			// TODO 날짜 조건 추가해야함.
-			if (cnt <= ++totalCnt) {
-				break
-			}
-			val value = sharedPref.getString(key, "").toString()
-			map[value] = map.getOrDefault(value,0).toFloat() + 1
-		}
-		return map
-	}
 }

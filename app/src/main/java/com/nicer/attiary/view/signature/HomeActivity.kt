@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
@@ -17,7 +18,13 @@ import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
 import com.nicer.attiary.view.setting.SettingActivity
 import com.nicer.attiary.view.write.WriteActivity
-import com.prolificinteractive.materialcalendarview.*
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.CalendarMode
+import com.prolificinteractive.materialcalendarview.DayViewDecorator
+import com.prolificinteractive.materialcalendarview.DayViewFacade
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -61,6 +68,9 @@ class HomeActivity : AppCompatActivity() {
             .commit()
         binding.calendarView.isDynamicHeightEnabled = true
         binding.barFindText.text = monthToString(currentMonth)
+        setHappinessDepressionBar(currentYear, currentMonth)
+
+
         binding.calendarView.setOnMonthChangedListener { _, date ->
             val year = date.year
             val month = date.month
@@ -68,6 +78,7 @@ class HomeActivity : AppCompatActivity() {
                 binding.barFindText.text = monthToString(month)
             else
                 ("$year " + monthToString(month)).also { binding.barFindText.text = it }
+            setHappinessDepressionBar(year, month)
         }
 
         binding.newButton.setOnClickListener {
@@ -99,6 +110,59 @@ class HomeActivity : AppCompatActivity() {
                 ).apply { addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION) })
         }
 
+    }
+
+    private fun setHappinessDepressionBar(currentYear: Int, currentMonth: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            var happiness = 0F
+            var depression = 0F
+            val reports = database?.ReportDao()?.findByYearAndMonth(RDate.toYearMonth(currentYear, currentMonth))
+            reports?.forEach { report ->
+                happiness += report.happiness
+                depression += report.depression
+                Log.d("home 행복지수 데이터", report.rDate)
+            }
+            happiness /= reports!!.size
+            depression /= reports.size
+
+            CoroutineScope(Dispatchers.IO).launch {
+                binding.happinessIndex.progress = toHappDeprprogress(happiness.toInt())
+                binding.depressionIndex.progress = toHappDeprprogress(depression.toInt())
+                binding.levelHappiness.text = toHappDeprLevel(happiness.toInt())
+                binding.levelDepression.text = toHappDeprLevel(depression.toInt())
+            }
+        }
+
+    }
+
+    private fun toHappDeprLevel(num : Int): String {
+        return if (num <= 20) {
+           "1단계"
+        } else if (num <= 40) {
+            "2단계"
+        } else if (num <= 60) {
+            "3단계"
+        } else if (num <= 80) {
+            "4단계"
+        } else {
+            "5단계"
+        }
+    }
+
+    private fun toHappDeprprogress(num: Int): Int {
+        return if (num == 0) {
+            0
+        } else if (num <= 20) {
+            20
+        } else if (num <= 40) {
+            40
+        } else if (num <= 60) {
+            60
+        } else if (num <= 80) {
+            80
+        } else {
+            100
+        }
     }
 
     private fun monthToString(month: Int): String {
