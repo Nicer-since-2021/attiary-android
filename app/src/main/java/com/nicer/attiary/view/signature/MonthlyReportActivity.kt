@@ -310,7 +310,6 @@ class MonthlyReportActivity : AppCompatActivity() {
             val reports = database?.ReportDao()?.findHappinessTop3()!!
             binding.diaryTop1Btn.setOnClickListener {
                 if (reports.isEmpty()) {
-                    Log.d("top1 happiness", "없음")
                     val builder = AlertDialog.Builder(this@MonthlyReportActivity)
                     builder.setMessage("작성된 일기가 없습니다.")
                     builder.setPositiveButton("확인") { _, _ ->
@@ -320,7 +319,6 @@ class MonthlyReportActivity : AppCompatActivity() {
                     val y = reports[0].rDate.substring(0 until 4).toInt()
                     val m = reports[0].rDate.substring(4 until 6).toInt()
                     val d = reports[0].rDate.substring(6 until 8).toInt()
-                    Log.d("top1 happiness", "${y}-${m}-${d} ${reports[0].happiness}")
                     val intent = Intent(this@MonthlyReportActivity, DiaryActivity::class.java)
                     intent.putExtra("year", y)
                     intent.putExtra("month", m - 1)
@@ -329,8 +327,7 @@ class MonthlyReportActivity : AppCompatActivity() {
                 }
             }
             binding.diaryTop2Btn.setOnClickListener {
-                if (reports.size == 1) {
-                    Log.d("top2 happiness", "없음")
+                if (reports.size < 2) {
                     val builder = AlertDialog.Builder(this@MonthlyReportActivity)
                     builder.setMessage("작성된 일기가 없습니다.")
                     builder.setPositiveButton("확인") { _, _ ->
@@ -348,8 +345,7 @@ class MonthlyReportActivity : AppCompatActivity() {
                 }
             }
             binding.diaryTop3Btn.setOnClickListener {
-                if (reports.size == 2) {
-                    Log.d("top3 happiness", "없음")
+                if (reports.size < 3) {
                     val builder = AlertDialog.Builder(this@MonthlyReportActivity)
                     builder.setMessage("작성된 일기가 없습니다.")
                     builder.setPositiveButton("확인") { _, _ ->
