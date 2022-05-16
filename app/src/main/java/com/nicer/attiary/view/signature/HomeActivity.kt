@@ -16,7 +16,7 @@ import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityHomeBinding
 import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
-import com.nicer.attiary.view.setting.lock.SettingActivity
+import com.nicer.attiary.view.setting.SettingActivity
 import com.nicer.attiary.view.write.WriteActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode

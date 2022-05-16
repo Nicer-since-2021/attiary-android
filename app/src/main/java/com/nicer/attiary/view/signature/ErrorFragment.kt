@@ -18,7 +18,6 @@ class ErrorFragment : Fragment() {
 		binding = FragmentErrorBinding.inflate(inflater, container, false)
 
 		binding.btn.setOnClickListener {
-			Log.d("fragment", "버튼 클릭")
 			activity?.supportFragmentManager
 				?.beginTransaction()
 				?.remove(this)

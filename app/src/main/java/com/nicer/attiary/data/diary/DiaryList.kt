@@ -94,4 +94,8 @@ class DiaryList(context: Context) {
 		}
 		return false
 	}
+
+	fun getNumDiary() : Int {
+		return sharedPref.all.size
+	}
 }

@@ -9,6 +9,7 @@ class AppLock(context: Context) {
 		val DISABLE_PASSLOCK = 2 //잠금 비활성화
 		val CHANGE_PASSWORD = 3 //암호변경
 		val UNLOCK_PASSWORD = 4 //잠금해제
+		val CANCEL = 0
 	}
 
 	private var sharedPref = context.getSharedPreferences("appLock", Context.MODE_PRIVATE)

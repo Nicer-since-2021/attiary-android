@@ -49,6 +49,9 @@ class AppPassWordActivity : AppCompatActivity() {
 			button.setOnClickListener(btnListener)
 		}
 		binding.btnPwCancel.setOnClickListener {
+			val returnIntent = Intent()
+			returnIntent.putExtra("returnCode", AppLock.AppLockStatus.CANCEL)
+			setResult(Activity.RESULT_OK, returnIntent)
 			finish()
 		}
 

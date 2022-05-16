@@ -101,50 +101,47 @@ class WriteActivity : AppCompatActivity() {
                 var emotions = hashMapOf<String, Int>()
                 var dDepression = 0
 
-                CoroutineScope(Dispatchers.IO).async {
-                    RetrofitObject.getApiService().getReport(content)
-                        ?.enqueue(object : Callback<Classification> {
-                            override fun onResponse(
-                                call: Call<Classification>,
-                                response: Response<Classification>
-                            ) {
-                                Log.d("YMC", "ㅎ")
-                                if (response.isSuccessful) {
-                                    var result: Classification? = response.body()
-                                    Log.d("YMC", "onResponse 성공: ")
-                                    emotions.put("anger", ((result?.anger)?.times(100))?.toInt()!!)
-                                    emotions.put(
-                                        "anxiety",
-                                        ((result?.anxiety)?.times(100))?.toInt()!!
-                                    )
-                                    emotions.put("hope", ((result?.hope)?.times(100))?.toInt()!!)
-                                    emotions.put("joy", ((result?.joy)?.times(100))?.toInt()!!)
-                                    emotions.put(
-                                        "regret",
-                                        ((result?.regret)?.times(100))?.toInt()!!
-                                    )
-                                    emotions.put(
-                                        "sadness",
-                                        ((result?.sadness)?.times(100))?.toInt()!!
-                                    )
-                                    emotions.put(
-                                        "tiredness",
-                                        ((result?.tiredness)?.times(100))?.toInt()!!
-                                    )
-                                    dDepression = (result?.depression)?.times(100)?.toInt()!!
-                                    Log.d("result", result.toString())
-                                } else {
-                                    // 통신 실패
-                                    Log.d("YMC", "onResponse 실패")
-                                }
+                RetrofitObject.getApiService().getReport(content)
+                    ?.enqueue(object : Callback<Classification> {
+                        override fun onResponse(
+                            call: Call<Classification>,
+                            response: Response<Classification>
+                        ) {
+                            if (response.isSuccessful) {
+                                var result: Classification? = response.body()
+                                Log.d("YMC", "onResponse 성공: ")
+                                emotions.put("anger", ((result?.anger)?.times(100))?.toInt()!!)
+                                emotions.put(
+                                    "anxiety",
+                                    ((result?.anxiety)?.times(100))?.toInt()!!
+                                )
+                                emotions.put("hope", ((result?.hope)?.times(100))?.toInt()!!)
+                                emotions.put("joy", ((result?.joy)?.times(100))?.toInt()!!)
+                                emotions.put(
+                                    "regret",
+                                    ((result?.regret)?.times(100))?.toInt()!!
+                                )
+                                emotions.put(
+                                    "sadness",
+                                    ((result?.sadness)?.times(100))?.toInt()!!
+                                )
+                                emotions.put(
+                                    "tiredness",
+                                    ((result?.tiredness)?.times(100))?.toInt()!!
+                                )
+                                dDepression = (result?.depression)?.times(100)?.toInt()!!
+                                Log.d("result", result.toString())
+                            } else {
+                                // 통신 실패
+                                Log.d("YMC", "onResponse 실패")
                             }
+                        }
 
-                            override fun onFailure(call: Call<Classification>, t: Throwable) {
-                                // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                                Log.d("YMC", "onFailure 에러: " + t.message.toString());
-                            }
-                        })
-                }
+                        override fun onFailure(call: Call<Classification>, t: Throwable) {
+                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                            Log.d("YMC", "onFailure 에러: " + t.message.toString());
+                        }
+                    })
 
 
                 Handler(Looper.getMainLooper()).postDelayed({
@@ -238,7 +235,7 @@ class WriteActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     }
-                }, 10000)
+                }, 5000)
             }
         }
 
