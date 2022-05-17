@@ -3,15 +3,13 @@ package com.nicer.attiary.view.signature
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.text.method.ScrollingMovementMethod
+import android.util.Log
 import android.view.WindowManager
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import com.google.gson.Gson
 import com.nicer.attiary.R
 import com.nicer.attiary.data.diary.DiaryList
@@ -20,6 +18,7 @@ import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityDiaryBinding
 import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
+import com.nicer.attiary.view.common.GlobalApplication
 import com.nicer.attiary.view.write.WriteActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -167,7 +166,8 @@ class DiaryActivity : AppCompatActivity() {
 				processEmotion(2, e2, p2)
 				processEmotion(3, e3, p3)
 				processEmotion(4, e4, p4)
-				val comment = report?.commentFromAtti
+				var comment = report.commentFromAtti
+				comment = comment.replace("00", GlobalApplication.settingPrefs.getString("nickname", ""))
 				binding.commentFromAtti.text = comment
 			}
 		}
