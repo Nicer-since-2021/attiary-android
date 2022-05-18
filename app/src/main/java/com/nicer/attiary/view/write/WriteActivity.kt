@@ -313,7 +313,6 @@ class WriteActivity : AppCompatActivity() {
                             Log.d("YMC", "onFailure 에러: " + t.message.toString())
                         }
                     })
-
                 cnt = str.length
                 true
             } else {
@@ -445,15 +444,14 @@ class WriteActivity : AppCompatActivity() {
 
     fun selectTrack(item: Int) {
         when (item) {
-            //0: 기쁨, 1: 희망, 2: 중립, 3: 분노, 4: 슬픔, 5: 불안, 6: 피곤, 7: 후회
-            0 -> playTrack(MusicList.musicList.bgm_ha_list)
-            1 -> playTrack(MusicList.musicList.bgm_ho_list)
-            2 -> playTrack(MusicList.musicList.bgm_n_list)
-            3 -> playTrack(MusicList.musicList.bgm_a_list)
-            4 -> playTrack(MusicList.musicList.bgm_s_list)
-            5 -> playTrack(MusicList.musicList.bgm_ax_list)
-            6 -> playTrack(MusicList.musicList.bgm_t_list)
-            7 -> playTrack(MusicList.musicList.bgm_r_list)
+            Emotion.JOY.num -> playTrack(MusicList.musicList.bgm_ha_list)
+            Emotion.HOPE.num -> playTrack(MusicList.musicList.bgm_ho_list)
+            Emotion.NEUTRALITY.num -> playTrack(MusicList.musicList.bgm_n_list)
+            Emotion.SADNESS.num -> playTrack(MusicList.musicList.bgm_s_list)
+            Emotion.ANGER.num -> playTrack(MusicList.musicList.bgm_a_list)
+            Emotion.ANXIETY.num -> playTrack(MusicList.musicList.bgm_ax_list)
+            Emotion.TIREDNESS.num -> playTrack(MusicList.musicList.bgm_t_list)
+            Emotion.REGRET.num -> playTrack(MusicList.musicList.bgm_r_list)
         }
     }
 }

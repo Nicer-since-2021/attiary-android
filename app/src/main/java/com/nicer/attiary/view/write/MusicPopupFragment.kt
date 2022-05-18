@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.nicer.attiary.databinding.FragmentMusicPopupBinding
+import com.nicer.attiary.util.Emotion
 
 class MusicPopupFragment : Fragment() {
     lateinit var binding: FragmentMusicPopupBinding
@@ -29,7 +30,7 @@ class MusicPopupFragment : Fragment() {
 
     private fun SetPicker() {
         val picker = binding.numberPicker
-        val bgm_category = arrayOf("기쁨", "희망", "중립", "분노", "슬픔", "불안", "피곤", "후회")
+        val bgm_category = Emotion.getEmotionKrList()
         picker.minValue = 0
         picker.maxValue = bgm_category.size - 1
         picker.displayedValues = bgm_category
