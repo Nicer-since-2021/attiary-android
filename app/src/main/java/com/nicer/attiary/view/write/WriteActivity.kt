@@ -32,7 +32,6 @@ import com.nicer.attiary.view.signature.DiaryActivity
 import com.nicer.attiary.view.signature.MusicService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -260,59 +259,64 @@ class WriteActivity : AppCompatActivity() {
 
             if ((event.action == KeyEvent.ACTION_UP) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 Log.d("YMC", "엔터키 입력")
+
                 val str = binding.contextEditText.text.toString()
-                val str_ = str.substring(cnt)
+                if (str.length > cnt) {
+                    var str_ = str.substring(cnt)
 
-                // 아띠
-                RetrofitObject.getApiService().getChatRes(str_)
-                    .enqueue(object : Callback<Chat> {
-                        override fun onResponse(
-                            call: Call<Chat>,
-                            response: Response<Chat>
-                        ) {
-                            if (response.isSuccessful) {
-                                var result: Chat? = response.body()
-                                Log.d("YMC", "onResponse 성공: " + result?.answer)
-                                binding.attiMsgTxt.text = result?.answer
-                            } else {
-                                // 통신 실패
-                                Log.d("YMC", "onResponse 실패")
-                            }
-                        }
-
-                        override fun onFailure(call: Call<Chat>, t: Throwable) {
-                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                            Log.d("YMC", "onFailure 에러: " + t.message.toString())
-                        }
-                    })
-
-                // 음악
-                RetrofitObject.getApiService().getChatEmo(str_)
-                    .enqueue(object : Callback<ShortClassification> {
-                        override fun onResponse(
-                            call: Call<ShortClassification>,
-                            response: Response<ShortClassification>
-                        ) {
-                            if (response.isSuccessful) {
-                                var result: ShortClassification? = response.body()
-                                Log.d("YMC", "onResponse 성공: " + result?.emotion_no)
-
-                                if (emo != result?.emotion_no) {
-                                    emo = result?.emotion_no!!
-                                    selectTrack(emo)
-                                    viewModel.setEmotion(result.emotion_no)
+                    // 아띠
+                    RetrofitObject.getApiService().getChatRes(str_)
+                        .enqueue(object : Callback<Chat> {
+                            override fun onResponse(
+                                call: Call<Chat>,
+                                response: Response<Chat>
+                            ) {
+                                if (response.isSuccessful) {
+                                    var result: Chat? = response.body()
+                                    Log.d("YMC", "onResponse 성공: " + result?.answer)
+                                    binding.attiMsgTxt.text = result?.answer
+                                } else {
+                                    // 통신 실패
+                                    Log.d("YMC", "onResponse 실패")
                                 }
-                            } else {
-                                // 통신 실패
-                                Log.d("YMC", "onResponse 실패")
                             }
-                        }
 
-                        override fun onFailure(call: Call<ShortClassification>, t: Throwable) {
-                            // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                            Log.d("YMC", "onFailure 에러: " + t.message.toString())
-                        }
-                    })
+                            override fun onFailure(call: Call<Chat>, t: Throwable) {
+                                // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                Log.d("YMC", "onFailure 에러: " + t.message.toString())
+                            }
+                        })
+
+                    // 음악
+                    RetrofitObject.getApiService().getChatEmo(str_)
+                        .enqueue(object : Callback<ShortClassification> {
+                            override fun onResponse(
+                                call: Call<ShortClassification>,
+                                response: Response<ShortClassification>
+                            ) {
+                                if (response.isSuccessful) {
+                                    var result: ShortClassification? = response.body()
+                                    Log.d("YMC", "onResponse 성공: " + result?.emotion_no)
+
+                                    if (emo != result?.emotion_no) {
+                                        emo = result?.emotion_no!!
+                                        selectTrack(emo)
+                                        viewModel.setEmotion(result.emotion_no)
+                                    }
+                                } else {
+                                    // 통신 실패
+                                    Log.d("YMC", "onResponse 실패")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<ShortClassification>, t: Throwable) {
+                                // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                Log.d("YMC", "onFailure 에러: " + t.message.toString())
+                            }
+                        })
+                } else {
+                    binding.attiMsgTxt.text = "듣고 있어요."
+                }
                 cnt = str.length
                 true
             } else {
