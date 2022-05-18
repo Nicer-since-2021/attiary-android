@@ -28,6 +28,7 @@ import com.nicer.attiary.databinding.ActivityWriteBinding
 import com.nicer.attiary.util.Emotion
 import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
+import com.nicer.attiary.view.common.GlobalApplication
 import com.nicer.attiary.view.signature.DiaryActivity
 import com.nicer.attiary.view.signature.MusicService
 import kotlinx.coroutines.CoroutineScope
@@ -44,6 +45,7 @@ class WriteActivity : AppCompatActivity() {
     lateinit var str: String
     private var database: ReportDatabase? = null
     lateinit var sigmu_intent: Intent
+    private lateinit var chatMode: String
     var emoMP: MediaPlayer? = null
     private var cnt: Int = 0
     private var emo: Int = 2
@@ -64,6 +66,7 @@ class WriteActivity : AppCompatActivity() {
         val rDate = RDate.toRDate(year, month, dayOfMonth)
         str = intent.getStringExtra("diary").toString()
         database = ReportDatabase.getInstance(this, Gson())
+        chatMode = GlobalApplication.settingPrefs.getString("chatMode", "")
 
         binding.diaryTextView.text = String.format("%d년 %d월 %d일", year, month + 1, dayOfMonth)
         binding.contextEditText.setText(str)
@@ -265,27 +268,51 @@ class WriteActivity : AppCompatActivity() {
                     var str_ = str.substring(cnt)
 
                     // 아띠
-                    RetrofitObject.getApiService().getChatRes(str_)
-                        .enqueue(object : Callback<Chat> {
-                            override fun onResponse(
-                                call: Call<Chat>,
-                                response: Response<Chat>
-                            ) {
-                                if (response.isSuccessful) {
-                                    var result: Chat? = response.body()
-                                    Log.d("YMC", "onResponse 성공: " + result?.answer)
-                                    binding.attiMsgTxt.text = result?.answer
-                                } else {
-                                    // 통신 실패
-                                    Log.d("YMC", "onResponse 실패")
+                    if (chatMode == "sympathy") {
+                        RetrofitObject.getApiService().getKoGPT2ChatRes(str_)
+                            .enqueue(object : Callback<Chat> {
+                                override fun onResponse(
+                                    call: Call<Chat>,
+                                    response: Response<Chat>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        var result: Chat? = response.body()
+                                        Log.d("YMC", "onResponse 성공: " + result?.answer)
+                                        binding.attiMsgTxt.text = result?.answer
+                                    } else {
+                                        // 통신 실패
+                                        Log.d("YMC", "onResponse 실패")
+                                    }
                                 }
-                            }
 
-                            override fun onFailure(call: Call<Chat>, t: Throwable) {
-                                // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                                Log.d("YMC", "onFailure 에러: " + t.message.toString())
-                            }
-                        })
+                                override fun onFailure(call: Call<Chat>, t: Throwable) {
+                                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                    Log.d("YMC", "onFailure 에러: " + t.message.toString())
+                                }
+                            })
+                    } else {
+                        RetrofitObject.getApiService().getKoBERTChatRes(str_)
+                            .enqueue(object : Callback<Chat> {
+                                override fun onResponse(
+                                    call: Call<Chat>,
+                                    response: Response<Chat>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        var result: Chat? = response.body()
+                                        Log.d("YMC", "onResponse 성공: " + result?.answer)
+                                        binding.attiMsgTxt.text = result?.answer
+                                    } else {
+                                        // 통신 실패
+                                        Log.d("YMC", "onResponse 실패")
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<Chat>, t: Throwable) {
+                                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                    Log.d("YMC", "onFailure 에러: " + t.message.toString())
+                                }
+                            })
+                    }
 
                     // 음악
                     RetrofitObject.getApiService().getChatEmo(str_)
