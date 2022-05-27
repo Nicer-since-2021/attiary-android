@@ -18,6 +18,7 @@ import com.nicer.attiary.data.password.AppLock
 import com.nicer.attiary.data.report.ReportDatabase
 import com.nicer.attiary.databinding.ActivityMonthlyReportBinding
 import com.nicer.attiary.util.Emotion
+import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,16 +36,20 @@ class MonthlyReportActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val intent: Intent = intent
+        val year = intent.getIntExtra("year", 0)
+        val month = intent.getIntExtra("month", 0)
+
         database = ReportDatabase.getInstance(this, Gson())
 
         binding.toolbarBackBtn.setOnClickListener {
             finish()
         }
 
-        makeEmotionChart()
-        makeHappyChart()
-        makeSadChart()
-        bindTop3Diary()
+        makeEmotionChart(year, month)
+        makeHappyChart(year, month)
+        makeSadChart(year, month)
+        bindTop3Diary(year, month)
     }
 
 
@@ -67,7 +72,7 @@ class MonthlyReportActivity : AppCompatActivity() {
         )
     }
 
-    private fun makeEmotionChart() {
+    private fun makeEmotionChart(year: Int, month: Int) {
         with(binding) {
             CoroutineScope(Dispatchers.IO).launch {
                 val emotionList: List<Emotion> =
@@ -80,7 +85,7 @@ class MonthlyReportActivity : AppCompatActivity() {
                         Emotion.SADNESS,
                         Emotion.ANXIETY
                     )
-                val reports = database?.ReportDao()?.findTop10(10)!!
+                val reports = database?.ReportDao()?.findByYearAndMonth(RDate.toYearMonth(year, month))!!
 
                 // 1. map으로 각 최고 감정의 개수 세기
                 val map: HashMap<String, Float> = HashMap()
@@ -88,7 +93,7 @@ class MonthlyReportActivity : AppCompatActivity() {
                     for (emotion in emotionList) {
                         val reportEmotion =
                             report.representative.substring(0, report.representative.length - 1)
-                        Log.d("파이차트 데이터", reportEmotion)
+                        // Log.d("파이차트 데이터", reportEmotion)
                         if (reportEmotion == emotion.en) {
                             val cnt = map[emotion.en]
                             if (cnt == null) {
@@ -158,19 +163,18 @@ class MonthlyReportActivity : AppCompatActivity() {
         return calendar.timeInMillis.toFloat()
     }
 
-    private fun makeHappyChart() {
+    private fun makeHappyChart(year: Int, month: Int) {
 
         // read data, add entries
         CoroutineScope(Dispatchers.IO).launch {
             val entries: MutableList<Entry> = ArrayList()
-            val reports = database?.ReportDao()?.findTop10(10)!!
-            reports.reverse()
+            val reports = database?.ReportDao()?.findByYearAndMonth(RDate.toYearMonth(year, month))!!
             for (report in reports) {
                 Log.d("행복지수 불러오기", "date: ${report.rDate}, happiness: ${report.happiness}")
-                val y = report.rDate?.substring(0 until 4)?.toInt()
-                val m = report.rDate?.substring(4 until 6)?.toInt()
-                val d = report.rDate?.substring(6 until 8)?.toInt()
-                entries.add(Entry(dateToMilliSecond(y!!, m!!, d!!), report.happiness.toFloat()))
+                val y = report.rDate.substring(0 until 4).toInt()
+                val m = report.rDate.substring(4 until 6).toInt()
+                val d = report.rDate.substring(6 until 8).toInt()
+                entries.add(Entry(dateToMilliSecond(y, m, d), report.happiness.toFloat()))
             }
 
             // draw graph
@@ -233,18 +237,17 @@ class MonthlyReportActivity : AppCompatActivity() {
     }
 
 
-    private fun makeSadChart() {
+    private fun makeSadChart(year: Int, month: Int) {
         // read data, add entires
         CoroutineScope(Dispatchers.IO).launch {
             val entries: MutableList<Entry> = ArrayList()
-            val reports = database?.ReportDao()?.findTop10(10)!!
-            reports.reverse()
+            val reports = database?.ReportDao()?.findByYearAndMonth(RDate.toYearMonth(year, month))!!
             for (report in reports) {
                 Log.d("우울지수 불러오기", "date: ${report.rDate}, depression: ${report.depression}")
-                val y = report.rDate?.substring(0 until 4)?.toInt()
-                val m = report.rDate?.substring(4 until 6)?.toInt()
-                val d = report.rDate?.substring(6 until 8)?.toInt()
-                entries.add(Entry(dateToMilliSecond(y!!, m!!, d!!), report.depression.toFloat()))
+                val y = report.rDate.substring(0 until 4).toInt()
+                val m = report.rDate.substring(4 until 6).toInt()
+                val d = report.rDate.substring(6 until 8).toInt()
+                entries.add(Entry(dateToMilliSecond(y, m, d), report.depression.toFloat()))
             }
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -306,9 +309,12 @@ class MonthlyReportActivity : AppCompatActivity() {
     }
 
 
-    private fun bindTop3Diary() {
+    private fun bindTop3Diary(year: Int, month: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            val reports = database?.ReportDao()?.findHappinessTop3()!!
+            val reports = database?.ReportDao()?.findHappinessTop3(RDate.toYearMonth(year, month))!!
+            for (report in reports) {
+                Log.d("기쁨 top3", "${report.rDate}: ${report.happiness}")
+            }
             binding.diaryTop1Btn.setOnClickListener {
                 if (reports.isEmpty()) {
                     val builder = AlertDialog.Builder(this@MonthlyReportActivity)
