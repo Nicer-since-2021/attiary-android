@@ -17,6 +17,10 @@ Server: https://github.com/Nicer-since-2021/attiary-model
 
 ### Blog
 
+## 주요 기능
+
+![엘리베이터스피치](https://user-images.githubusercontent.com/68107000/170640361-62b72f5b-10c9-4b2b-b5dc-75bba53b36df.png)
+
 ## POSTER
 ![포스터](https://user-images.githubusercontent.com/68107000/170448923-ad3149a8-a079-4d82-bf55-9a8b917828e7.png)
 
