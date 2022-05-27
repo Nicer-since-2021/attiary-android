@@ -1,7 +1,7 @@
 # 아띠어리: 딥러닝 기반 심리 케어 일기 어플
 
 ### NICER Youtube Channel
-Link:
+Link: https://www.youtube.com/channel/UCjDQoo6GDGgUo1te3q5Vo_w/featured
 
 ### Prototype
 
@@ -9,11 +9,11 @@ Link:
 ### Product Manual
 
 ### Project Repository
-KoBERT:
+KoBERT: https://github.com/Nicer-since-2021/multiclass-emotion-classification-using-KoBERT
 
-KoGPT2:
+KoGPT2: https://github.com/Nicer-since-2021/KoGPT2-Chatbot
 
-Server:
+Server: https://github.com/Nicer-since-2021/attiary-model
 
 ### Blog
 
