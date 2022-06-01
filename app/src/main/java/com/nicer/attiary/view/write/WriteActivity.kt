@@ -28,6 +28,7 @@ import com.nicer.attiary.databinding.ActivityWriteBinding
 import com.nicer.attiary.util.Emotion
 import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
+import com.nicer.attiary.view.common.GlobalApplication
 import com.nicer.attiary.view.signature.DiaryActivity
 import com.nicer.attiary.view.signature.MusicService
 import kotlinx.coroutines.CoroutineScope
@@ -44,6 +45,7 @@ class WriteActivity : AppCompatActivity() {
     lateinit var str: String
     private var database: ReportDatabase? = null
     lateinit var sigmu_intent: Intent
+    private lateinit var chatMode: String
     var emoMP: MediaPlayer? = null
     private var cnt: Int = 0
     private var emo: Int = 2
@@ -64,6 +66,7 @@ class WriteActivity : AppCompatActivity() {
         val rDate = RDate.toRDate(year, month, dayOfMonth)
         str = intent.getStringExtra("diary").toString()
         database = ReportDatabase.getInstance(this, Gson())
+        chatMode = GlobalApplication.settingPrefs.getString("chatMode", "")
 
         binding.diaryTextView.text = String.format("%d년 %d월 %d일", year, month + 1, dayOfMonth)
         binding.contextEditText.setText(str)
@@ -265,27 +268,51 @@ class WriteActivity : AppCompatActivity() {
                     var str_ = str.substring(cnt)
 
                     // 아띠
-                    RetrofitObject.getApiService().getChatRes(str_)
-                        .enqueue(object : Callback<Chat> {
-                            override fun onResponse(
-                                call: Call<Chat>,
-                                response: Response<Chat>
-                            ) {
-                                if (response.isSuccessful) {
-                                    var result: Chat? = response.body()
-                                    Log.d("YMC", "onResponse 성공: " + result?.answer)
-                                    binding.attiMsgTxt.text = result?.answer
-                                } else {
-                                    // 통신 실패
-                                    Log.d("YMC", "onResponse 실패")
+                    if (chatMode == "sympathy") {
+                        RetrofitObject.getApiService().getKoGPT2ChatRes(str_)
+                            .enqueue(object : Callback<Chat> {
+                                override fun onResponse(
+                                    call: Call<Chat>,
+                                    response: Response<Chat>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        var result: Chat? = response.body()
+                                        Log.d("YMC", "onResponse 성공: " + result?.answer)
+                                        binding.attiMsgTxt.text = result?.answer
+                                    } else {
+                                        // 통신 실패
+                                        Log.d("YMC", "onResponse 실패")
+                                    }
                                 }
-                            }
 
-                            override fun onFailure(call: Call<Chat>, t: Throwable) {
-                                // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                                Log.d("YMC", "onFailure 에러: " + t.message.toString())
-                            }
-                        })
+                                override fun onFailure(call: Call<Chat>, t: Throwable) {
+                                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                    Log.d("YMC", "onFailure 에러: " + t.message.toString())
+                                }
+                            })
+                    } else {
+                        RetrofitObject.getApiService().getKoBERTChatRes(str_)
+                            .enqueue(object : Callback<Chat> {
+                                override fun onResponse(
+                                    call: Call<Chat>,
+                                    response: Response<Chat>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        var result: Chat? = response.body()
+                                        Log.d("YMC", "onResponse 성공: " + result?.answer)
+                                        binding.attiMsgTxt.text = result?.answer
+                                    } else {
+                                        // 통신 실패
+                                        Log.d("YMC", "onResponse 실패")
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<Chat>, t: Throwable) {
+                                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                    Log.d("YMC", "onFailure 에러: " + t.message.toString())
+                                }
+                            })
+                    }
 
                     // 음악
                     RetrofitObject.getApiService().getChatEmo(str_)
@@ -317,7 +344,6 @@ class WriteActivity : AppCompatActivity() {
                 } else {
                     binding.attiMsgTxt.text = "듣고 있어요."
                 }
-
                 cnt = str.length
                 true
             } else {
@@ -449,15 +475,14 @@ class WriteActivity : AppCompatActivity() {
 
     fun selectTrack(item: Int) {
         when (item) {
-            //0: 기쁨, 1: 희망, 2: 중립, 3: 분노, 4: 슬픔, 5: 불안, 6: 피곤, 7: 후회
-            0 -> playTrack(MusicList.musicList.bgm_ha_list)
-            1 -> playTrack(MusicList.musicList.bgm_ho_list)
-            2 -> playTrack(MusicList.musicList.bgm_n_list)
-            3 -> playTrack(MusicList.musicList.bgm_a_list)
-            4 -> playTrack(MusicList.musicList.bgm_s_list)
-            5 -> playTrack(MusicList.musicList.bgm_ax_list)
-            6 -> playTrack(MusicList.musicList.bgm_t_list)
-            7 -> playTrack(MusicList.musicList.bgm_r_list)
+            Emotion.JOY.num -> playTrack(MusicList.musicList.bgm_ha_list)
+            Emotion.HOPE.num -> playTrack(MusicList.musicList.bgm_ho_list)
+            Emotion.NEUTRALITY.num -> playTrack(MusicList.musicList.bgm_n_list)
+            Emotion.SADNESS.num -> playTrack(MusicList.musicList.bgm_s_list)
+            Emotion.ANGER.num -> playTrack(MusicList.musicList.bgm_a_list)
+            Emotion.ANXIETY.num -> playTrack(MusicList.musicList.bgm_ax_list)
+            Emotion.TIREDNESS.num -> playTrack(MusicList.musicList.bgm_t_list)
+            Emotion.REGRET.num -> playTrack(MusicList.musicList.bgm_r_list)
         }
     }
 }

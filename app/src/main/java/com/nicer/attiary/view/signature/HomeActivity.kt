@@ -37,6 +37,8 @@ class HomeActivity : AppCompatActivity() {
     private var endTimeCalendar = Calendar.getInstance()
     private val currentYear = startTimeCalendar.get(Calendar.YEAR)
     private val currentMonth = startTimeCalendar.get(Calendar.MONTH)
+    private var nextYear = currentYear
+    private var nextMonth = currentMonth
     private val currentDate = startTimeCalendar.get(Calendar.DATE)
     private val enCalendarDay = CalendarDay(
         endTimeCalendar.get(Calendar.YEAR),
@@ -68,7 +70,6 @@ class HomeActivity : AppCompatActivity() {
             .commit()
         binding.calendarView.isDynamicHeightEnabled = true
         binding.barFindText.text = monthToString(currentMonth)
-        setHappinessDepressionBar(currentYear, currentMonth)
 
 
         binding.calendarView.setOnMonthChangedListener { _, date ->
@@ -78,11 +79,30 @@ class HomeActivity : AppCompatActivity() {
                 binding.barFindText.text = monthToString(month)
             else
                 ("$year " + monthToString(month)).also { binding.barFindText.text = it }
-            setHappinessDepressionBar(year, month)
+
+            nextYear = year
+            nextMonth = month
+            onResume()
+
+            binding.statsView.setOnClickListener {
+                val intent: Intent = Intent(this, MonthlyReportActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                intent.putExtra("year", year)
+                intent.putExtra("month", month)
+                startActivity(intent)
+            }
         }
 
         binding.newButton.setOnClickListener {
             nextView(currentYear, currentMonth, currentDate, RDate.toRDate(currentYear, currentMonth, currentDate))
+        }
+
+        binding.statsView.setOnClickListener {
+            val intent: Intent = Intent(this, MonthlyReportActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+            intent.putExtra("year", currentYear)
+            intent.putExtra("month", currentMonth)
+            startActivity(intent)
         }
 
         binding.calendarView.setOnDateChangedListener { widget, date, selected ->
@@ -93,7 +113,6 @@ class HomeActivity : AppCompatActivity() {
             nextView(year, month, dayOfMonth, rDate)
         }
 
-
         binding.settingBtn.setOnClickListener {
             startActivity(
                 Intent(
@@ -101,38 +120,6 @@ class HomeActivity : AppCompatActivity() {
                     SettingActivity::class.java
                 ).apply { addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION) })
         }
-
-        binding.statsView.setOnClickListener {
-            startActivity(
-                Intent(
-                    this,
-                    MonthlyReportActivity::class.java
-                ).apply { addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION) })
-        }
-
-    }
-
-    private fun setHappinessDepressionBar(currentYear: Int, currentMonth: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            var happiness = 0F
-            var depression = 0F
-            val reports = database?.ReportDao()?.findByYearAndMonth(RDate.toYearMonth(currentYear, currentMonth))
-            reports?.forEach { report ->
-                happiness += report.happiness
-                depression += report.depression
-                Log.d("home 행복지수 데이터", report.rDate)
-            }
-            happiness /= reports!!.size
-            depression /= reports.size
-
-            CoroutineScope(Dispatchers.IO).launch {
-                binding.happinessIndex.progress = toHappDeprprogress(happiness.toInt())
-                binding.depressionIndex.progress = toHappDeprprogress(depression.toInt())
-                binding.levelHappiness.text = toHappDeprLevel(happiness.toInt())
-                binding.levelDepression.text = toHappDeprLevel(depression.toInt())
-            }
-        }
-
     }
 
     private fun toHappDeprLevel(num : Int): String {
@@ -194,11 +181,33 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         } else {
             val intent: Intent = Intent(this, WriteActivity::class.java)
-            intent.putExtra("year", year);
-            intent.putExtra("month", month);
-            intent.putExtra("dayOfMonth", dayOfMonth);
+            intent.putExtra("year", year)
+            intent.putExtra("month", month)
+            intent.putExtra("dayOfMonth", dayOfMonth)
             intent.putExtra("diary", "")
             startActivity(intent)
+        }
+    }
+
+    private fun setHappinessDepressionBar() {
+        Log.d("종합행복우울지수, 지금은 몇월?", "${nextMonth + 1}")
+        CoroutineScope(Dispatchers.IO).launch {
+            var happiness = 0F
+            var depression = 0F
+            val reports = database?.ReportDao()?.findByYearAndMonth(RDate.toYearMonth(nextYear, nextMonth))
+            reports?.forEach { report ->
+                happiness += report.happiness
+                depression += report.depression
+            }
+            happiness /= reports!!.size
+            depression /= reports.size
+
+            CoroutineScope(Dispatchers.IO).launch {
+                binding.happinessIndex.progress = toHappDeprprogress(happiness.toInt())
+                binding.depressionIndex.progress = toHappDeprprogress(depression.toInt())
+                binding.levelHappiness.text = toHappDeprLevel(happiness.toInt())
+                binding.levelDepression.text = toHappDeprLevel(depression.toInt())
+            }
         }
     }
 
@@ -213,7 +222,10 @@ class HomeActivity : AppCompatActivity() {
         binding.calendarView.addDecorator(TirednessDecorator(this))
         binding.calendarView.addDecorator(ErrorDecorator(this))
 
+        setHappinessDepressionBar()
+
         super.onResume()
+
         if (AppLock.AppLockStatus.lock && AppLock(this).isPassLockSet()) {
             val intent = Intent(this, AppPassWordActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
