@@ -28,6 +28,7 @@ import com.nicer.attiary.databinding.ActivityWriteBinding
 import com.nicer.attiary.util.Emotion
 import com.nicer.attiary.util.RDate
 import com.nicer.attiary.view.common.AppPassWordActivity
+import com.nicer.attiary.view.common.GlobalApplication
 import com.nicer.attiary.view.signature.DiaryActivity
 import com.nicer.attiary.view.signature.MusicService
 import kotlinx.coroutines.CoroutineScope
@@ -56,7 +57,7 @@ class WriteActivity : AppCompatActivity() {
         stopService(sigmu_intent)
         shuffleTrack()
         viewModel.setEmotion(emo)
-
+        var emoCheck = GlobalApplication.settingPrefs.getString("emoMusic", "")
         val intent: Intent = getIntent()
         val year = intent.getIntExtra("year", 0)
         val month = intent.getIntExtra("month", 0)
@@ -288,36 +289,42 @@ class WriteActivity : AppCompatActivity() {
                         })
 
                     // 음악
-                    RetrofitObject.getApiService().getChatEmo(str_)
-                        .enqueue(object : Callback<ShortClassification> {
-                            override fun onResponse(
-                                call: Call<ShortClassification>,
-                                response: Response<ShortClassification>
-                            ) {
-                                if (response.isSuccessful) {
-                                    var result: ShortClassification? = response.body()
-                                    Log.d("YMC", "onResponse 성공: " + result?.emotion_no)
 
-                                    if (emo != result?.emotion_no) {
-                                        emo = result?.emotion_no!!
-                                        selectTrack(emo)
-                                        viewModel.setEmotion(result.emotion_no)
+                    if (emoCheck == "eON") {
+                        RetrofitObject.getApiService().getChatEmo(str_)
+                            .enqueue(object : Callback<ShortClassification> {
+                                override fun onResponse(
+                                    call: Call<ShortClassification>,
+                                    response: Response<ShortClassification>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        var result: ShortClassification? = response.body()
+                                        Log.d("YMC", "onResponse 성공: " + result?.emotion_no)
+
+                                        if (emo != result?.emotion_no) {
+                                            emo = result?.emotion_no!!
+                                            selectTrack(emo)
+                                            viewModel.setEmotion(result.emotion_no)
+                                        }
+                                    } else {
+                                        // 통신 실패
+                                        Log.d("YMC", "onResponse 실패")
                                     }
-                                } else {
-                                    // 통신 실패
-                                    Log.d("YMC", "onResponse 실패")
                                 }
-                            }
 
-                            override fun onFailure(call: Call<ShortClassification>, t: Throwable) {
-                                // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                                Log.d("YMC", "onFailure 에러: " + t.message.toString())
-                            }
-                        })
-                } else {
-                    binding.attiMsgTxt.text = "듣고 있어요."
+                                override fun onFailure(
+                                    call: Call<ShortClassification>,
+                                    t: Throwable
+                                ) {
+                                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                    Log.d("YMC", "onFailure 에러: " + t.message.toString())
+                                }
+                            })
+
+                    } else {
+                        binding.attiMsgTxt.text = "듣고 있어요."
+                    }
                 }
-
                 cnt = str.length
                 true
             } else {
