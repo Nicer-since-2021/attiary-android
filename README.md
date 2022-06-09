@@ -4,9 +4,11 @@
 Link: https://www.youtube.com/channel/UCjDQoo6GDGgUo1te3q5Vo_w/featured
 
 ### Prototype
+https://www.figma.com/file/Z7WgBPzFAmGNJW0nM1vEBP/%EC%95%84%EB%9D%A0%EC%96%B4%EB%A6%AC?node-id=0%3A1
 
 ## ATTIARY Project
 ### Product Manual
+https://github.com/Nicer-since-2021/attiary-android/blob/main/ReleaseNote.MD
 
 ### Project Repository
 KoBERT: https://github.com/Nicer-since-2021/multiclass-emotion-classification-using-KoBERT
@@ -28,4 +30,7 @@ Server: https://github.com/Nicer-since-2021/attiary-model
 <p align=center><img width=720px src="https://user-images.githubusercontent.com/68107000/170639972-d654c121-8cb4-453d-a18b-a55c22eff188.png"></p>
 
 ## Reference
+https://github.com/SKTBrain/KoBERT
+https://github.com/haven-jeon/KoGPT2-chatbot
+
 
