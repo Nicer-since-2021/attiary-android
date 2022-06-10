@@ -257,7 +257,7 @@ class WriteActivity : AppCompatActivity() {
             }
         }
 
-        // 엔터키 누를 때마다 Chatbot 응답 전송
+ // 엔터키 누를 때마다 Chatbot 응답 전송
         binding.contextEditText.setOnKeyListener { _, keyCode, event ->
 
             if ((event.action == KeyEvent.ACTION_UP) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
@@ -337,7 +337,7 @@ class WriteActivity : AppCompatActivity() {
                                     }
                                 }
 
-                                override fun onFailure(
+                               override fun onFailure(
                                     call: Call<ShortClassification>,
                                     t: Throwable
                                 ) {
