@@ -431,18 +431,15 @@ class WriteActivity : AppCompatActivity() {
         var tmpList = list
         if (tmpList.isEmpty()) {
             tmpList = list
-        }
-
-        val nextTrack = tmpList.first()
-        tmpList = tmpList - nextTrack
-
-        emoMP = MediaPlayer.create(this, nextTrack).apply {
-            setOnCompletionListener {
-                it.stop()
-                it.release()
-                playTrack(tmpList)
+        } else {
+            val nextTrack = tmpList.first()
+            tmpList = tmpList - nextTrack
+            emoMP = MediaPlayer.create(this, nextTrack).apply {
+                setOnCompletionListener {
+                    playTrack(tmpList)
+                }
+                start()
             }
-            start()
         }
     }
 
