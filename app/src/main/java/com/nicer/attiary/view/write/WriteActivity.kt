@@ -314,7 +314,6 @@ class WriteActivity : AppCompatActivity() {
                             })
                     }
 
-
                     // 음악
                     if (emoCheck == "eON") {
                         RetrofitObject.getApiService().getChatEmo(str_)
