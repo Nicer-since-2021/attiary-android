@@ -337,7 +337,7 @@ class WriteActivity : AppCompatActivity() {
                                     }
                                 }
 
-                                override fun onFailure(
+                               override fun onFailure(
                                     call: Call<ShortClassification>,
                                     t: Throwable
                                 ) {
@@ -345,9 +345,12 @@ class WriteActivity : AppCompatActivity() {
                                     Log.d("YMC", "onFailure 에러: " + t.message.toString())
                                 }
                             })
+
+                    }
                 } else {
                     binding.attiMsgTxt.text = "듣고 있어요."
                 }
+
                 cnt = str.length
                 true
             } else {
