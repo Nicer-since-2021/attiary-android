@@ -7,22 +7,26 @@ enum class Emotion(val num: Int, val en: String, val kr: String, val color: Int)
     JOY(0, "joy", "기쁨", Color.rgb(182, 219, 176)),
     HOPE(1, "hope", "희망", Color.rgb(249, 198, 234)),
     NEUTRALITY(2, "neutrality", "중립", Color.rgb(216, 216, 216)),
-    ANGER(3, "anger", "분노", Color.rgb(252, 179, 169)),
-    SADNESS(4, "sadness", "슬픔", Color.rgb(169, 197, 252)),
+    SADNESS(3, "sadness", "슬픔", Color.rgb(169, 197, 252)),
+    ANGER(4, "anger", "분노", Color.rgb(252, 179, 169)),
     ANXIETY(5, "anxiety", "불안", Color.rgb(190, 169, 252)),
     TIREDNESS(6, "tiredness", "피곤", Color.rgb(252, 209, 169)),
     REGRET(7, "regret", "후회", Color.rgb(211, 172, 126));
 
     companion object {
+        fun getEmotionKrList() : Array<String> {
+            return arrayOf(JOY.kr, HOPE.kr, NEUTRALITY.kr, SADNESS.kr, ANGER.kr, ANXIETY.kr, TIREDNESS.kr, REGRET.kr)
+        }
+
         fun getComment(str: String): String {
             return if (JOY.en == str) {
                 joyComment[Random().nextInt(joyComment.size)]
             } else if (HOPE.en == str) {
                 hopeComment[Random().nextInt(hopeComment.size)]
-            } else if (ANGER.en == str) {
-                angerComment[Random().nextInt(angerComment.size)]
             } else if (SADNESS.en == str) {
                 sadnessComment[Random().nextInt(sadnessComment.size)]
+            } else if (ANGER.en == str) {
+                angerComment[Random().nextInt(angerComment.size)]
             } else if (ANXIETY.en == str) {
                 anxietyComment[Random().nextInt(anxietyComment.size)]
             } else if (TIREDNESS.en == str) {
@@ -46,7 +50,6 @@ enum class Emotion(val num: Int, val en: String, val kr: String, val color: Int)
             // 3
             "00님의 섬세한 이야기를 들려주셔서 감사해요. 해도해도 부족한 것이 감정표현이래요. 그날그날 느낀 것들을 가슴속에 묻어두지 말고, 오늘처럼 아띠에게 말해 주세요. 저는 이야기 듣는 게 세상에서 제일 좋거든요! 사실 00님처럼 마음이 알록달록한 분을 만나서 아띠는 매일 행복하답니다."
         )
-
         private val hopeComment = listOf(
             // 0
             "축하해요! 희망이 많이 보여요!\n긍정적인 사고를 하는 건 매우 중요하죠 ㅎㅎ\n아띠가 곁에 있디면 맛있는 식사라도 대접하고 싶어요.",
@@ -62,26 +65,6 @@ enum class Emotion(val num: Int, val en: String, val kr: String, val color: Int)
                     "자연스러운 것이니 너무 걱정하지 말고,\n" +
                     "후회를 최대한 덜 남기는 것을 목표로 해보는 건 어떨까요~?"
         )
-
-        private val angerComment = listOf(
-            // 0
-            "정말이지… 아띠도 답답하고 화가 나네요. 화 나는 일이 연속적으로 일어나면 정말 힘들죠…\n" +
-                    "그러나 무엇보다 중요한 건 당신을 화나게 한 존재나 사건이 아니라 당신 자체라는 걸 명심하세요.\n" +
-                    "분노는 자연스러운 감정이지만, 너무 커져버리면 당신을 힘들게 할지도 몰라요.\n" +
-                    "그러니 잠시 심호흡하고, 가만히 당신의 감정을 지켜보세요. 그리고, 당신을 위한 선택을 하세요.",
-            // 1
-            "사람은 완벽하지 않고 모두가 다르기 때문에 갈등은 생길 수 밖에 없어요.\n00님 탓이 아니랍니다.",
-            // 2
-            "듣자듣자 하니 아띠도 너무 화가 나요! 왜 마음을 못 알아주는 걸까요?\n" +
-                    "너무 화가 나고 속상하지만 이럴 때일수록 챙겨야 하는 것은 자기 자신이에요. 폭식, 과음 등 자신을 망치는 행동을 하기 쉽기 때문이에요.\n" +
-                    "아띠는 아주 짧게 산책을 해보거나, 찬 물을 마시거나, 사탕 하나를 먹으면서 몸과 마음을 챙기고 있어요. 여유가 생기고 기분 전환이 되니 꼭 실천해보아요.",
-            // 3
-            "오늘은 화가 많이 느껴지는 날이에요.\n" +
-                    "이럴 땐 긴 호흡을 천천히 들이쉬고 내쉬어보세요. 10번 정도 반복하다 보면 마음이 좀 편안해질 거에요.\n" +
-                    "지금 당장 시작해봅시다!\n" +
-                    "해보셨나요? 어려운 상황에서도 일기를 쓰면서 감정을 다스리고 노력하는 00님의 모습이 너무 멋져요. 아띠가 특 급 칭 찬 해줄게요!!"
-        )
-
         private val sadnessComment = listOf(
             // 0
             "평화롭지만은 않았던 하루네요. 모든 일이 순탄하게 흘러갔으면 좋았을텐데…\n" +
@@ -111,6 +94,24 @@ enum class Emotion(val num: Int, val en: String, val kr: String, val color: Int)
             "아이구… 긴 터널을 걷고 있는 기분일까요..?\n" +
                     "특별한 행운이 없어도 잠을 푹 자지 못해도 호탕한 웃음소리를 내보지 못했어도\n" +
                     "00님의 하루가 근심 걱정 없는 하루였으면 좋겠어요."
+        )
+        private val angerComment = listOf(
+            // 0
+            "정말이지… 아띠도 답답하고 화가 나네요. 화 나는 일이 연속적으로 일어나면 정말 힘들죠…\n" +
+                    "그러나 무엇보다 중요한 건 당신을 화나게 한 존재나 사건이 아니라 당신 자체라는 걸 명심하세요.\n" +
+                    "분노는 자연스러운 감정이지만, 너무 커져버리면 당신을 힘들게 할지도 몰라요.\n" +
+                    "그러니 잠시 심호흡하고, 가만히 당신의 감정을 지켜보세요. 그리고, 당신을 위한 선택을 하세요.",
+            // 1
+            "사람은 완벽하지 않고 모두가 다르기 때문에 갈등은 생길 수 밖에 없어요.\n00님 탓이 아니랍니다.",
+            // 2
+            "듣자듣자 하니 아띠도 너무 화가 나요! 왜 마음을 못 알아주는 걸까요?\n" +
+                    "너무 화가 나고 속상하지만 이럴 때일수록 챙겨야 하는 것은 자기 자신이에요. 폭식, 과음 등 자신을 망치는 행동을 하기 쉽기 때문이에요.\n" +
+                    "아띠는 아주 짧게 산책을 해보거나, 찬 물을 마시거나, 사탕 하나를 먹으면서 몸과 마음을 챙기고 있어요. 여유가 생기고 기분 전환이 되니 꼭 실천해보아요.",
+            // 3
+            "오늘은 화가 많이 느껴지는 날이에요.\n" +
+                    "이럴 땐 긴 호흡을 천천히 들이쉬고 내쉬어보세요. 10번 정도 반복하다 보면 마음이 좀 편안해질 거에요.\n" +
+                    "지금 당장 시작해봅시다!\n" +
+                    "해보셨나요? 어려운 상황에서도 일기를 쓰면서 감정을 다스리고 노력하는 00님의 모습이 너무 멋져요. 아띠가 특 급 칭 찬 해줄게요!!"
         )
         private val anxietyComment = listOf(
             // 0

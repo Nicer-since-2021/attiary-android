@@ -9,7 +9,12 @@ import retrofit2.http.Query
 
 interface RetrofitService {
     @GET("chatbot/b")
-    fun getChatRes(
+    fun getKoBERTChatRes(
+        @Query("s") s: String
+    ): Call<Chat>
+
+    @GET("chatbot/g")
+    fun getKoGPT2ChatRes(
         @Query("s") s: String
     ): Call<Chat>
 
