@@ -58,7 +58,7 @@ class WriteActivity : AppCompatActivity() {
         stopService(sigmu_intent)
         shuffleTrack()
         viewModel.setEmotion(emo)
-
+        var emoCheck = GlobalApplication.settingPrefs.getString("emoMusic", "")
         val intent: Intent = getIntent()
         val year = intent.getIntExtra("year", 0)
         val month = intent.getIntExtra("month", 0)
@@ -257,7 +257,7 @@ class WriteActivity : AppCompatActivity() {
             }
         }
 
-        // 엔터키 누를 때마다 Chatbot 응답 전송
+ // 엔터키 누를 때마다 Chatbot 응답 전송
         binding.contextEditText.setOnKeyListener { _, keyCode, event ->
 
             if ((event.action == KeyEvent.ACTION_UP) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
@@ -315,35 +315,42 @@ class WriteActivity : AppCompatActivity() {
                     }
 
                     // 음악
-                    RetrofitObject.getApiService().getChatEmo(str_)
-                        .enqueue(object : Callback<ShortClassification> {
-                            override fun onResponse(
-                                call: Call<ShortClassification>,
-                                response: Response<ShortClassification>
-                            ) {
-                                if (response.isSuccessful) {
-                                    var result: ShortClassification? = response.body()
-                                    Log.d("YMC", "onResponse 성공: " + result?.emotion_no)
+                    if (emoCheck == "eON") {
+                        RetrofitObject.getApiService().getChatEmo(str_)
+                            .enqueue(object : Callback<ShortClassification> {
+                                override fun onResponse(
+                                    call: Call<ShortClassification>,
+                                    response: Response<ShortClassification>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        var result: ShortClassification? = response.body()
+                                        Log.d("YMC", "onResponse 성공: " + result?.emotion_no)
 
-                                    if (emo != result?.emotion_no) {
-                                        emo = result?.emotion_no!!
-                                        selectTrack(emo)
-                                        viewModel.setEmotion(result.emotion_no)
+                                        if (emo != result?.emotion_no) {
+                                            emo = result?.emotion_no!!
+                                            selectTrack(emo)
+                                            viewModel.setEmotion(result.emotion_no)
+                                        }
+                                    } else {
+                                        // 통신 실패
+                                        Log.d("YMC", "onResponse 실패")
                                     }
-                                } else {
-                                    // 통신 실패
-                                    Log.d("YMC", "onResponse 실패")
                                 }
-                            }
 
-                            override fun onFailure(call: Call<ShortClassification>, t: Throwable) {
-                                // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
-                                Log.d("YMC", "onFailure 에러: " + t.message.toString())
-                            }
-                        })
+                               override fun onFailure(
+                                    call: Call<ShortClassification>,
+                                    t: Throwable
+                                ) {
+                                    // 통신 실패 (인터넷 끊킴, 예외 발생 등 시스템적인 이유)
+                                    Log.d("YMC", "onFailure 에러: " + t.message.toString())
+                                }
+                            })
+
+                    }
                 } else {
                     binding.attiMsgTxt.text = "듣고 있어요."
                 }
+
                 cnt = str.length
                 true
             } else {
@@ -450,18 +457,15 @@ class WriteActivity : AppCompatActivity() {
         var tmpList = list
         if (tmpList.isEmpty()) {
             tmpList = list
-        }
-
-        val nextTrack = tmpList.first()
-        tmpList = tmpList - nextTrack
-
-        emoMP = MediaPlayer.create(this, nextTrack).apply {
-            setOnCompletionListener {
-                it.stop()
-                it.release()
-                playTrack(tmpList)
+        } else {
+            val nextTrack = tmpList.first()
+            tmpList = tmpList - nextTrack
+            emoMP = MediaPlayer.create(this, nextTrack).apply {
+                setOnCompletionListener {
+                    playTrack(tmpList)
+                }
+                start()
             }
-            start()
         }
     }
 
