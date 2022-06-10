@@ -1,6 +1,11 @@
 # 그로쓰 19팀 NICER
+
 ## Quick Start Guide
+
 ## 기능 1) 초기 설정
+
+<p align="center"><img height="550" src="https://user-images.githubusercontent.com/68107000/172988425-abe4c369-8f09-4258-86d0-4c655d47296d.png"/></p>
+
 a. 이메일, 닉네임, 생일을 입력합니다.
 
 b. 비밀번호를 설정합니다.
@@ -49,7 +54,7 @@ a. 상단의 체크 표시를 누르면 일기 분석이 이루어지는데, 이
 
 b. 아래 숨김창을 스와이프 하여 감정 보고서를 확인할 수 있습니다. 분석된 대표 감정으로 아이콘이 설정되고, 감정에 따라 아띠의 한마디가 작성됩니다.
 
-<p align="center"><img height="550" src="https://user-images.githubusercontent.com/68107000/172986926-7adb1c21-f540-4d9f-8a39-551c5f77ba57.png"/></p>
+<p align="center"><img height="550" src="https://user-images.githubusercontent.com/68107000/172987834-511c6fbf-41de-43a8-ad25-67f88fbeb09c.png"/></p>
 
 c. 대표 감정을 바꾸고 싶다면 사용자의 임의로 변경할 수 있습니다.
 
@@ -89,7 +94,7 @@ b. 삭제 버튼을 누르면 삭제할 수 있습니다.
 
 #### (1) 감정 파이 차트, 행복 지수, 우울 지수, 행복일기 TOP 3
 
-<p align="center"><img height="550" src="https://user-images.githubusercontent.com/68107000/172983606-873a75c1-b687-4271-ac2d-fd7bfbd0e088.png"/></p>
+<p align="center"><img height="550" src="https://user-images.githubusercontent.com/68107000/172988549-010e4879-5173-42dd-bdca-8b8d712c24f6.png"/></p>
 
 a. 넘어가는 보고서 페이지의 가장 상단에, 이 달의 감정 분포 파이 차트를 볼 수 있습니다.
 
@@ -97,7 +102,7 @@ b. 아래로 내리면 행복 지수, 우울 지수 그래프를 확인할 수 �
 
 c. 가장 하단에, 행복 지수가 가장 높은 일기 3가지를 다시 볼 수 있도록 바로가기를 제공합니다.
 
-<p align="center"><img height="550" src="https://user-images.githubusercontent.com/68107000/172985113-50d9ee87-c03e-4282-b99e-d1a45db9c360.png"/></p>
+<p align="center"><img height="550" src="https://user-images.githubusercontent.com/68107000/172988610-fe6ad0df-0645-4fef-a6cf-3ecc70f1a26f.png"/></p>
 
 버튼을 통해 이동한 행복한 일기의 예시입니다.
 
@@ -107,7 +112,7 @@ c. 가장 하단에, 행복 지수가 가장 높은 일기 3가지를 다시 볼
 
 ### 1. 닉네임 및 생일 정보 변경
 
-<p align="center"><img height="550" src="https://user-images.githubusercontent.com/68107000/172982243-f42d17f3-85bb-4b6a-84f2-cf46aac1404d.png"/></p>
+<p align="center"><img height="550" src="https://user-images.githubusercontent.com/68107000/172988176-5312ebae-c7a6-4089-b244-0d8771785cb4.png"/></p>
 
 <p align="center"><img height="550" src="https://user-images.githubusercontent.com/68107000/172982343-b14d66f1-feed-47c4-92fe-9068faf0d68d.png"/></p>
 
@@ -127,6 +132,6 @@ a. 공감형 or 위로형 으로 실시간 반응봇의 성격을 바꿀 수 있
 
 ### 4. 실시간 감정음악 On/Off
 
-<p align="center"><img height="550" src="https://user-images.githubusercontent.com/68107000/172982621-722e9e2b-f583-44cf-8480-b46f40b97616.png"/></p>
+<p align="center"><img height="550" src="https://user-images.githubusercontent.com/68107000/172988748-f4a984c2-cafb-43df-bc1a-4f682be9f225.png"/></p>
 
 a. 이 기능을 off하면, 일기 작성 시 감정에 따라 음악이 바뀌지 않는다. 대신 기본으로 설정된 음악이 흘러나옵니다.
