@@ -314,8 +314,8 @@ class WriteActivity : AppCompatActivity() {
                             })
                     }
 
-                    // 음악
 
+                    // 음악
                     if (emoCheck == "eON") {
                         RetrofitObject.getApiService().getChatEmo(str_)
                             .enqueue(object : Callback<ShortClassification> {
@@ -347,10 +347,11 @@ class WriteActivity : AppCompatActivity() {
                                 }
                             })
 
-                    } else {
-                        binding.attiMsgTxt.text = "듣고 있어요."
                     }
+                } else {
+                    binding.attiMsgTxt.text = "듣고 있어요."
                 }
+
                 cnt = str.length
                 true
             } else {
