@@ -1,9 +1,13 @@
 # 아띠어리: 딥러닝 기반 심리 케어 일기 어플
 
-### NICER Youtube Channel
+## apk 실행 파일
+apk 실행 파일은 해당 레포의 [`app/release/attiary.apk`](https://github.com/Nicer-since-2021/attiary-android/blob/main/app/release/attiary.apk)에 업로드해두었습니다.
+이동하여 다운로드할 수 있습니다.
+
+## NICER Youtube Channel
 Link: https://www.youtube.com/channel/UCjDQoo6GDGgUo1te3q5Vo_w/featured
 
-### Prototype
+## Prototype
 https://www.figma.com/file/Z7WgBPzFAmGNJW0nM1vEBP/%EC%95%84%EB%9D%A0%EC%96%B4%EB%A6%AC?node-id=0%3A1
 
 ## ATTIARY Project
